@@ -1,6 +1,6 @@
 #include "ConnectionServer.hpp"
-
-
+#include "request_handler/RequestHandler.hpp"
+#include "session_manager/SessionManager.hpp"
 #include <iostream>
 
 ConnectionServer::ConnectionServer(){
@@ -36,6 +36,7 @@ ConnectionServer &ConnectionServer::bind_data(){
 
 ConnectionServer &ConnectionServer::start()
 {
+    this->session_manager = std::make_shared<SessionManager>();
     if(!this->port.has_value()){
         throw std::runtime_error("Error , port is none");
     }
@@ -47,7 +48,7 @@ ConnectionServer &ConnectionServer::start()
     }
     
     std::cout << "Server started and listen on port 8080\n";
-
+  
     while (true) {
         socklen_t addrlen = sizeof(address); 
         int client = accept(server_fd.value(), (struct sockaddr *)&address, (socklen_t*)&addrlen);
@@ -55,15 +56,17 @@ ConnectionServer &ConnectionServer::start()
             perror("accept");
             continue;
         }
-        std::string response= "salut";
-        std::thread([client,response](){
+       
+        std::thread([client,this](){
+            int len = 0;
             char buffer[4096] = {0};
-            read(client, buffer, sizeof(buffer) - 1);
-            std::cout << "Cerere primită:\n" << buffer << "\n";
+            read(client, &len, sizeof(int));
+            read(client, buffer, len);
             
-            int len = response.size();
-            write(client, response.c_str(), response.size());
-            write(client, response.c_str(), response.size());
+            std::string response = RequestHandler::match_request(client,buffer,this->session_manager);
+            len = response.size();
+            write(client, &len, sizeof(int));
+            write(client, response.c_str(), len);
 
             close(client);
         }).detach(); 
