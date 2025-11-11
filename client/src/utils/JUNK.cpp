@@ -1,0 +1,74 @@
+#include "JUNK.hpp"
+#include <iostream>
+#include <string.h>
+#include <format>
+
+
+std::optional<std::string> JUNK::operator[](const std::string key)
+{
+    if(data.contains(key))
+        return data[key];
+    return std::nullopt;
+}
+
+void JUNK::display()
+{
+    std::string JUNK = "";
+    for (const auto& [key, value] : data) {
+        std::cout << key << " = " << value << "\n";
+    }
+
+}
+std::string JUNK::serialize(JUNK data)
+{
+    std::string JUNK = "";
+    for (const auto& [key, value] : data) {
+        JUNK = std::format("{}:{{{}}};{}", key, value,JUNK);
+    }
+    return JUNK;
+}
+
+// 'NUME':{nume:nume};
+
+JUNK JUNK::deserialize(std::string data)
+{
+    JUNK new_data;
+    int left_count=0;
+    int poz=0;
+    std::string key_val[2];
+    for(auto ch : data){
+        if (ch == '\n'||ch =='\r'){
+            continue;
+        }
+        if(ch==':'&&left_count==0){
+            poz+=1;
+            continue;
+        }
+        if(ch =='{'){
+            left_count+=1;
+            if (left_count==1){
+                continue;
+            }
+        }
+        if(ch=='}'){
+            left_count-=1;
+             if (left_count==0){
+                continue;
+            }
+        }
+        if(ch==';'&&left_count==0){
+            new_data.add(key_val[0],key_val[1]);
+            poz=0;
+            key_val[0].clear();key_val[1].clear();
+        }
+        else {
+            key_val[poz].push_back(ch);
+        }
+        
+    }
+    return new_data;
+}
+void JUNK::add(std::string key,std::string value){
+    data[key]=value;
+    
+}
