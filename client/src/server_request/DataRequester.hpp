@@ -5,9 +5,9 @@
 #include <unistd.h>
 #include <cstring>
 #include <string>
+#include "ProtocolFormater.hpp"
 
-
-class DataRequester{
+class DataRequester:public ProtocolFormater{
     std::string ip;
     int port;
     int sock;
