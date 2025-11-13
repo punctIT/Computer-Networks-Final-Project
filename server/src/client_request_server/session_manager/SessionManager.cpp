@@ -1,20 +1,34 @@
 #include "SessionManager.hpp"
 #include <iostream>
-bool SessionManager::check_token(const std::string token)
-{
+#include <format>
+bool SessionManager::check_token(const std::string token){
+    std::shared_lock lock(mutex);
+    if(sessions.contains(token)){
+        return true;
+    }
     return false;
 }
 
-std::string SessionManager::create_session()
-{
+std::string SessionManager::create_session(std::string username){
     std::unique_lock lock(mutex);
-    sessions.push_back("salut");
-    for(auto i : sessions){
-        std::cout<<i<<" \n";
-    }
-    return std::string();
+    std::string token =std::format("ceva{}",count);
+    sessions[token]=username;
+    ++count;
+    return token;
 }
-
-SessionManager::SessionManager()
-{
+std::expected<bool, std::string> SessionManager::remove_session(const std::string token){
+    std::unique_lock lock(mutex);
+    if(sessions.contains(token)){
+        return sessions.erase(token);
+    }
+    return std::unexpected("Error , token not found in manager");
+}
+void SessionManager::debug(){
+    std::shared_lock lock(mutex);
+     for(auto i : sessions){
+        std::cout<<i.first<<" "<<i.second<<" \n";
+    }
+}
+SessionManager::SessionManager(){
+    count=0;
 }

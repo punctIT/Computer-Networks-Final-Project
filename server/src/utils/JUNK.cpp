@@ -3,7 +3,6 @@
 #include <string.h>
 #include <format>
 
-
 std::optional<std::string> JUNK::operator[](const std::string key)
 {
     if(data.contains(key))
@@ -19,21 +18,25 @@ void JUNK::display()
     }
 
 }
-std::string JUNK::serialize(JUNK data)
+std::expected<std::string,std::string> JUNK::serialize(JUNK data)
 {
     std::string JUNK = "";
     for (const auto& [key, value] : data) {
         JUNK = std::format("{}:{{{}}};{}", key, value,JUNK);
+    }
+    if(JUNK.empty()){
+        return std::unexpected("Invalid JUNK object");
     }
     return JUNK;
 }
 
 // 'NUME':{nume:nume};
 
-JUNK JUNK::deserialize(std::string data)
+std::expected<JUNK,std::string> JUNK::deserialize(std::string data)
 {
     JUNK new_data;
     int left_count=0;
+    int format_count =0;
     int poz=0;
     std::string key_val[2];
     for(auto ch : data){
@@ -42,6 +45,7 @@ JUNK JUNK::deserialize(std::string data)
         }
         if(ch==':'&&left_count==0){
             poz+=1;
+            format_count+=1;
             continue;
         }
         if(ch =='{'){
@@ -66,9 +70,20 @@ JUNK JUNK::deserialize(std::string data)
         }
         
     }
+    if(format_count == 0 || left_count!=0 || new_data.empty()){
+        return std::unexpected(std::format("Invalid data , not a valid JUNK format \n {}",data));
+    }
     return new_data;
 }
-void JUNK::add(std::string key,std::string value){
+bool JUNK::empty()
+{
+    return data.empty();
+}
+bool JUNK::containts(std::string key)
+{
+    return data.contains(key);
+}
+void JUNK::add(std::string key, std::string value)
+{
     data[key]=value;
-    
 }

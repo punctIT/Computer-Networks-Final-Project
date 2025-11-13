@@ -3,7 +3,7 @@
 #include <string>
 #include <unordered_map>
 #include <optional>
-
+#include <expected>
 
 //Just
 //Useful
@@ -19,8 +19,9 @@ class JUNK{
     public:
     std::optional<std::string> operator[](const std::string);
     void display();
-    static std::string serialize(JUNK data);
-    static JUNK deserialize(std::string);
+    static std::expected<std::string,std::string> serialize(JUNK data);
+    static std::expected<JUNK,std::string> deserialize(std::string);
+    bool empty();
     void add(std::string,std::string);
     auto begin() { return data.begin(); }
     auto end() { return data.end(); }

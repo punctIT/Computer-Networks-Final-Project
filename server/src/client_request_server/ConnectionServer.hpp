@@ -9,12 +9,16 @@
 
 
 class SessionManager;
+class RequestHandler;
+class AuthManager;
 
 class ConnectionServer
 {
 private:
     std::optional<int> server_fd, client;
     std::shared_ptr<SessionManager> session_manager;
+    std::shared_ptr<AuthManager> auth;
+    std::shared_ptr<RequestHandler> request_handler;
     sockaddr_in address;
     int opt = 1;
     std::optional<int> port;
