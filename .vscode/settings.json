@@ -74,6 +74,10 @@
         "numbers": "cpp",
         "semaphore": "cpp",
         "span": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "codecvt": "cpp",
+        "fstream": "cpp",
+        "iomanip": "cpp",
+        "sstream": "cpp"
     }
 }
