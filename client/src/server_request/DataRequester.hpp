@@ -8,6 +8,7 @@
 #include "ProtocolFormater.hpp"
 #include <optional>
 #include <expected>
+
 class DataRequester:public ProtocolFormater{
     std::string ip;
     int port;
