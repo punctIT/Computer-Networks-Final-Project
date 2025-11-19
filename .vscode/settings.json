@@ -81,6 +81,9 @@
         "sstream": "cpp",
         "chrono": "cpp",
         "map": "cpp",
-        "future": "cpp"
+        "future": "cpp",
+        "qstackedwidget": "cpp",
+        "source_location": "cpp",
+        "cinttypes": "cpp"
     }
 }

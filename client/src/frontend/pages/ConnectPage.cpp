@@ -1,23 +1,22 @@
-#include "LoginPage.h"
+#include "ConnectPage.h"
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QLineEdit>
-#include "../managers/PageManager.h"
-void LoginPage::bind_buttons()
+
+void ConnectPage::bind_buttons()
 {
-    QObject::connect(this->signin_btn, &QPushButton::clicked, [this]() {
-        qDebug() << "Buton apăsat!";    
-        this->page_manager->change_page(1);
-        
+    QObject::connect(this->signin_btn, &QPushButton::clicked, []() {
+        qDebug() << "Buton apăsat!";
     });
 }
 
-LoginPage::LoginPage(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager){
-    this->page_manager=page_manager;
+ConnectPage::ConnectPage(std::shared_ptr<DataRequester> data)
+{
     page = new QWidget();
+   
     QVBoxLayout *layout = new QVBoxLayout();
-    QLabel *label = new QLabel("Salut! Acesta este un QLabel într-un QWidget.");
+    QLabel *label = new QLabel("Connect");
     label->setAlignment(Qt::AlignCenter);
 
     signin_btn = new QPushButton("Connect");
@@ -31,6 +30,6 @@ LoginPage::LoginPage(std::shared_ptr <DataRequester> data,const std::shared_ptr 
     bind_buttons();
 }
 
-QWidget *LoginPage::get_page(){
+QWidget *ConnectPage::get_page(){
     return page;
 }

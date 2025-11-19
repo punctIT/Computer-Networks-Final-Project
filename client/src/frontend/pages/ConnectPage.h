@@ -9,17 +9,16 @@ class QLineEdit;
 class QWidget;
 class QPushButton;
 
-class PageManager;
-class LoginPage{
+class ConnectPage{
     QWidget * page;
     QLineEdit *username_input ;
     QLineEdit *password_input ;
     QPushButton * signin_btn ;
     std::shared_ptr <DataRequester> data_requester;
-    std::shared_ptr <PageManager> page_manager;
+
     void bind_buttons();
     public:
-        LoginPage(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager);
+        ConnectPage(std::shared_ptr <DataRequester> data);
         QWidget* get_page();
 
 };
