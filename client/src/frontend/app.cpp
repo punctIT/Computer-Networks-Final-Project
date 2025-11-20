@@ -2,7 +2,9 @@
 #include "../server_request/DataRequester.hpp"
 #include "pages/LoginPage.h"
 #include "pages/ConnectPage.h"
-#include "managers/PageManager.h"
+#include "page_system/PageManager.h"
+#include "pages/home/HomePage.h"
+
 App::App()
 {
     data_requster=std::make_shared<DataRequester>();
@@ -19,10 +21,14 @@ App::App()
     window->setFixedSize(400, 200);
     window->setWindowTitle("Network Device Monitor");
 
-    login_page= std::make_shared<LoginPage>(data_requster,page_manager);
-    connect_page= std::make_shared<ConnectPage>(data_requster);
-    page_manager->add_page(login_page->get_page());
-    page_manager->add_page(connect_page->get_page());
+    pages.push_back(std::make_shared<ConnectPage>(data_requster,page_manager));
+    pages.push_back(std::make_shared<LoginPage>(data_requster,page_manager));
+    pages.push_back(std::make_shared<HomePage>(data_requster,page_manager));
+   
+    for (auto page : pages){
+         page_manager->add_page(page->get_page());
+    }
+   
     
     window->setCentralWidget(page_manager->GetStack());
     window->show();

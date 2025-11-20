@@ -3,7 +3,7 @@
 #pragma once
 
 #include <memory>
-#include "../page_system/Page.h"
+#include "../../page_system/Page.h"
 
 class DataRequester;
 class QLineEdit;
@@ -11,12 +11,11 @@ class QWidget;
 class QPushButton;
 
 class PageManager;
-class LoginPage:public Page{
+class HomePage:public Page{
     QLineEdit *username_input ;
     QLineEdit *password_input ;
     QPushButton * signin_btn ;
     void bind_buttons();
     public:
-        LoginPage(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager);
-
+        HomePage(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager);
 };

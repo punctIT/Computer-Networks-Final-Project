@@ -3,19 +3,19 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QLineEdit>
-#include "../managers/PageManager.h"
-void LoginPage::bind_buttons()
-{
+#include "../page_system/PageManager.h"
+#include "../../server_request/DataRequester.hpp"
+
+void LoginPage::bind_buttons(){
     QObject::connect(this->signin_btn, &QPushButton::clicked, [this]() {
         qDebug() << "Buton apăsat!";    
-        this->page_manager->change_page(1);
+        this->page_manager->change_page(2);
+
         
     });
 }
 
-LoginPage::LoginPage(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager){
-    this->page_manager=page_manager;
-    page = new QWidget();
+LoginPage::LoginPage(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager):Page(data,page_manager){
     QVBoxLayout *layout = new QVBoxLayout();
     QLabel *label = new QLabel("Salut! Acesta este un QLabel într-un QWidget.");
     label->setAlignment(Qt::AlignCenter);
@@ -29,8 +29,4 @@ LoginPage::LoginPage(std::shared_ptr <DataRequester> data,const std::shared_ptr 
     layout->addWidget(signin_btn);
     page->setLayout(layout);
     bind_buttons();
-}
-
-QWidget *LoginPage::get_page(){
-    return page;
 }

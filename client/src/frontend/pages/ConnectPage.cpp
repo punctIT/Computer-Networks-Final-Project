@@ -11,10 +11,7 @@ void ConnectPage::bind_buttons()
     });
 }
 
-ConnectPage::ConnectPage(std::shared_ptr<DataRequester> data)
-{
-    page = new QWidget();
-   
+ConnectPage::ConnectPage(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager):Page(data,page_manager){
     QVBoxLayout *layout = new QVBoxLayout();
     QLabel *label = new QLabel("Connect");
     label->setAlignment(Qt::AlignCenter);
@@ -28,8 +25,4 @@ ConnectPage::ConnectPage(std::shared_ptr<DataRequester> data)
     layout->addWidget(signin_btn);
     page->setLayout(layout);
     bind_buttons();
-}
-
-QWidget *ConnectPage::get_page(){
-    return page;
 }
