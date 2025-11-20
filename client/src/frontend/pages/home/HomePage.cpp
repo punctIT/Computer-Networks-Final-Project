@@ -14,3 +14,8 @@ HomePage::HomePage(std::shared_ptr <DataRequester> data,const std::shared_ptr <P
     layout->addWidget(label);
     page->setLayout(layout);
 }
+
+void HomePage::on_enter()
+{
+    qDebug()<<"Home";
+}

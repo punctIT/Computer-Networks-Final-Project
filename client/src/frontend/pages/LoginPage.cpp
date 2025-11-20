@@ -3,14 +3,33 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QLineEdit>
+#include "../../utils/JUNK.hpp"
 #include "../page_system/PageManager.h"
 #include "../../server_request/DataRequester.hpp"
 
 void LoginPage::bind_buttons(){
     QObject::connect(this->signin_btn, &QPushButton::clicked, [this]() {
-        qDebug() << "Buton apăsat!";    
-        this->page_manager->change_page(2);
+        qDebug() << "login";    
+        auto response = this->data_requester->sent_request(
+                              data_requester->login_request(this->username_input->text().toStdString(),
+                                                            this->password_input->text().toStdString()));
+        if(!response.has_value()){
+            qDebug()<<response.error().c_str();
+            return;
+        }
+        auto data = JUNK::deserialize(response.value());
+        if(!data.has_value() || !data.value()["succes"].has_value() || !data.value()["content"].has_value()){
+            return;
+        }
+        if(data.value()["succes"].value()=="true"){
+            data_requester->set_token(data.value()["content"].value());
+            page_manager->change_page(2);
+        }   
+        else {
 
+        }
+        
+        
         
     });
 }
@@ -29,4 +48,9 @@ LoginPage::LoginPage(std::shared_ptr <DataRequester> data,const std::shared_ptr 
     layout->addWidget(signin_btn);
     page->setLayout(layout);
     bind_buttons();
+}
+
+void LoginPage::on_enter()
+{
+    qDebug()<<"login";
 }

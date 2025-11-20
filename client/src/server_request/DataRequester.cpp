@@ -2,13 +2,12 @@
 #include <iostream>
 #include "../utils/JUNK.hpp"
 #include <format>
-DataRequester::DataRequester()
-{
+DataRequester::DataRequester(){
     token=std::nullopt;
+    connected=false;
 }
 
-DataRequester &DataRequester::set_port(int port)
-{
+DataRequester &DataRequester::set_port(int port){
     this->port=port;
     return *this;
 }
@@ -18,8 +17,7 @@ DataRequester &DataRequester::set_ip(std::string ip){
     return *this;
 }
 
-void DataRequester::set_token(std::string token)
-{
+void DataRequester::set_token(std::string token){
     this->token=token;
 }
 
@@ -48,10 +46,14 @@ DataRequester &DataRequester::configure(){
     char buffer[100];
     recv(sock, &size, sizeof(int), 0);
     recv(sock, buffer,size, 0);
+    connected=true;
     return *this;
 }
 
 std::expected<std::string,std::string> DataRequester::sent_request(std::string data){  
+    if(!connected){
+        return std::unexpected("Error , connection error");
+    }
     auto test_data = JUNK::deserialize(data);
     if (test_data){
         if(this->token.has_value()){

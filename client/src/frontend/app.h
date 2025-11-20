@@ -19,7 +19,7 @@ class App{
     std::shared_ptr<PageManager> page_manager;
     std::shared_ptr<DataRequester> data_requster;
 
-    std::vector<std::shared_ptr<Page>> pages;
+    std::shared_ptr<std::vector<std::shared_ptr<Page>>> pages;
     public:
         App();
 

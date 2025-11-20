@@ -2,5 +2,9 @@
 #include <format>
 std::string ProtocolFormater::login_request(std::string username, std::string password)
 {
-    return std::format("type:{{{}}};content:{{{}}};token:{{{}}};","ana","are","mere");
+    if(username.empty())
+        username="caca";
+    if(password.empty())
+        password="caca";
+    return std::format("type:{{{}}};username:{{{}}};password:{{{}}};","login",username,password);
 }

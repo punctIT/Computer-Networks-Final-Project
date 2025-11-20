@@ -14,6 +14,7 @@ class DataRequester:public ProtocolFormater{
     int port;
     int sock;
     struct sockaddr_in server_address;
+    bool connected;
 
     std::optional<std::string> token;
     public:

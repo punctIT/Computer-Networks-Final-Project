@@ -26,3 +26,8 @@ ConnectPage::ConnectPage(std::shared_ptr <DataRequester> data,const std::shared_
     page->setLayout(layout);
     bind_buttons();
 }
+
+void ConnectPage::on_enter()
+{
+    qDebug()<<"Connect";
+}

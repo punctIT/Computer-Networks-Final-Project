@@ -8,7 +8,7 @@
 App::App()
 {
     data_requster=std::make_shared<DataRequester>();
-    page_manager = std::make_shared<PageManager>();
+    
     try{
         data_requster->set_ip("127.0.0.1")
                     .set_port(8080)
@@ -21,14 +21,17 @@ App::App()
     window->setFixedSize(400, 200);
     window->setWindowTitle("Network Device Monitor");
 
-    pages.push_back(std::make_shared<ConnectPage>(data_requster,page_manager));
-    pages.push_back(std::make_shared<LoginPage>(data_requster,page_manager));
-    pages.push_back(std::make_shared<HomePage>(data_requster,page_manager));
+    page_manager = std::make_shared<PageManager>();
+    pages = std::make_shared<std::vector<std::shared_ptr<Page>>>();
+    pages->push_back(std::make_shared<ConnectPage>(data_requster,page_manager));
+    pages->push_back(std::make_shared<LoginPage>(data_requster,page_manager));
+    pages->push_back(std::make_shared<HomePage>(data_requster,page_manager));
    
-    for (auto page : pages){
-         page_manager->add_page(page->get_page());
+    page_manager->set(pages);
+    for (auto page : *pages){
+        page_manager->add_page(page->get_page());
     }
-   
+    page_manager->change_page(1);
     
     window->setCentralWidget(page_manager->GetStack());
     window->show();

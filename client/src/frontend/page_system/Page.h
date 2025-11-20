@@ -17,6 +17,7 @@ class Page{
         std::shared_ptr <PageManager> page_manager;
     public:
         Page(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager);
+        virtual void on_enter() =0 ;
         QWidget* get_page();
 
 };
