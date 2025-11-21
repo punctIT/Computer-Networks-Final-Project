@@ -8,6 +8,7 @@ class Page;
 class PageManager{
     QStackedWidget *stack;
     std::shared_ptr<std::vector<std::shared_ptr<Page>>> pages;
+    int current_page;
     public:
     PageManager();
     void add_page(QWidget* page);

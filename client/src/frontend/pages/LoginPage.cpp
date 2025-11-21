@@ -52,5 +52,10 @@ LoginPage::LoginPage(std::shared_ptr <DataRequester> data,const std::shared_ptr 
 
 void LoginPage::on_enter()
 {
-    qDebug()<<"login";
+    qDebug()<<"enter login";
+}
+
+void LoginPage::on_exit()
+{
+    qDebug()<<"exit login";
 }

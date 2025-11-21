@@ -18,7 +18,7 @@ App::App()
         qDebug()<<e.what();
     }
     window = new QMainWindow();
-    window->setFixedSize(400, 200);
+    //window->setFixedSize(400, 200);
     window->setWindowTitle("Network Device Monitor");
 
     page_manager = std::make_shared<PageManager>();

@@ -36,7 +36,13 @@ ConnectionServer &ConnectionServer::bind_data(){
     return *this;
 }
 
-ConnectionServer &ConnectionServer::start()
+ConnectionServer &ConnectionServer::set_logs_db(std::shared_ptr<DBManager> db)
+{
+    logs_db=db;
+    return *this;
+}
+
+void ConnectionServer::start()
 {
     this->session_manager = std::make_shared<SessionManager>();
     this->auth = std::make_shared<AuthManager>();
@@ -85,15 +91,11 @@ ConnectionServer &ConnectionServer::start()
                     write(client, error.c_str(), len);
                 }
             }
-           
-
             close(client);
         }).detach(); 
         
        
     }
-    return *this;
-
 }
 
 ConnectionServer::~ConnectionServer()

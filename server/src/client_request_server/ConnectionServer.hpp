@@ -11,6 +11,7 @@
 class SessionManager;
 class RequestHandler;
 class AuthManager;
+class DBManager;
 
 class ConnectionServer
 {
@@ -19,6 +20,7 @@ private:
     std::shared_ptr<SessionManager> session_manager;
     std::shared_ptr<AuthManager> auth;
     std::shared_ptr<RequestHandler> request_handler;
+    std::shared_ptr<DBManager> logs_db;
     sockaddr_in address;
     int opt = 1;
     std::optional<int> port;
@@ -27,7 +29,8 @@ public:
     ConnectionServer();
     ConnectionServer& set_port(int port);
     ConnectionServer& bind_data();
-    ConnectionServer& start();
+    ConnectionServer& set_logs_db(std::shared_ptr<DBManager> db);
+    void start();
     ~ConnectionServer();
 };
 

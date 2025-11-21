@@ -29,5 +29,10 @@ ConnectPage::ConnectPage(std::shared_ptr <DataRequester> data,const std::shared_
 
 void ConnectPage::on_enter()
 {
-    qDebug()<<"Connect";
+    qDebug()<<"enter Connect";
+}
+
+void ConnectPage::on_exit()
+{
+    qDebug()<<"exit Connect";
 }
