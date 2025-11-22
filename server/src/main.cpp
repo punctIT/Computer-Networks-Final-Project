@@ -14,6 +14,8 @@ int main(){
                         .create()
                         .open();
         LogPipeline logs_pipeline(logs_db);
+        logs_pipeline.start_syslog_receiver()
+                     .start_process_syslogs();
         http_server.set_port(8080)
                    .bind_data()
                    .set_logs_db(logs_db)

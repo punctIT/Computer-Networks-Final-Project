@@ -60,7 +60,7 @@ void SyslogReceiver::start()
     if (listen(server_fd.value(), 10) < 0) {
         throw std::runtime_error("listen failed");
     }
-    std::cout << "Syslog server started and listen on port X?"<<std::endl;
+    std::cout << "Syslog server started and listen on port "<<port.value()<<std::endl;
     std::vector <pollfd> fds;
     pollfd server_poll;
 
