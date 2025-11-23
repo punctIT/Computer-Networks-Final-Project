@@ -20,12 +20,11 @@ LogProcessor &LogProcessor::set_syslog_queue(std::shared_ptr<ThreadSafeQueue<std
 
 }
 
-void LogProcessor::analyze_syslog()
-{
+void LogProcessor::analyze_syslog(int id){
     loop{
         auto data = syslog_queue->pop();
         if(data.has_value()){
-            std::cout<<data.value()<<std::endl;
+            std::cout<<"["<<id<<']'<<data.value()<<std::endl;
         }
     }
 

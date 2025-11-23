@@ -14,6 +14,7 @@ class LogPipeline{
     std::shared_ptr<LogProcessor> log_processor;
     public:
     LogPipeline(std::shared_ptr<DBManager> db);
+    LogPipeline& configure_database();
     LogPipeline& start_syslog_receiver();
     LogPipeline& start_process_syslogs();
 };

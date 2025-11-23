@@ -51,6 +51,11 @@ void DBManager::open(){
         throw std::runtime_error("Can't open Database");
     }
     char *errMsg = nullptr;
+    sqlite3_exec(db, "PRAGMA foreign_keys = ON;", nullptr, nullptr, &errMsg);
+    if (errMsg){
+        sqlite3_free(errMsg);
+    }
+
     sqlite3_exec(db, "PRAGMA journal_mode=WAL;", nullptr, nullptr, &errMsg);
     if (errMsg){
         sqlite3_free(errMsg);
