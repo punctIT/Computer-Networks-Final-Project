@@ -13,6 +13,8 @@ int main(){
         logs_db->set_path("logs.db")
                         .create()
                         .open();
+        std::cout<<"Logs database has open succesdul"<<std::endl;
+
         LogPipeline logs_pipeline(logs_db);
         logs_pipeline.configure_database()
                      .start_syslog_receiver()

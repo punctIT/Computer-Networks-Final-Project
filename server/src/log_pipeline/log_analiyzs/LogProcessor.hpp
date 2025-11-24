@@ -8,6 +8,7 @@ class DBManager;
 class LogProcessor{
     std::shared_ptr<ThreadSafeQueue<std::string>> syslog_queue;
     std::shared_ptr<DBManager> logs_db;
+    void write_log(const std::vector<std::string>& log);
     public:
     LogProcessor();
     LogProcessor& set_database(  std::shared_ptr<DBManager> logs_db);

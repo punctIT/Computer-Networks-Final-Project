@@ -20,23 +20,14 @@ LogPipeline &LogPipeline::configure_database()
             timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
             host TEXT,
             source TEXT,
-            message TEXT
+            message TEXT,
+
+            resolved_by TEXT DEFAULT NULL,
+            resolved_at DATETIME DEFAULT NULL,
+            resolution_message TEXT DEFAULT NULL
         );
     )";
     auto result = this->logs_db->run_command(create_alerts);
-    if(!result.has_value())
-        throw std::runtime_error(result.error());
-    const std::string create_resolved_alers=R"(
-        CREATE TABLE IF NOT EXISTS alerts_resolution (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            alert_id INTEGER NOT NULL,
-            resolved_by TEXT,
-            resolved_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            resolution_message TEXT,
-            FOREIGN KEY (alert_id) REFERENCES alerts(id)
-        );
-    )";
-    result = this->logs_db->run_command(create_resolved_alers);
     if(!result.has_value())
         throw std::runtime_error(result.error());
     return *this;

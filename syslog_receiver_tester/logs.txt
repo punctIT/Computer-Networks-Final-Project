@@ -2,4 +2,5 @@
 <13>Oct 11 22:14:15 server01 sshd[1234]: Failed password for invalid user admin from 192.168.1.100 port 22 ssh2
 <85>Oct 11 22:14:16 webserver nginx: 192.168.1.50 - - [11/Oct/2023:22:14:16 +0000] "GET /index.html HTTP/1.1" 200 1234
 <30>Oct 11 22:14:17 db-server postgres[5678]: ERROR: duplicate key value violates unique constraint
+ana
 <134>Oct 11 22:14:18 firewall kernel: [UFW BLOCK] IN=eth0 OUT= MAC=00:11:22:33:44:55 SRC=10.0.0.5 DST=10.0.0.1
