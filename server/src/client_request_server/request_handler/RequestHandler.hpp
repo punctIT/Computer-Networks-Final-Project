@@ -10,6 +10,7 @@ class AuthManager;
 class RequestHandler{
     std::shared_ptr<SessionManager>& session;
     std::shared_ptr<AuthManager>& auth;
+    std::expected<std::string, std::string> login_request(JUNK &request);
     public:
     RequestHandler(std::shared_ptr<SessionManager> &session,std::shared_ptr<AuthManager> &auth);
     std::expected<std::string,std::string> match_type(JUNK &request);

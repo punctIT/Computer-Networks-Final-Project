@@ -38,14 +38,6 @@ DataRequester &DataRequester::configure(){
         close(sock);
         throw std::runtime_error("connection failed");
     }
-    int size =0;
-    std::string data = "type:{con};";
-    size =data.size();
-    send(sock, &size, sizeof(int), 0);
-    send(sock, data.c_str(), size, 0);
-    char buffer[100];
-    recv(sock, &size, sizeof(int), 0);
-    recv(sock, buffer,size, 0);
     connected=true;
     return *this;
 }
