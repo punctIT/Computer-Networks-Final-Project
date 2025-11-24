@@ -6,9 +6,10 @@
 #include "../../utils/JUNK.hpp"
 #include "../page_system/PageManager.h"
 #include "../../server_request/DataRequester.hpp"
-
+#include <QtWidgets/QMainWindow>
 void LoginPage::bind_buttons(){
     QObject::connect(this->signin_btn, &QPushButton::clicked, [this]() {
+        error_lbn->setText("");
         qDebug() << "login";    
         auto response = this->data_requester->sent_request(
                               data_requester->login_request(this->username_input->text().toStdString(),
@@ -26,7 +27,7 @@ void LoginPage::bind_buttons(){
             page_manager->change_page(2);
         }   
         else {
-
+            show_error();
         }
         
         
@@ -34,17 +35,31 @@ void LoginPage::bind_buttons(){
     });
 }
 
-LoginPage::LoginPage(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager):Page(data,page_manager){
-    QVBoxLayout *layout = new QVBoxLayout();
-    QLabel *label = new QLabel("Salut! Acesta este un QLabel într-un QWidget.");
-    label->setAlignment(Qt::AlignCenter);
+void LoginPage::clear_data()
+{
+    username_input->setText("");  
+    password_input->setText("");
+    error_lbn->setText("");
+}
 
-    signin_btn = new QPushButton("Connect");
+void LoginPage::show_error()
+{
+    error_lbn->setText("Username or password invalid");
+    error_lbn->setStyleSheet("color: red;"); 
+}
+
+LoginPage::LoginPage(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager,std::shared_ptr <QMainWindow> window):Page(data,page_manager,window){
+    QVBoxLayout *layout = new QVBoxLayout();
+    QLabel *label = new QLabel("Welcome Back");
+    label->setAlignment(Qt::AlignCenter);
+    error_lbn=new QLabel();
+    signin_btn =  new QPushButton("Connect");
     username_input = new QLineEdit();
     password_input = new QLineEdit();
     layout->addWidget(label);
     layout->addWidget(username_input);
     layout->addWidget(password_input);
+    layout->addWidget(error_lbn);
     layout->addWidget(signin_btn);
     page->setLayout(layout);
     bind_buttons();
@@ -53,6 +68,8 @@ LoginPage::LoginPage(std::shared_ptr <DataRequester> data,const std::shared_ptr 
 void LoginPage::on_enter()
 {
     qDebug()<<"enter login";
+    window->resize(400, 200);
+    clear_data();
 }
 
 void LoginPage::on_exit()

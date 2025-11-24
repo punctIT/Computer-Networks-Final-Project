@@ -17,15 +17,15 @@ App::App()
     catch(std::exception &e){
         qDebug()<<e.what();
     }
-    window = new QMainWindow();
-    //window->setFixedSize(400, 200);
+    window =  std::make_shared<QMainWindow>();
+    window->setFixedSize(400, 200);
     window->setWindowTitle("Network Device Monitor");
 
     page_manager = std::make_shared<PageManager>();
     pages = std::make_shared<std::vector<std::shared_ptr<Page>>>();
-    pages->push_back(std::make_shared<ConnectPage>(data_requster,page_manager));
-    pages->push_back(std::make_shared<LoginPage>(data_requster,page_manager));
-    pages->push_back(std::make_shared<HomePage>(data_requster,page_manager));
+    pages->push_back(std::make_shared<ConnectPage>(data_requster,page_manager,window));
+    pages->push_back(std::make_shared<LoginPage>(data_requster,page_manager,window));
+    pages->push_back(std::make_shared<HomePage>(data_requster,page_manager,window));
    
     page_manager->set(pages);
     for (auto page : *pages){

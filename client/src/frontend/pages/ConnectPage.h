@@ -15,7 +15,7 @@ class ConnectPage:public Page{
     QPushButton * signin_btn ;
     void bind_buttons();
     public:
-        ConnectPage(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager);
+        ConnectPage(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager,std::shared_ptr <QMainWindow> window);
         void on_enter() override;
         void on_exit() override;
 };

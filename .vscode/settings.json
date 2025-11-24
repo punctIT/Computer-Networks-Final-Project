@@ -84,6 +84,8 @@
         "future": "cpp",
         "qstackedwidget": "cpp",
         "source_location": "cpp",
-        "cinttypes": "cpp"
+        "cinttypes": "cpp",
+        "bitset": "cpp",
+        "regex": "cpp"
     }
 }

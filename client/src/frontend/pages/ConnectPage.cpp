@@ -11,7 +11,7 @@ void ConnectPage::bind_buttons()
     });
 }
 
-ConnectPage::ConnectPage(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager):Page(data,page_manager){
+ConnectPage::ConnectPage(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager,std::shared_ptr <QMainWindow> window):Page(data,page_manager,window){
     QVBoxLayout *layout = new QVBoxLayout();
     QLabel *label = new QLabel("Connect");
     label->setAlignment(Qt::AlignCenter);

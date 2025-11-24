@@ -15,7 +15,7 @@ class LoginPage;
 class ConnectPage;
 class HomePage;
 class App{
-    QMainWindow *window;
+    std::shared_ptr<QMainWindow> window;
     std::shared_ptr<PageManager> page_manager;
     std::shared_ptr<DataRequester> data_requster;
 

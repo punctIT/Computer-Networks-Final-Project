@@ -31,33 +31,34 @@ std::expected<std::string,std::string> RequestHandler::match_request(int client,
 }
 
 std::expected<std::string, std::string> RequestHandler::match_type(JUNK &request){
-    if(request["type"].has_value()){
-        if(request["type"].value()=="login"){
-            request.display();
-            if(request["username"].has_value()&&request["password"].has_value()){
-                auto credentials_check=auth->check_credentials(request["username"].value(),request["password"].value());
-                if(!credentials_check){
-                    return std::unexpected("Auth Error");
-                }
-                if(*credentials_check){
-                    std::string token = session->create_session(request["username"].value());
-                    return RequestHandler::response_formater(true,"login",token);
-                }
-                return RequestHandler::response_formater(false,"login","Invalid username or password");
+    if(!request["type"].has_value()){
+        return std::unexpected("unknown type");
+    }
+    if(request["type"].value()=="login"){
+        request.display();
+        if(request["username"].has_value()&&request["password"].has_value()){
+            auto credentials_check=auth->check_credentials(request["username"].value(),request["password"].value());
+            if(!credentials_check){
+                return std::unexpected("Auth Error");
             }
-            else {
-                return std::unexpected("invalid format , username or password");
-            } 
+            if(*credentials_check){
+                std::string token = session->create_session(request["username"].value());
+                return RequestHandler::response_formater(true,"login",token);
+            }
+            return RequestHandler::response_formater(false,"login","Invalid username or password");
         }
-        else{
-            if(request["token"].has_value() && session->check_token(request["token"].value())){
-                if(request["type"]=="ceva"){
-                    return RequestHandler::response_formater(true,"ceva","nimic");
-                }
+        else {
+            return std::unexpected("invalid format , username or password");
+        } 
+    }
+    else{
+        if(request["token"].has_value() && session->check_token(request["token"].value())){
+            if(request["type"]=="ceva"){
+                return RequestHandler::response_formater(true,"ceva","nimic");
             }
-            else {
-                return std::unexpected("Invalid Token");
-            }
+        }
+        else {
+            return std::unexpected("Invalid Token");
         }
     }
     return std::unexpected("unknown type");
