@@ -18,7 +18,7 @@ AuthManager::AuthManager()
         )";
         auto status = credentials_db->run_command(cmd);
         if(!status.has_value()){
-            std::cout<<status.error()<<std::endl;
+            std::cerr<<status.error()<<std::endl;
         }
         else {
             std::cout<<"Password Db open succesful"<<std::endl;
@@ -48,4 +48,9 @@ std::expected<bool, std::string> AuthManager::check_credentials(std::string user
         return false;
     }
     
+}
+
+std::expected<void, std::string> AuthManager::_register(std::string username, std::string password)
+{ 
+    return credentials_db->run_command(std::format("INSERT INTO users (username, password) VALUES ('{}', '{}');",username,password));
 }

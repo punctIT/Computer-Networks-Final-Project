@@ -32,6 +32,9 @@ std::expected<std::string, std::string> RequestHandler::match_type(JUNK &request
     if(request["type"].value()=="login"){
         return login_request(request);
     }
+    if(request["type"].value()=="register"){
+        return register_request(request);
+    }
     if(!request["token"].has_value() || session->check_token(request["token"].value())){
         return std::unexpected("Invalid Token");
     }
@@ -59,6 +62,22 @@ std::expected<std::string, std::string> RequestHandler::login_request(JUNK &requ
         return std::unexpected("invalid format , username or password");
     } 
 }
+
+std::expected<std::string, std::string> RequestHandler::register_request(JUNK &request)
+{
+    request.display();
+    if(request["username"].has_value()&&request["password"].has_value()){
+        auto credentials_check=auth->_register(request["username"].value(),request["password"].value());
+        if(!credentials_check){
+            return std::unexpected(credentials_check.error());
+        }
+        return RequestHandler::response_formater(true,"register","NONE");
+    }
+    else {
+        return std::unexpected("invalid format , username or password");
+    } 
+}
+
 
 RequestHandler::RequestHandler(std::shared_ptr<SessionManager> &session, std::shared_ptr<AuthManager> &auth)
     : session(session), auth(auth) {};

@@ -5,6 +5,7 @@
 #include "page_system/PageManager.h"
 #include "pages/home/HomePage.h"
 #include "pages/dashboard/DashboardPage.h"
+#include "pages/RegisterPage.h"
 #include <QtWidgets/QGridLayout>
 #include "widgets/MainMenu.hpp"
 
@@ -50,6 +51,7 @@ App::App()
     pages = std::make_shared<std::vector<std::shared_ptr<Page>>>();
     pages->push_back(std::make_shared<ConnectPage>(data_requster,page_manager,window));
     pages->push_back(std::make_shared<LoginPage>(data_requster,page_manager,window));
+    pages->push_back(std::make_shared<RegisterPage>(data_requster,page_manager,window));
     pages->push_back(std::make_shared<HomePage>(data_requster,page_manager,window));
     pages->push_back(std::make_shared<DashboardPage>(data_requster,page_manager,window));
 

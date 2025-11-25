@@ -11,9 +11,7 @@
 #include <vector>
 class DataRequester;
 class PageManager;
-class LoginPage;
-class ConnectPage;
-class HomePage;
+
 class QGridLayout;
 class MainMenu;
 

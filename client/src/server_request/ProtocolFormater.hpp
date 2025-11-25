@@ -11,7 +11,8 @@
 class ProtocolFormater
 {
 public:
-    std::string login_request(std::string username,std::string password);
-    std::string logs_request(int start_id);
+    const std::string login_request(std::string username,std::string password);
+    const std::string register_request(std::string username,std::string password);
+    const std::string logs_request(int start_id);
 };
 

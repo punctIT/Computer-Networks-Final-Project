@@ -58,6 +58,16 @@ mod tests {
         }
         
     }
+    #[test]
+    fn test_valid_register(){
+        let mut stream = TcpStream::connect("127.0.0.1:8080").unwrap();
+        let response = send_message(&mut stream, "type:register;username:3;password:3;").unwrap();
+        if !response.starts_with("succes:{true};type:{register};"){
+            println!("{}",response);
+            panic!("Invalid login");
+        }
+        
+    }
     
 }
 fn main(){

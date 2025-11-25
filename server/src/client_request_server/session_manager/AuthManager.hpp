@@ -12,4 +12,5 @@ class AuthManager{
     public:
     AuthManager();
     std::expected<bool,std::string> check_credentials(std::string username,std::string password);
+    std::expected<void,std::string> _register(std::string username,std::string password);
 };

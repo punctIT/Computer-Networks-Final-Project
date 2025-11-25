@@ -32,6 +32,7 @@ DBManager &DBManager::create(){
     return *this;
 }
 
+
 void DBManager::open(){
     if (!path.has_value()){
         throw std::runtime_error("Database path not set, USE set_path(PATH) method");
