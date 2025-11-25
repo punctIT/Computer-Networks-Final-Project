@@ -1,4 +1,4 @@
-#include "HomePage.h"
+#include "DashboardPage.h"
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
@@ -6,20 +6,20 @@
 #include "../../page_system/PageManager.h"
 #include "../../widgets/MainMenu.hpp"
 #include <QtWidgets/QMainWindow>
-void HomePage::bind_buttons()
-{
+
+void DashboardPage::bind_buttons(){
     QObject::connect(btn,&QPushButton::clicked,[this](){
         this->page_manager->change_page(1);
     });
 }
 
-HomePage::HomePage(std::shared_ptr<DataRequester> data, const std::shared_ptr<PageManager> &page_manager,std::shared_ptr <QMainWindow> window) : Page(data, page_manager,window)
+DashboardPage::DashboardPage(std::shared_ptr<DataRequester> data, const std::shared_ptr<PageManager> &page_manager,std::shared_ptr <QMainWindow> window) : Page(data, page_manager,window)
 {
     QGridLayout *layout = new QGridLayout();
     layout->setRowStretch(0, 1);  
     layout->setRowStretch(1, 99);  
 
-    QLabel *label = new QLabel("HOME");
+    QLabel *label = new QLabel("Dashboard");
     label->setAlignment(Qt::AlignCenter);
     layout->addWidget(label,1,0);
    
@@ -29,13 +29,13 @@ HomePage::HomePage(std::shared_ptr<DataRequester> data, const std::shared_ptr<Pa
     bind_buttons();
 }
 
-void HomePage::on_enter()
+void DashboardPage::on_enter()
 {
     window->showMaximized();
-    qDebug()<<"enter Home";
+    qDebug()<<"enter dashboard";
 }
 
-void HomePage::on_exit()
+void DashboardPage::on_exit()
 {
-     qDebug()<<"leave Home";
+     qDebug()<<"leave dashboard";
 }

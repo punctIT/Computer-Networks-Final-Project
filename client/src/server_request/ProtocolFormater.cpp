@@ -8,3 +8,8 @@ std::string ProtocolFormater::login_request(std::string username, std::string pa
         password="caca";
     return std::format("type:{{{}}};username:{{{}}};password:{{{}}};","login",username,password);
 }
+
+std::string ProtocolFormater::logs_request(int start_id)
+{
+    return std::format("type:{{{}}};","logs");
+}

@@ -8,23 +8,18 @@
 std::expected<std::string,std::string> RequestHandler::match_request(int client,std::string request){
     //std::cout << "Request: "<< request << std::endl;
     auto data = JUNK::deserialize(request);
-    if(data){
-        //(*data).display();
-        if((*data).containts("type")){
-            auto response = this->match_type(*data);
-            if(response){
-                return *response;
-            }
-            else {
-                return RequestHandler::response_formater(false,"Error",response.error());
-            }
-        }
-        else{
-            return std::unexpected("Invalid data: don t containt a type");
-        }
+    if(!data.has_value()){
+        return std::unexpected(data.error());
+    }
+    if(!(*data).containts("type")){
+        return std::unexpected("Invalid data: don t containt a type");
+    }
+    auto response = this->match_type(*data);
+    if(response){
+        return *response;
     }
     else {
-        return std::unexpected(data.error());
+        return RequestHandler::response_formater(false,"Error",response.error());
     }
     
 

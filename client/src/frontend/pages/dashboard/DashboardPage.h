@@ -12,11 +12,11 @@ class QPushButton;
 
 class MainMenu;
 class PageManager;
-class HomePage:public Page{
+class DashboardPage:public Page{
     QPushButton *btn;
     void bind_buttons();
     public:
-        HomePage(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager,std::shared_ptr <QMainWindow> window);
+        DashboardPage(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager,std::shared_ptr <QMainWindow> window);
         void on_enter() override;
         void on_exit() override;
 };

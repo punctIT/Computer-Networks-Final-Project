@@ -20,7 +20,7 @@ mod tests {
 
         let mut stream = TcpStream::connect("127.0.0.1:8080").unwrap();
         let response = send_message(&mut stream, "typ:ce;").unwrap();
-        assert_eq!(response, "succes:false;type:{error};content:{Invalid data: don t containt a type or token;};");
+        assert_eq!(response, "succes:false;type:{error};content:{Invalid data: don t containt a type};");
     }
     #[test]
     fn test_invalid_junk_format() {
@@ -34,8 +34,31 @@ mod tests {
 
         let mut stream = TcpStream::connect("127.0.0.1:8080").unwrap();
         let response = send_message(&mut stream, "type:ceva;").unwrap();
-        assert_eq!(response, "succes:{false};type:{error};content:{Invalid Token};");
+        assert_eq!(response, "succes:{false};type:{Error};content:{Invalid Token};");
     }
+    #[test]
+    fn test_without_type() {
+
+        let mut stream = TcpStream::connect("127.0.0.1:8080").unwrap();
+        let response = send_message(&mut stream, "ceva:ceva;").unwrap();
+        assert_eq!(response, "succes:false;type:{error};content:{Invalid data: don t containt a type};");
+    }
+    #[test]
+    fn test_invalid_login(){
+        let mut stream = TcpStream::connect("127.0.0.1:8080").unwrap();
+        let response = send_message(&mut stream, "type:login;username:;password:1;").unwrap();
+        assert_eq!(response, "succes:{false};type:{login};content:{Invalid username or password};");
+    }
+    #[test]
+    fn test_valid_login(){
+        let mut stream = TcpStream::connect("127.0.0.1:8080").unwrap();
+        let response = send_message(&mut stream, "type:login;username:1;password:1;").unwrap();
+        if !response.starts_with("succes:{true};type:{login};"){
+            panic!("Invalid login");
+        }
+        
+    }
+    
 }
 fn main(){
 
