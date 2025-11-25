@@ -14,4 +14,5 @@ class Auth:public ResponseFormater{
     Auth(std::shared_ptr<SessionManager> &session,std::shared_ptr<AuthManager> &auth);
     std::expected<std::string, std::string> login_request(JUNK &request);
     std::expected<std::string, std::string> register_request(JUNK &request);
+    std::expected<std::string, std::string> logout_request(JUNK &request);
 };

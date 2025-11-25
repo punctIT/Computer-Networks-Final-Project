@@ -46,7 +46,7 @@ void ConnectionServer::start()
 {
     this->session_manager = std::make_shared<SessionManager>();
     this->auth = std::make_shared<AuthManager>();
-    this->request_handler=std::make_shared<RequestHandler>(session_manager,auth);
+    this->request_handler=std::make_shared<RequestHandler>(session_manager,auth,logs_db);
 
     if(!this->port.has_value()){
         throw std::runtime_error("Error , port is none");

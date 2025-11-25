@@ -5,11 +5,20 @@
 #include <QtWidgets/QLineEdit>
 #include "../../page_system/PageManager.h"
 #include "../../widgets/MainMenu.hpp"
+#include "../../../server_request/DataRequester.hpp"
 #include <QtWidgets/QMainWindow>
 void HomePage::bind_buttons()
 {
     QObject::connect(btn,&QPushButton::clicked,[this](){
+        auto data = this->data_requester->sent_request("type:{logout};");
+        if(data){
+            qDebug()<<data.value().c_str();
+        }
+        else {
+            qDebug()<<data.error().c_str();
+        }
         this->page_manager->change_page(1);
+
     });
 }
 
@@ -32,6 +41,10 @@ HomePage::HomePage(std::shared_ptr<DataRequester> data, const std::shared_ptr<Pa
 void HomePage::on_enter()
 {
     window->showMaximized();
+    auto data = data_requester->sent_request("type:logs;");
+    if(data){
+        qDebug()<<data.value().c_str();
+    }
     qDebug()<<"enter Home";
 }
 

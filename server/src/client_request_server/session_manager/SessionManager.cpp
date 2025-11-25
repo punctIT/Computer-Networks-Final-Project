@@ -10,6 +10,7 @@ bool SessionManager::check_token(const std::string token){
 }
 
 std::string SessionManager::create_session(std::string username){
+    //std::cout<<"ceva";
     std::unique_lock lock(mutex);
     std::string token =std::format("ceva{}",count);
     sessions[token]=username;
