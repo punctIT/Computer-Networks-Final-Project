@@ -19,13 +19,13 @@ QWidget* App::get_window()
 void App::show_menu()
 {
     main_menu->get_widget()->show();
-    qDebug() << "show";
+    //qDebug() << "show";
 }
 
 void App::hide_menu()
 {
     main_menu->get_widget()->hide();
-    qDebug() << "HIde";
+    //qDebug() << "HIde";
 }
 
 App::App()
@@ -42,7 +42,7 @@ App::App()
         qDebug()<<e.what();
     }
     window =  std::make_shared<QMainWindow>();
-    window->setFixedSize(400, 200);
+    window->setFixedSize(500, 300);
     window->setWindowTitle("Network Device Monitor");
 
     auto app_ptr = std::shared_ptr<App>(this, [](App*) {});

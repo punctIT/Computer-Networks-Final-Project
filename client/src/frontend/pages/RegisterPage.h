@@ -18,9 +18,9 @@ class RegisterPage:public Page{
     QLineEdit *password2_input ;
     QLabel *error_lbn;
     QPushButton * signin_btn ;
+    QPushButton * login_btn ;
     void bind_buttons();
     void clear_data();
-    void show_error();
     public:
      RegisterPage(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager,std::shared_ptr <QMainWindow> window);
         void on_enter() override;

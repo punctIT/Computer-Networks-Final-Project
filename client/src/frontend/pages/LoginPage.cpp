@@ -40,6 +40,7 @@ void LoginPage::bind_buttons(){
 
 void LoginPage::clear_data()
 {
+    error_lbn->hide();
     username_input->setText("");  
     password_input->setText("");
     error_lbn->setText("");
@@ -47,6 +48,7 @@ void LoginPage::clear_data()
 
 void LoginPage::show_error()
 {
+    error_lbn->show();
     error_lbn->setText("Username or password invalid");
     error_lbn->setStyleSheet("color: red;"); 
 }
@@ -56,13 +58,16 @@ LoginPage::LoginPage(std::shared_ptr <DataRequester> data,const std::shared_ptr 
     QLabel *label = new QLabel("Welcome Back");
     label->setAlignment(Qt::AlignCenter);
     error_lbn=new QLabel();
+    error_lbn->hide();
     signin_btn =  new QPushButton("Connect");
     register_btn =  new QPushButton("Register");
     
     username_input = new QLineEdit();
     password_input = new QLineEdit();
     layout->addWidget(label);
+    layout->addWidget(new QLabel("Username:"));
     layout->addWidget(username_input);
+    layout->addWidget(new QLabel("Password:"));
     layout->addWidget(password_input);
     layout->addWidget(error_lbn);
     layout->addWidget(signin_btn);
@@ -73,12 +78,9 @@ LoginPage::LoginPage(std::shared_ptr <DataRequester> data,const std::shared_ptr 
 
 void LoginPage::on_enter()
 {
-    qDebug()<<"enter login";
-    window->resize(400, 200);
+    window->resize(500,300);
     clear_data();
 }
 
-void LoginPage::on_exit()
-{
-    qDebug()<<"exit login";
+void LoginPage::on_exit(){
 }
