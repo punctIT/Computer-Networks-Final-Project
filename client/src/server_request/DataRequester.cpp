@@ -46,6 +46,7 @@ std::expected<std::string,std::string> DataRequester::sent_request(std::string d
     if(!connected){
         return std::unexpected("Error , connection error");
     }
+    std::string content = "";
     auto test_data = JUNK::deserialize(data);
     if (test_data){
         if(this->token.has_value()){
@@ -58,13 +59,19 @@ std::expected<std::string,std::string> DataRequester::sent_request(std::string d
     
         
         int received_size = 0;
-        
         recv(sock, &received_size, sizeof(int), 0);
         char buffer[4096] = {0};
-        if (received_size > 0 && received_size < 4096) {
-            recv(sock, buffer, received_size, 0);
+        int remaining = received_size;
+        while (remaining > 0) {
+            int chunk = std::min(remaining, 4096);
+            int bytes_read = recv(sock, buffer, chunk, 0);
+            if (bytes_read <= 0) {
+                break;
+            }
+            content.append(buffer, bytes_read);
+            remaining -= bytes_read;
         }
-        return buffer;
+        return content;
     }
     else {
         return std::unexpected(test_data.error());

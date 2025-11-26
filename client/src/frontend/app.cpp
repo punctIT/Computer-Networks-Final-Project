@@ -33,14 +33,7 @@ App::App()
     page = new QWidget();      
     layout = new QGridLayout(page); 
     data_requster=std::make_shared<DataRequester>();
-    try{
-        data_requster->set_ip("127.0.0.1")
-                    .set_port(8080)
-                    .configure();
-    }
-    catch(std::exception &e){
-        qDebug()<<e.what();
-    }
+    
     window =  std::make_shared<QMainWindow>();
     window->setFixedSize(500, 300);
     window->setWindowTitle("Network Device Monitor");
@@ -59,7 +52,7 @@ App::App()
     for (auto page : *pages){
         page_manager->add_page(page->get_page());
     }
-    page_manager->change_page(1);
+    page_manager->change_page(0);
     window->setCentralWidget(get_window());
     window->show();
 }

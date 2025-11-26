@@ -10,10 +10,14 @@ class QLineEdit;
 class QWidget;
 class QPushButton;
 
+class TableMenu;
+
 class MainMenu;
 class PageManager;
 class HomePage:public Page{
     QPushButton *btn;
+    std::shared_ptr<TableMenu> table_widget;
+    
     void bind_buttons();
     public:
         HomePage(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager,std::shared_ptr <QMainWindow> window);

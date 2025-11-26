@@ -79,7 +79,7 @@ bool JUNK::empty()
 {
     return data.empty();
 }
-bool JUNK::containts(std::string key)
+bool JUNK::contains(std::string key)
 {
     return data.contains(key);
 }

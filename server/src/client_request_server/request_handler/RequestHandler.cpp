@@ -13,7 +13,7 @@ std::expected<std::string,std::string> RequestHandler::match_request(int client,
     if(!data.has_value()){
         return std::unexpected(data.error());
     }
-    if(!(*data).containts("type")){
+    if(!(*data).contains("type")){
         return std::unexpected("Invalid data: don t containt a type");
     }
     auto response = this->match_type(*data);

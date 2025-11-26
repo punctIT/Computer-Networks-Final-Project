@@ -11,5 +11,9 @@ std::expected<std::string, std::string> Logs::logs_request(JUNK &request)
     if(!data.has_value()){
         return std::unexpected(data.error());
     }
-    return response_formater(true,"logs","salut");
+    std::string result="";
+    for(auto log : data.value()){
+        result=std::format("{}{{}}{}",result,log);
+    }
+    return response_formater(true,"logs",result);
 }

@@ -5,5 +5,5 @@
 #include <optional>
 class BetterString{
     public:
-    static std::optional<std::vector<std::string>> split_syslog(std::string log);
+    static std::vector<std::string> split(std::string text,const std::string splitter);
 };
