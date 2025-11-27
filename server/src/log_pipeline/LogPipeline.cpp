@@ -27,7 +27,7 @@ LogPipeline &LogPipeline::configure_database()
             resolution_message TEXT DEFAULT NULL
         );
     )";
-    auto result = this->logs_db->run_command(create_alerts);
+    auto result = this->logs_db->run_command_unsafe(create_alerts);
     if(!result.has_value())
         throw std::runtime_error(result.error());
     return *this;

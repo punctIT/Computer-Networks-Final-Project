@@ -71,7 +71,7 @@ int DBManager::callback(void *data, int argc, char **argv, char **colName){
     return 0;
 }
 
-std::expected<std::vector<std::string>, std::string> DBManager::get(const std::string cmd){
+std::expected<std::vector<std::string>, std::string> DBManager::get_unsafe(const std::string cmd){
     std::shared_lock lock(db_RDLOCK);
     if (!db){
         return std::unexpected("Database not connected");
@@ -94,7 +94,7 @@ std::expected<std::vector<std::string>, std::string> DBManager::get(const std::s
     return rows;
 }
 
-std::expected<void, std::string> DBManager::run_command(const std::string cmd){
+std::expected<void, std::string> DBManager::run_command_unsafe(const std::string cmd){
     std::unique_lock lock(db_RDLOCK);
 
     if (!db){
@@ -113,4 +113,52 @@ std::expected<void, std::string> DBManager::run_command(const std::string cmd){
         return std::unexpected(error);
     }
     return {};
+}
+std::expected<std::vector<std::string>, std::string> DBManager::query(
+    const std::string& sql, 
+    const std::vector<std::string>& params) 
+{
+    std::shared_lock lock(db_RDLOCK);
+    if (!db) return std::unexpected("Database not connected");
+
+    sqlite3_stmt* stmt = nullptr;
+    if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
+        return std::unexpected(sqlite3_errmsg(db));
+    }
+    for (size_t i = 0; i < params.size(); ++i) {
+        int index = static_cast<int>(i) + 1;
+        const std::string& val = params[i];
+        
+        if (sqlite3_bind_text(stmt, index, val.c_str(), -1, SQLITE_TRANSIENT) != SQLITE_OK) {
+            std::string error = "Binding error for parameter ";
+            error += std::to_string(index);
+            sqlite3_finalize(stmt);
+            return std::unexpected(error);
+        }
+    }
+
+    std::vector<std::string> results;
+    int stepResult;
+
+    while ((stepResult = sqlite3_step(stmt)) == SQLITE_ROW) {
+        std::string row_str;
+        int colCount = sqlite3_column_count(stmt);
+        
+        for (int i = 0; i < colCount; i++) {
+            const char* val = (const char*)sqlite3_column_text(stmt, i);
+            row_str += (val ? val : "NULL");
+            if (i < colCount - 1) {
+                row_str += "[]";
+            }
+        }
+        results.push_back(row_str);
+    }
+    if (stepResult != SQLITE_DONE) {
+        std::string err = sqlite3_errmsg(db);
+        sqlite3_finalize(stmt);
+        return std::unexpected(err);
+    }
+
+    sqlite3_finalize(stmt);
+    return results;
 }

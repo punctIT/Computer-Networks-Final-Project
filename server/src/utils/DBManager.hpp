@@ -22,6 +22,7 @@ class DBManager{
         DBManager& create();
         void open();
         static int callback(void* data, int argc, char** argv, char** colName) ;
-        std::expected<std::vector<std::string>,std::string> get(const std::string cmd) ;
-        std::expected<void,std::string> run_command(const std::string cmd);
+        std::expected<std::vector<std::string>,std::string> get_unsafe(const std::string cmd) ;
+        std::expected<void,std::string> run_command_unsafe(const std::string cmd);
+        std::expected<std::vector<std::string>,std::string> query(const std::string& sql, const std::vector<std::string>& params) ;
 };

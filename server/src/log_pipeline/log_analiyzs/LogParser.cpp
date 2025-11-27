@@ -1,7 +1,7 @@
-#include "BetterString.hpp"
+#include "LogParser.hpp"
 #include <regex>
 
-std::optional<std::vector<std::string>> BetterString::split_syslog(std::string log){
+std::optional<std::vector<std::string>> LogParser::split_syslog(std::string log){
     auto get_pri = [](int x){
         int value = x%8;
         std::vector<std::string> pri = {

@@ -7,7 +7,7 @@ Logs::Logs( std::shared_ptr<DBManager> &logs): logs(logs) {}
 std::expected<std::string, std::string> Logs::logs_request(JUNK &request)
 {
     std::string cmd = "select * from alerts;";
-    auto data = logs->get(cmd);
+    auto data = logs->get_unsafe(cmd);
     if(!data.has_value()){
         return std::unexpected(data.error());
     }

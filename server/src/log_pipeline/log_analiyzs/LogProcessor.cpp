@@ -1,20 +1,16 @@
 #include "LogProcessor.hpp"
 #include <iostream>
-#include "../../utils/BetterString.hpp"
+#include "LogParser.hpp"
 #include <format>
 #include "../../utils/DBManager.hpp"
 #define loop while(true)
 
 void LogProcessor::write_log(const std::vector<std::string>& log)
 {
-    if(log.size()<5){
+    if(log.size()!=5){
         return;
     }
-    const std::string sql = std::format(R"(
-        INSERT INTO alerts (pri, timestamp, host, source, message)
-           VALUES ('{}', '{}', '{}', '{}', '{}');
-        )",log[0],log[1],log[2],log[3],log[4]);
-    auto result= logs_db->run_command(sql);
+    auto result= logs_db->query("INSERT INTO alerts (pri, timestamp, host, source, message) VALUES (?, ?, ?, ?, ?);",log);
     if(!result.has_value()){
         std::cerr<<"[ERR]"<<result.error()<<std::endl;
     }
@@ -44,7 +40,7 @@ void LogProcessor::analyze_syslog(int id){
             continue;
         }
         //std::cout<<"["<<id<<']'<<data.value()<<std::endl;
-        auto log = BetterString::split_syslog(data.value());
+        auto log = LogParser::split_syslog(data.value());
         if (!log.has_value()){
             continue;
         }   
