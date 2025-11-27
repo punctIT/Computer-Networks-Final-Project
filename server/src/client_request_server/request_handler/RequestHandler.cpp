@@ -31,7 +31,7 @@ std::expected<std::string, std::string> RequestHandler::match_type(JUNK &request
     if(!request["type"].has_value()){
         return std::unexpected("unknown type");
     }
-    //request.display();
+    request.display();
     const std::string type = request["type"].value();
     if(type=="login"){
         return auth_requests->login_request(request);

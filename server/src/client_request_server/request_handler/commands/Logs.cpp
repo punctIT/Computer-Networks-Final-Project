@@ -7,7 +7,10 @@ Logs::Logs( std::shared_ptr<DBManager> &logs): logs(logs) {}
 std::expected<std::string, std::string> Logs::logs_request(JUNK &request)
 {
     std::string cmd = "select * from alerts;";
-    auto data = logs->get_unsafe(cmd);
+    if(!request.contains("last_id")){
+        return std::unexpected("Invalid , there is no LAST_ID ");
+    }
+    auto data = logs->query("select * from alerts where id >= ?",{request["last_id"].value()});
     if(!data.has_value()){
         return std::unexpected(data.error());
     }

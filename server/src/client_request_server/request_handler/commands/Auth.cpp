@@ -27,7 +27,7 @@ std::expected<std::string, std::string> Auth::login_request(JUNK &request)
 
 std::expected<std::string, std::string> Auth::register_request(JUNK &request)
 {
-    request.display();
+    //request.display();
     if(request["username"].has_value()&&request["password"].has_value()){
         auto credentials_check=auth->_register(request["username"].value(),request["password"].value());
         if(!credentials_check){

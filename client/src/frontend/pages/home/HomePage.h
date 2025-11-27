@@ -4,6 +4,8 @@
 
 #include <memory>
 #include "../../page_system/Page.h"
+#include <QtCore/QTimer>
+#include <QtCore/QObject>
 
 class DataRequester;
 class QLineEdit;
@@ -19,8 +21,13 @@ class HomePage:public Page{
     std::shared_ptr<TableMenu> table_widget;
     
     void bind_buttons();
+    QTimer *updateTimer;
     public:
         HomePage(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager,std::shared_ptr <QMainWindow> window);
         void on_enter() override;
         void on_exit() override;
+    private slots:
+        void update();
+    
+
 };

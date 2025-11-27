@@ -2,9 +2,13 @@
 #include <QtWidgets/QTableWidget>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHeaderView>
+#include <string>
+#include <iostream>
+
 #include "../../../utils/BetterString.hpp"
 TableMenu::TableMenu()
 {
+    last_id=0;
     widget= new QWidget();
     QGridLayout *layout = new QGridLayout();
     table = new QTableWidget();
@@ -42,6 +46,10 @@ void TableMenu::pop()
     if (lastRow >= 0)
         table->removeRow(lastRow);
 }
+unsigned int TableMenu::get_id()
+{
+    return last_id;
+}
 void TableMenu::add(std::vector<std::string> logs)
 {
     for(auto log : logs ){
@@ -53,7 +61,15 @@ void TableMenu::add(std::vector<std::string> logs)
         table->insertRow(0);
         for(int i=1;i<=5;++i){
             table->setItem(0, i-1, new QTableWidgetItem(QString::fromStdString(content[i])));
+            
         }
+        try{
+            last_id = std::stoi(content[0])+1;
+        }
+        catch(std::exception & e){
+            qDebug()<<e.what();
+        }
+        
     }
    
 }

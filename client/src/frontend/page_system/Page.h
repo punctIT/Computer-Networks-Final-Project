@@ -3,7 +3,8 @@
 #pragma once
 
 #include <memory>
-
+#include <QtCore/QObject>
+#include <QWidget>
 class DataRequester;
 class QLineEdit;
 class QWidget;
@@ -11,7 +12,8 @@ class QPushButton;
 class QMainWindow;
 
 class PageManager;
-class Page{
+class Page : public QWidget {
+    Q_OBJECT
     protected:
         QWidget * page;
         std::shared_ptr <DataRequester> data_requester;

@@ -3,12 +3,16 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QLineEdit>
+#include <QtWidgets/QMainWindow>
+
+#include <format>
+
 #include "../../page_system/PageManager.h"
 #include "../../widgets/MainMenu.hpp"
 #include "../../../server_request/DataRequester.hpp"
 #include "TableWidget.h"
 #include "../../../utils/BetterString.hpp"
-#include <QtWidgets/QMainWindow>
+
 void HomePage::bind_buttons()
 {
     QObject::connect(btn,&QPushButton::clicked,[this](){
@@ -38,21 +42,32 @@ HomePage::HomePage(std::shared_ptr<DataRequester> data, const std::shared_ptr<Pa
     btn = new QPushButton("login");
     layout->addWidget(btn,3,0);
     page->setLayout(layout);
+
+    updateTimer = new QTimer(this); 
+
+    connect(updateTimer, &QTimer::timeout, this, &HomePage::update);
+    updateTimer->setInterval(2000); 
+
     bind_buttons();
 }
 
 void HomePage::on_enter()
 {
     window->showMaximized();
-    auto data = data_requester->sent_request("type:logs;");
+    
+    qDebug()<<"enter Home";
+    updateTimer->start();
+}
+void HomePage::update(){
+    auto data = data_requester->sent_request(std::format("type:{{logs}};last_id:{{{}}};",table_widget->get_id()));
     if(!data){
         qDebug()<<data.error().c_str();
     }
     table_widget->add(BetterString::split(data.value(),"{}"));
-    qDebug()<<"enter Home";
+    
 }
-
 void HomePage::on_exit()
 {
+     updateTimer->stop();
      qDebug()<<"leave Home";
 }
