@@ -10,6 +10,7 @@ class MainMenu{
     std::shared_ptr <PageManager> page_manager;
     QPushButton *home_btn;
     QPushButton *statistiscs_btn;
+    QPushButton *security_btn;
     QPushButton *settings_btn;
     QGridLayout *grid;
     QWidget *menu;

@@ -6,7 +6,7 @@ AuthManager::AuthManager()
 {
     credentials_db = std::make_shared<DBManager>();
     try{
-        credentials_db->set_path("pass.db")
+        credentials_db->set_path("databases/pass.db")
                         .create()
                         .open();
         const std::string cmd = R"(

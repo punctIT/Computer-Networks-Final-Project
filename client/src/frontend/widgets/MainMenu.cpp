@@ -15,6 +15,9 @@ void MainMenu::bind_buttons()
         qDebug()<<"settings";
         page_manager->change_page(4); 
     });
+    QObject::connect(security_btn,&QPushButton::clicked,[this](){
+        qDebug()<<"secutiry";
+    });
     //home_btn
 }
 MainMenu::MainMenu(std::shared_ptr<PageManager> page_manager)
@@ -25,9 +28,11 @@ MainMenu::MainMenu(std::shared_ptr<PageManager> page_manager)
     this->statistiscs_btn= new QPushButton("Dashboard");
     this->home_btn= new QPushButton("Home");
     this->settings_btn = new QPushButton("Settings");
+    this->security_btn= new QPushButton("Security");
     grid->addWidget(home_btn,0,0);
     grid->addWidget(statistiscs_btn,0,1);
-    grid->addWidget(settings_btn,0,2);
+    grid->addWidget(security_btn,0,2);
+    grid->addWidget(settings_btn,0,3);
     menu->setLayout(grid); 
     bind_buttons();
 }

@@ -88,6 +88,8 @@
         "bitset": "cpp",
         "regex": "cpp",
         "qmainwindow": "cpp",
-        "qgridlayout": "cpp"
+        "qgridlayout": "cpp",
+        "filesystem": "cpp",
+        "unordered_set": "cpp"
     }
 }
