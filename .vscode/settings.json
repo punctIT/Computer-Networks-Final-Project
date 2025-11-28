@@ -87,6 +87,7 @@
         "cinttypes": "cpp",
         "bitset": "cpp",
         "regex": "cpp",
-        "qmainwindow": "cpp"
+        "qmainwindow": "cpp",
+        "qgridlayout": "cpp"
     }
 }

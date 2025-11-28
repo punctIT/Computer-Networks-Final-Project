@@ -4,7 +4,7 @@
 #include "../utils/DBManager.hpp"
 #include <thread>
 LogPipeline::LogPipeline(std::shared_ptr<DBManager> db){
-    syslog_queue=std::make_shared<ThreadSafeQueue<std::string>>();
+    syslog_queue=std::make_shared<ThreadSafeQueue<std::pair<std::string,std::string>>>();
     syslog_receiver= std::make_shared<SyslogReceiver>();
     log_processor = std::make_shared<LogProcessor>();
     logs_db=db; 

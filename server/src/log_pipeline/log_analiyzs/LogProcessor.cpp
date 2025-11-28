@@ -26,7 +26,7 @@ LogProcessor &LogProcessor::set_database(  std::shared_ptr<DBManager> logs_db)
     return *this;
 }
 
-LogProcessor &LogProcessor::set_syslog_queue(std::shared_ptr<ThreadSafeQueue<std::string>> syslog_queue)
+LogProcessor &LogProcessor::set_syslog_queue(std::shared_ptr<ThreadSafeQueue<std::pair<std::string,std::string>>> syslog_queue)
 {
     this->syslog_queue=syslog_queue;
     return *this;
@@ -39,8 +39,8 @@ void LogProcessor::analyze_syslog(int id){
         if(!data.has_value()){
             continue;
         }
-        //std::cout<<"["<<id<<']'<<data.value()<<std::endl;
-        auto log = LogParser::split_syslog(data.value());
+        std::cout<<"["<<id<<']'<<data.value().first<<" "<<data.value().second<<std::endl;
+        auto log = LogParser::split_syslog(data.value().second);
         if (!log.has_value()){
             continue;
         }   

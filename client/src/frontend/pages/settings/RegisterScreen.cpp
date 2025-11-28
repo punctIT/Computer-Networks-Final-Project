@@ -1,15 +1,17 @@
-#include "RegisterPage.h"
+#include "RegisterScreen.h"
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QLabel>
-#include <QtWidgets/QPushButton>
 #include <QtWidgets/QLineEdit>
-#include "../../utils/JUNK.hpp"
-#include "../page_system/PageManager.h"
-#include "../../server_request/DataRequester.hpp"
+#include <QtWidgets/QPushButton>
+
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMessageBox>
+#include "../../../server_request/DataRequester.hpp"    
+#include "../../page_system/PageManager.h"
+#include "../../../utils/JUNK.hpp"
 
-void RegisterPage::bind_buttons(){
+void RegisterScreen::bind_buttons()
+{
     QObject::connect(this->login_btn,&QPushButton::clicked,[this](){
         page_manager->change_page(1);
     });
@@ -32,7 +34,6 @@ void RegisterPage::bind_buttons(){
             return;
         }
         if(data.value()["succes"].value()=="true"){
-            QMessageBox::information(window.get(), "Success", "Register successful");
             page_manager->change_page(1);
             return;
         }   
@@ -41,15 +42,12 @@ void RegisterPage::bind_buttons(){
     });
 }
 
-void RegisterPage::clear_data()
-{
-    error_lbn->hide();
-    username_input->setText("");  
-    password_input->setText("");
-    error_lbn->setText("");
-}
 
-RegisterPage::RegisterPage(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager,std::shared_ptr <QMainWindow> window):Page(data,page_manager,window){
+RegisterScreen::RegisterScreen(std::shared_ptr<DataRequester> data, const std::shared_ptr<PageManager> &page_manager)
+{
+    screen= new QWidget();
+    this->data_requester=data;
+    this->page_manager=page_manager;
     QVBoxLayout *layout = new QVBoxLayout();
 
     QLabel *label = new QLabel("Register");
@@ -73,17 +71,11 @@ RegisterPage::RegisterPage(std::shared_ptr <DataRequester> data,const std::share
     layout->addWidget(signin_btn);
     layout->addWidget(login_btn);
     
-    page->setLayout(layout);
+    screen->setLayout(layout);
     bind_buttons();
 }
 
-void RegisterPage::on_enter()
+QWidget *RegisterScreen::get_screen()
 {
-    window->resize(500,300);
-
-    clear_data();
-}
-
-void RegisterPage::on_exit(){
-    
+    return screen;
 }

@@ -17,7 +17,6 @@ class LoginPage:public Page{
     QLineEdit *password_input ;
     QLabel *error_lbn;
     QPushButton * signin_btn ;
-    QPushButton * register_btn ;
     void bind_buttons();
     void clear_data();
     void show_error();

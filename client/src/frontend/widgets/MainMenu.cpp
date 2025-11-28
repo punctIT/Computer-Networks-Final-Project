@@ -5,14 +5,15 @@
 void MainMenu::bind_buttons()
 {
     QObject::connect(home_btn,&QPushButton::clicked,[this](){
-        page_manager->change_page(3);
+        page_manager->change_page(2);
         qDebug()<<"salut home";
     });
     QObject::connect(statistiscs_btn,&QPushButton::clicked,[this](){
-        page_manager->change_page(4); qDebug()<<"ceva";
+        page_manager->change_page(3); qDebug()<<"ceva";
     });
     QObject::connect(settings_btn,&QPushButton::clicked,[this](){
         qDebug()<<"settings";
+        page_manager->change_page(4); 
     });
     //home_btn
 }

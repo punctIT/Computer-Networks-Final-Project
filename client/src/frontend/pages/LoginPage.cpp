@@ -24,7 +24,7 @@ void LoginPage::bind_buttons(){
         }
         if(data.value()["succes"].value()=="true"){
             data_requester->set_token(data.value()["content"].value());
-            page_manager->change_page(3);
+            page_manager->change_page(2);
         }   
         else {
             show_error();
@@ -32,9 +32,6 @@ void LoginPage::bind_buttons(){
         
         
         
-    });
-    QObject::connect(this->register_btn, &QPushButton::clicked, [this]() {
-        page_manager->change_page(2);
     });
 }
 
@@ -60,7 +57,6 @@ LoginPage::LoginPage(std::shared_ptr <DataRequester> data,const std::shared_ptr 
     error_lbn=new QLabel();
     error_lbn->hide();
     signin_btn =  new QPushButton("Connect");
-    register_btn =  new QPushButton("Register");
     
     username_input = new QLineEdit();
     password_input = new QLineEdit();
@@ -71,7 +67,6 @@ LoginPage::LoginPage(std::shared_ptr <DataRequester> data,const std::shared_ptr 
     layout->addWidget(password_input);
     layout->addWidget(error_lbn);
     layout->addWidget(signin_btn);
-    layout->addWidget(register_btn);
     page->setLayout(layout);
     bind_buttons();
 }

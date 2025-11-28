@@ -22,7 +22,7 @@ void PageManager::change_page(int index){
     (*pages)[current_page]->on_exit();
     (*pages)[index]->on_enter();
     current_page=index;
-    if(index<=2){
+    if(index<2){
         app->hide_menu();
     }
     else {

@@ -5,6 +5,7 @@
 #include <memory>
 #include <QtCore/QObject>
 #include <QWidget>
+
 class DataRequester;
 class QLineEdit;
 class QWidget;

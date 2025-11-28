@@ -5,7 +5,7 @@ TARGET = $(TARGET_DIR)/program
 
 SRC := $(shell find src -name "*.cpp")
 
-LIBS = -lsqlite3 /usr/local/lib/bcrypt.a -lmaxminddb
+LIBS = -lsqlite3
 
 
 all: $(TARGET)

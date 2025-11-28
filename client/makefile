@@ -23,7 +23,7 @@ CXXFLAGS = -I/usr/include/x86_64-linux-gnu/qt6 \
 LIBS = -lsqlite3 -lQt6Widgets -lQt6Core -lQt6Gui -lQt6Charts 
 
 
-all: $(TARGET) copy
+all: $(TARGET) 
 
 $(TARGET): $(SRC) $(MOCS) | $(TARGET_DIR)
 	$(CXX) $(CXXFLAGS) -o $(TARGET) $(SRC) $(MOCS) $(LIBS)

@@ -59,7 +59,7 @@ ConnectPage::ConnectPage(std::shared_ptr <DataRequester> data,const std::shared_
 
 void ConnectPage::on_enter()
 {
-    window->resize(300,200);
+    window->resize(500,300);
     error_lbn->hide(); 
 }
 

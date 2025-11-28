@@ -13,7 +13,7 @@ SyslogReceiver::SyslogReceiver()
 {
 }
 
-SyslogReceiver &SyslogReceiver::set_thread_safe_queue(std::shared_ptr<ThreadSafeQueue<std::string>> queue)
+SyslogReceiver &SyslogReceiver::set_thread_safe_queue(std::shared_ptr<ThreadSafeQueue<std::pair<std::string,std::string>>> queue)
 {
     this->log_queue=queue;
     return *this;
@@ -67,6 +67,7 @@ void SyslogReceiver::start()
     server_poll.fd=server_fd.value();
     server_poll.events=POLLIN;
     fds.push_back(server_poll);
+    
 
     loop{
         const int ret=poll(fds.data(),fds.size(),-1);
@@ -78,11 +79,20 @@ void SyslogReceiver::start()
                 continue;
             }
             if (fds[i].fd == server_fd.value()) {
-                int client_fd = accept(server_fd.value(), nullptr, nullptr);
+                struct sockaddr_in client_addr;
+                socklen_t client_len = sizeof(client_addr);
+                int client_fd = accept(server_fd.value(), (struct sockaddr*)&client_addr, &client_len);
                 if (client_fd < 0) {
                     std::cerr<<"[ERR] Accept error"<<std::endl;
                     continue;
                 }
+
+                char ip_str[INET_ADDRSTRLEN];
+                inet_ntop(AF_INET, &(client_addr.sin_addr), ip_str, INET_ADDRSTRLEN);
+                std::string ip_source(ip_str);
+
+                client_ips[client_fd] = ip_source;
+
                 pollfd client_poll;
                 client_poll.fd = client_fd;
                 client_poll.events = POLLIN;
@@ -116,7 +126,7 @@ std::expected<void, std::string> SyslogReceiver::RW_logs(int fd)
         while ((pos = client_buffer.find('\n')) != std::string::npos) {
             std::string complete_message = client_buffer.substr(0, pos);
             if (!complete_message.empty()) {
-                log_queue->push(complete_message);
+                log_queue->push(std::make_pair(client_ips[fd], complete_message));
             }
             client_buffer.erase(0, pos + 1);
         }
