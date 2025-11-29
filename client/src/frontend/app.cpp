@@ -5,6 +5,7 @@
 #include "pages/home/HomePage.h"
 #include "pages/settings/SettingsPage.h"
 #include "pages/dashboard/DashboardPage.h"
+#include "pages/security/SecurityPage.h"
 #include "pages/ConnectPage.h"
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QLabel>
@@ -48,6 +49,7 @@ App::App()
     pages->push_back(std::make_shared<HomePage>(data_requster,page_manager,window));
     pages->push_back(std::make_shared<DashboardPage>(data_requster,page_manager,window));
     pages->push_back(std::make_shared<SettingsPage>(data_requster,page_manager,window));
+    pages->push_back(std::make_shared<SecurityPage>(data_requster,page_manager,window));
 
     page_manager->set(pages);
     for (auto page : *pages){

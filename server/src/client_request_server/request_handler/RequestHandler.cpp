@@ -4,6 +4,7 @@
 #include "../../utils/JUNK.hpp"
 #include "commands/Logs.hpp"
 #include "commands/Auth.hpp"
+#include "commands/Source.hpp"
 #include <iostream>
 #include <format>
 
@@ -53,14 +54,17 @@ std::expected<std::string, std::string> RequestHandler::match_type(JUNK &request
     if(type=="logs"){
         return logs_requests->logs_request(request);
     }
-    
+    if(type=="add_whitelist_ip"){
+        return source_request->add_whitelist_request(request);
+    }
     return std::unexpected("unknown type");
 }
 
 
-RequestHandler::RequestHandler(std::shared_ptr<SessionManager> &session, std::shared_ptr<AuthManager> &auth, std::shared_ptr<DBManager>& logs_db)
-    : session(session), auth(auth),logs_db(logs_db){
+RequestHandler::RequestHandler(std::shared_ptr<SessionManager> &session, std::shared_ptr<AuthManager> &auth, std::shared_ptr<DBManager>& logs_db,std::shared_ptr<SourceManager>source)
+    : session(session){
        auth_requests=std::make_shared<Auth>(session,auth);
        logs_requests=std::make_shared<Logs>(logs_db);
+       source_request=std::make_shared<Source>(source);
     };
 

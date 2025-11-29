@@ -5,16 +5,20 @@
 #include "source_manager/SourceManager.hpp"
 #include <thread>
 
-LogPipeline::LogPipeline(std::shared_ptr<DBManager> db,std::shared_ptr<DBManager> source_db){
+LogPipeline::LogPipeline(std::shared_ptr<DBManager> db,std::shared_ptr<SourceManager> source){
     syslog_queue=std::make_shared<ThreadSafeQueue<std::pair<std::string,std::string>>>();
     syslog_receiver= std::make_shared<SyslogReceiver>();
     log_processor = std::make_shared<LogProcessor>();
     logs_db=db; 
-    source_manager=std::make_shared<SourceManager>(source_db);
+    source_manager=source;
 }
 
 LogPipeline &LogPipeline::configure_database()
 {
+    this->logs_db->set_path("databases/logs.db")
+                  .create()
+                  .open();
+    std::cout<<"Logs database has open succesful"<<std::endl;
     // id ,pri , timestamp(NOW) , host , source , message , username_resolved NULL ,solved ,  rezolved time , by , message  
     const std::string create_alerts = R"(
         CREATE TABLE IF NOT EXISTS alerts (

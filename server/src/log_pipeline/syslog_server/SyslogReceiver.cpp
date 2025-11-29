@@ -43,7 +43,7 @@ SyslogReceiver &SyslogReceiver::configure_server()
     address.sin_port = htons(this->port.value());
 
     if (bind(server_fd.value(), (struct sockaddr *)&address, sizeof(address)) < 0) {
-        throw std::runtime_error("");
+        throw std::runtime_error("[Err] Bind Error");
     }
     return *this;
 }

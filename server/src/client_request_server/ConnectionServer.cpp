@@ -18,10 +18,10 @@ ConnectionServer &ConnectionServer::set_port(int port){
 
 ConnectionServer &ConnectionServer::bind_data(){
     if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
-        throw std::runtime_error("");
+        throw std::runtime_error("[ERR]Sokect request server");
     }
     if (setsockopt(server_fd.value(), SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt))) {
-        throw std::runtime_error("");
+        throw std::runtime_error("[ERR]Socket opt request server");
     }
     if (!this->port.has_value()){
         throw std::runtime_error("Error , port is none");
@@ -31,7 +31,7 @@ ConnectionServer &ConnectionServer::bind_data(){
     address.sin_port = htons(this->port.value());
 
     if (bind(server_fd.value(), (struct sockaddr *)&address, sizeof(address)) < 0) {
-        throw std::runtime_error("");
+        throw std::runtime_error("[ERR] bind error");
     }
     return *this;
 }
@@ -42,11 +42,17 @@ ConnectionServer &ConnectionServer::set_logs_db(std::shared_ptr<DBManager> db)
     return *this;
 }
 
+ConnectionServer &ConnectionServer::set_source_manager(std::shared_ptr<SourceManager> source)
+{
+    source_manager=source;
+    return *this;
+}
+
 void ConnectionServer::start()
 {
     this->session_manager = std::make_shared<SessionManager>();
     this->auth = std::make_shared<AuthManager>();
-    this->request_handler=std::make_shared<RequestHandler>(session_manager,auth,logs_db);
+    this->request_handler=std::make_shared<RequestHandler>(session_manager,auth,logs_db,source_manager);
 
     if(!this->port.has_value()){
         throw std::runtime_error("Error , port is none");
@@ -82,7 +88,12 @@ void ConnectionServer::start()
                 if(response){
                     len = (*response).size();
                     write(client, &len, sizeof(int));
-                    write(client, (*response).c_str(), len);
+                    const char* data = (*response).c_str();
+
+                    for (int offset = 0; offset < len; offset += 4096) {
+                        int chunk = std::min(4096, len - offset);
+                        write(client, data + offset, chunk);
+                    }
                 }
                 else {
                     std::string error = std::format("succes:{};type:{{error}};content:{{{}}};","false",response.error());

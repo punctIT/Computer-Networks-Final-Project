@@ -6,17 +6,15 @@ void MainMenu::bind_buttons()
 {
     QObject::connect(home_btn,&QPushButton::clicked,[this](){
         page_manager->change_page(2);
-        qDebug()<<"salut home";
     });
     QObject::connect(statistiscs_btn,&QPushButton::clicked,[this](){
-        page_manager->change_page(3); qDebug()<<"ceva";
+        page_manager->change_page(3);
     });
     QObject::connect(settings_btn,&QPushButton::clicked,[this](){
-        qDebug()<<"settings";
         page_manager->change_page(4); 
     });
     QObject::connect(security_btn,&QPushButton::clicked,[this](){
-        qDebug()<<"secutiry";
+        page_manager->change_page(5); 
     });
     //home_btn
 }

@@ -1,6 +1,9 @@
 #include "SourceManager.hpp"
 #include <iostream>
+#include <format>
 #include "../../utils/DBManager.hpp"
+#include "../../utils/BetterString.hpp"
+
 void SourceManager::create_database()
 {
     std::string cmd = R"(
@@ -14,7 +17,7 @@ void SourceManager::create_database()
         )";
     auto data = sources_db->run_command_unsafe(cmd);
     if(!data){
-        std::cerr<<"SOURCE DATABASE[ERR]:"<<data.error()<<std::endl;
+        throw std::runtime_error(std::format("SOURCE DATABASE[ERR]:{}",data.error()));
     }
     cmd = R"(
             CREATE TABLE IF NOT EXISTS blacklist(
@@ -27,7 +30,7 @@ void SourceManager::create_database()
         )";
     data = sources_db->run_command_unsafe(cmd);
     if(!data){
-        std::cerr<<"SOURCE DATABASE[ERR]:"<<data.error()<<std::endl;
+        throw std::runtime_error(std::format("SOURCE DATABASE[ERR]:{}",data.error()));
     }
     std::cout<<"[INFO]"<<"Source db open/configured succesful"<<std::endl;
 }
@@ -39,11 +42,46 @@ SourceManager::SourceManager(std::shared_ptr<DBManager> sources_db)
                       .create()
                       .open();
     create_database();
+    auto data = sources_db->get_unsafe("select * from whitelist;");
+    if(!data.has_value()){
+        throw std::runtime_error(data.error());
+    }
+    for(auto values : data.value()){
+        auto content=BetterString::split(values,"[]");
+        if(content.size()<5){
+            continue;
+        }
+        whitelist_source[content[1]]=content[2];
+    }
+    std::cout<<"[WHITELIST SIZE]:"<<whitelist_source.size()<<std::endl;
+    data = sources_db->get_unsafe("select * from blacklist;");
+    if(!data.has_value()){
+        throw std::runtime_error(data.error());
+    }
+    for(auto values : data.value()){
+        auto content=BetterString::split(values,"[]");
+        if(content.size()<5){
+            continue;
+        }
+        blacklist_source[content[1]]=content[2];
+    }
+    std::cout<<"[BLACKLIST SIZE]:"<<blacklist_source.size()<<std::endl;
+    
 }
 
-std::expected<void, std::string> SourceManager::add_whitelist(std::string ip, std::string source_name)
-{
-    std::unique_lock lock(_mutex);
+std::expected<void, std::string> SourceManager::add_whitelist(std::string ip, std::string source_name, std::string admin_username)
+{  std::unique_lock lock(_mutex);
+    if(whitelist_source.contains(ip)){
+        return std::unexpected("ip alerady in  whitelist");
+    }
+    if(blacklist_source.contains(ip)){
+        return std::unexpected("invalid , ip in blacklist");
+    }
+    auto result = sources_db->query("INSERT INTO whitelist (ip, hostname, admin_username) VALUES (?, ?, ?)",{ip,source_name,admin_username});
+    if(!result){
+        return std::unexpected(result.error());
+    }
+    whitelist_source[ip]=source_name;
     return std::expected<void, std::string>();
 }
 
