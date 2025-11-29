@@ -11,4 +11,5 @@ class Source:ResponseFormater{
     public:
     Source(std::shared_ptr<SourceManager>& source_manager);
     std::expected<std::string, std::string> add_whitelist_request(JUNK &request);
+    std::expected<std::string, std::string> add_blacklist_request(JUNK &request);
 };

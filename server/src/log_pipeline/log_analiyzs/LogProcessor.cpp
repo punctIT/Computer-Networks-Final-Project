@@ -3,6 +3,8 @@
 #include "LogParser.hpp"
 #include <format>
 #include "../../utils/DBManager.hpp"
+#include "../../log_pipeline/source_manager/SourceManager.hpp"
+
 #define loop while(true)
 
 void LogProcessor::write_log(const std::vector<std::string>& log)
@@ -16,11 +18,14 @@ void LogProcessor::write_log(const std::vector<std::string>& log)
     }
 }
 
-LogProcessor::LogProcessor()
+
+LogProcessor::LogProcessor(std::shared_ptr<SourceManager> source_manager)
 {
+    this->source_manager= source_manager;
+
 }
 
-LogProcessor &LogProcessor::set_database(  std::shared_ptr<DBManager> logs_db)
+LogProcessor &LogProcessor::set_database(std::shared_ptr<DBManager> logs_db)
 {
     this->logs_db=logs_db;
     return *this;
@@ -39,7 +44,12 @@ void LogProcessor::analyze_syslog(int id){
         if(!data.has_value()){
             continue;
         }
-        std::cout<<"["<<id<<']'<<data.value().first<<" "<<data.value().second<<std::endl;
+        if(source_manager->check_ip_whitelist(data.value().first)){
+            std::cout<<"["<<id<<']'<<data.value().first<<" "<<data.value().second<<std::endl;      
+        }   
+        else {
+            std::cout<<"["<<id<<']'<<"UNKNOWN"<<" "<<data.value().second<<std::endl; 
+        }  
         auto log = LogParser::split_syslog(data.value().second);
         if (!log.has_value()){
             continue;

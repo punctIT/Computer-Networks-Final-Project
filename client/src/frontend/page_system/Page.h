@@ -21,9 +21,17 @@ class Page : public QWidget {
         std::shared_ptr <PageManager> page_manager;
         std::shared_ptr <QMainWindow> window;
     public:
-        Page(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager,std::shared_ptr <QMainWindow> window);
+        Page(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager,std::shared_ptr <QMainWindow> window){
+            this->page = new QWidget();
+            this->data_requester=data;
+            this->page_manager=page_manager;
+            this->window=window;
+        }
         virtual void on_enter() =0;
         virtual void on_exit()=0;
-        QWidget* get_page();
+        QWidget* get_page(){
+            return this->page;
+        }
+
 
 };

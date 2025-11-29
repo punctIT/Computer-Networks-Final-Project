@@ -23,7 +23,6 @@ void SourceManager::create_database()
             CREATE TABLE IF NOT EXISTS blacklist(
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 ip TEXT NOT NULL UNIQUE,
-                hostname TEXT NOT NULL,
                 admin_username TEXT NOT NULL,
                 added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
@@ -60,17 +59,18 @@ SourceManager::SourceManager(std::shared_ptr<DBManager> sources_db)
     }
     for(auto values : data.value()){
         auto content=BetterString::split(values,"[]");
-        if(content.size()<5){
+        if(content.size()<4){
             continue;
         }
-        blacklist_source[content[1]]=content[2];
+        blacklist_source.insert(content[1]);
     }
     std::cout<<"[BLACKLIST SIZE]:"<<blacklist_source.size()<<std::endl;
     
 }
 
 std::expected<void, std::string> SourceManager::add_whitelist(std::string ip, std::string source_name, std::string admin_username)
-{  std::unique_lock lock(_mutex);
+{  
+    std::unique_lock lock(_mutex);
     if(whitelist_source.contains(ip)){
         return std::unexpected("ip alerady in  whitelist");
     }
@@ -82,7 +82,7 @@ std::expected<void, std::string> SourceManager::add_whitelist(std::string ip, st
         return std::unexpected(result.error());
     }
     whitelist_source[ip]=source_name;
-    return std::expected<void, std::string>();
+    return {};
 }
 
 std::expected<void, std::string> SourceManager::remove_whitelist(std::string ip)
@@ -97,8 +97,31 @@ std::expected<std::string, std::string> SourceManager::get_whitelist(std::string
     return std::expected<std::string, std::string>();
 }
 
+std::expected<void, std::string> SourceManager::add_blacklist(std::string ip, std::string admin_username)
+{
+    std::unique_lock lock(_mutex);
+    if(blacklist_source.contains(ip)){
+        return std::unexpected("ip alerady in  blacklist");
+    }
+    if(whitelist_source.contains(ip)){
+        return std::unexpected("invalid , ip in whitelist");
+    }
+    auto result = sources_db->query("INSERT INTO blacklist (ip, admin_username) VALUES (?, ?)",{ip,admin_username});
+    if(!result){
+        return std::unexpected(result.error());
+    }
+    blacklist_source.insert(ip);
+    return {};
+}
+
 bool SourceManager::check_ip_whitelist(std::string ip)
 {
     std::shared_lock lock(_mutex);
-    return false;
+    return whitelist_source.contains(ip);
+}
+
+bool SourceManager::check_ip_blacklist(std::string ip)
+{
+    std::shared_lock lock(_mutex);
+    return blacklist_source.contains(ip);
 }

@@ -11,22 +11,24 @@
 #include "../../widgets/MainMenu.hpp"
 #include "../../../server_request/DataRequester.hpp"
 #include "../../../utils/BetterString.hpp"
+#include "AddWhiteListPopup.hpp"
 
 void SecurityPage::bind_buttons()
 {
     QObject::connect(btn,&QPushButton::clicked,[this](){
-        auto data = data_requester->sent_request("type:{add_whitelist_ip};source_name:{local};ip:{none};admin_username:{admin};");
-        if(data){
-            qDebug()<<data.value().c_str();
-        }
+        // auto data = data_requester->sent_request("type:{add_blacklist_ip};source_name:{local};ip:{127.0.0.1};admin_username:{admin};");
+        // if(data){
+        //     qDebug()<<data.value().c_str();
+        // }
+        popup_whitelist_add->showCentered();
     });
 }
 
 SecurityPage::SecurityPage(std::shared_ptr<DataRequester> data, const std::shared_ptr<PageManager> &page_manager,std::shared_ptr <QMainWindow> window) : Page(data, page_manager,window)
 {
+   
+    popup_whitelist_add=std::make_shared<AddWhitelistPopup>(window.get(),data_requester,400,200); 
     QGridLayout *layout = new QGridLayout();
-    layout->setRowStretch(0, 1);  
-    layout->setRowStretch(1, 99);  
     btn = new QPushButton("sent");
     QLabel *label = new QLabel("Security");
     label->setAlignment(Qt::AlignCenter);

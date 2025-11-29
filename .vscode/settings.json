@@ -90,6 +90,7 @@
         "qmainwindow": "cpp",
         "qgridlayout": "cpp",
         "filesystem": "cpp",
-        "unordered_set": "cpp"
+        "unordered_set": "cpp",
+        "qgraphicsdropshadoweffect": "cpp"
     }
 }

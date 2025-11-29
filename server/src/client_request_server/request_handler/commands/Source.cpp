@@ -19,3 +19,15 @@ std::expected<std::string, std::string> Source::add_whitelist_request(JUNK &requ
         return std::unexpected(data.error());
     return ResponseFormater::response_formater(true,"add_whitelist_ip","NONE");
 }
+
+std::expected<std::string, std::string> Source::add_blacklist_request(JUNK &request)
+{
+    if(!request.contains("ip"))
+        return std::unexpected("invalid format");
+    if(!request.contains("admin_username"))
+        return std::unexpected("invalid format");
+    auto data = source_manager->add_blacklist(request["ip"].value(),request["admin_username"].value());
+    if(!data)
+        return std::unexpected(data.error());
+    return ResponseFormater::response_formater(true,"add_whitelist_ip","NONE");
+}

@@ -5,12 +5,14 @@
 #include <arpa/inet.h>
 #include <poll.h>
 #include <vector>
-
+#include <format>
+#include "../source_manager/SourceManager.hpp"
 #define loop while(true)
 
 
-SyslogReceiver::SyslogReceiver()
+SyslogReceiver::SyslogReceiver( std::shared_ptr<SourceManager> source_manager)
 {
+    this->source_manager=source_manager;
 }
 
 SyslogReceiver &SyslogReceiver::set_thread_safe_queue(std::shared_ptr<ThreadSafeQueue<std::pair<std::string,std::string>>> queue)
@@ -90,7 +92,11 @@ void SyslogReceiver::start()
                 char ip_str[INET_ADDRSTRLEN];
                 inet_ntop(AF_INET, &(client_addr.sin_addr), ip_str, INET_ADDRSTRLEN);
                 std::string ip_source(ip_str);
-
+                if(source_manager->check_ip_blacklist(ip_source)){
+                    close(client_fd); 
+                    std::cout << "[WARN] Connection denied from blacklisted IP: " << ip_source << std::endl;
+                    continue;
+                }
                 client_ips[client_fd] = ip_source;
 
                 pollfd client_poll;
@@ -116,7 +122,12 @@ std::expected<void, std::string> SyslogReceiver::RW_logs(int fd)
 {
     const int buffer_size=4096;
     char buffer[buffer_size];
-
+    if(source_manager->check_ip_blacklist(client_ips[fd])){
+        client_buffers.erase(fd);
+        auto ip = client_ips[fd];
+        client_ips.erase(fd);
+        return std::unexpected(std::format("[WARN]Active connection dropped (Blacklisted IP): IP:{}" ,ip));
+    }
     int n = read(fd, buffer, buffer_size - 1);
     if (n > 0) {
         buffer[n] = '\0';

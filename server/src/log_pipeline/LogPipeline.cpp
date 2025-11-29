@@ -2,15 +2,14 @@
 #include "syslog_server/SyslogReceiver.hpp"
 #include "log_analiyzs/LogProcessor.hpp"
 #include "../utils/DBManager.hpp"
-#include "source_manager/SourceManager.hpp"
 #include <thread>
 
 LogPipeline::LogPipeline(std::shared_ptr<DBManager> db,std::shared_ptr<SourceManager> source){
     syslog_queue=std::make_shared<ThreadSafeQueue<std::pair<std::string,std::string>>>();
-    syslog_receiver= std::make_shared<SyslogReceiver>();
-    log_processor = std::make_shared<LogProcessor>();
+    syslog_receiver= std::make_shared<SyslogReceiver>(source);
+    log_processor = std::make_shared<LogProcessor>(source);
     logs_db=db; 
-    source_manager=source;
+    
 }
 
 LogPipeline &LogPipeline::configure_database()

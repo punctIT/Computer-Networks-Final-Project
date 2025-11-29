@@ -13,12 +13,15 @@ class QWidget;
 class QPushButton;
 
 class TableMenu;
+class AddWhitelistPopup;
+
 
 class MainMenu;
 class PageManager;
 class SecurityPage:public Page{
     QPushButton *btn;
     void bind_buttons();
+    std::shared_ptr<AddWhitelistPopup> popup_whitelist_add;
     QTimer *updateTimer;
     public:
         SecurityPage(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager,std::shared_ptr <QMainWindow> window);
