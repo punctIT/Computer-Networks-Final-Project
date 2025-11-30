@@ -2,11 +2,15 @@
 
 #include "../../page_system/Popup.h"
 #include <QLabel>
+#include <QPushButton>
+#include <QLineEdit>
 
 class DataRequester;
 class AddWhitelistPopup:public Popup{
+    QPushButton *add_btn;
+    QLineEdit *ip_entry,*source_name;
+    QLabel *error;
+    void connect_buttons();
     public:
-    AddWhitelistPopup(QWidget* parent,std::shared_ptr <DataRequester> data,int x,int y):Popup(parent,data,x,y){
-        layout->addWidget(new QLabel("test"));
-    };
+    AddWhitelistPopup(QWidget* parent,std::shared_ptr <DataRequester> data,int x,int y);
 };

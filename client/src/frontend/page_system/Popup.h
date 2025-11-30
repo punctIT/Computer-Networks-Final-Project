@@ -17,7 +17,7 @@ protected:
     std::shared_ptr <DataRequester> data_requester;
 public:
     Popup(QWidget* parent,std::shared_ptr<DataRequester> data,int sizeX,int sizeY) : QWidget(parent),data_requester(data) {
-        
+        this->setAttribute(Qt::WA_StyledBackground, true);
         this->setFixedSize(sizeX, sizeY); 
         this->setStyleSheet("background-color: white; border-radius: 10px; border: 1px solid #ccc;");
         QVBoxLayout *main_layout = new QVBoxLayout(this);
