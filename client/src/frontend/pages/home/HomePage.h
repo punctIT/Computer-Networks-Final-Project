@@ -3,7 +3,7 @@
 #pragma once
 
 #include <memory>
-#include "../../page_system/Page.h"
+
 #include <QtCore/QTimer>
 #include <QtCore/QObject>
 #include <QtWidgets/QGridLayout>
@@ -13,11 +13,12 @@
 #include <QtWidgets/QMainWindow>
 
 #include <format>
+#include "TableWidget.h"
 
 #include "../../page_system/PageManager.h"
 #include "../../widgets/MainMenu.hpp"
 #include "../../../server_request/DataRequester.hpp"
-#include "TableWidget.h"
+#include "../../page_system/Page.h"
 #include "../../../utils/BetterString.hpp"
 
 class HomePage:public Page{

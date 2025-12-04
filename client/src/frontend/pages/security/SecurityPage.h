@@ -15,18 +15,21 @@
 #include <format>
 
 #include "../../page_system/PageManager.h"
+#include "../../page_system/Page.h"
 #include "../../widgets/MainMenu.hpp"
 #include "../../../server_request/DataRequester.hpp"
 #include "../../../utils/BetterString.hpp"
+#include "WhitelistScreen.h"
 #include "WhiteListPopup.hpp"
-
+#include "BlacklistScreen.h"
 
 class SecurityPage:public Page{
-    QPushButton *btn;
     void bind_buttons();
     std::shared_ptr<std::vector<std::shared_ptr<Page>>> pages;
     std::shared_ptr<PageManager> security_pages;
     QGridLayout *layout;
+    QPushButton *whitelist;
+    QPushButton *blacklist;
     QWidget* get_side_menu();
     public:
         SecurityPage(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager,std::shared_ptr <QMainWindow> window);

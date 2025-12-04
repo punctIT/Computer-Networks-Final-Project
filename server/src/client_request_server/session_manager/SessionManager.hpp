@@ -6,6 +6,7 @@
 #include <expected>
 #include <iostream>
 #include <format>
+
 class SessionManager{
     std::shared_mutex mutex;
     std::unordered_map<std::string,std::string> sessions;
