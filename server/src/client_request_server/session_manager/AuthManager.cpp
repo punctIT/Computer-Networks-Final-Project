@@ -1,7 +1,5 @@
 #include "AuthManager.hpp"
-#include "../../utils/DBManager.hpp"
-#include <iostream>
-#include <format>
+
 AuthManager::AuthManager()
 {
     credentials_db = std::make_shared<DBManager>();

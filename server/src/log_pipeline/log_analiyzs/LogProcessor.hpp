@@ -1,9 +1,11 @@
 #pragma once 
 #include <memory>
 #include "../../utils/ThreadSafeQueue.hpp"
-
-class DBManager;
-class SourceManager;
+#include <iostream>
+#include "LogParser.hpp"
+#include <format>
+#include "../../utils/DBManager.hpp"
+#include "../../log_pipeline/source_manager/SourceManager.hpp"
 
 class LogProcessor{
     std::shared_ptr<ThreadSafeQueue<std::pair<std::string,std::string>>> syslog_queue;

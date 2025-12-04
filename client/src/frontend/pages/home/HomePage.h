@@ -6,16 +6,20 @@
 #include "../../page_system/Page.h"
 #include <QtCore/QTimer>
 #include <QtCore/QObject>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QMainWindow>
 
-class DataRequester;
-class QLineEdit;
-class QWidget;
-class QPushButton;
+#include <format>
 
-class TableMenu;
+#include "../../page_system/PageManager.h"
+#include "../../widgets/MainMenu.hpp"
+#include "../../../server_request/DataRequester.hpp"
+#include "TableWidget.h"
+#include "../../../utils/BetterString.hpp"
 
-class MainMenu;
-class PageManager;
 class HomePage:public Page{
     QPushButton *btn;
     std::shared_ptr<TableMenu> table_widget;

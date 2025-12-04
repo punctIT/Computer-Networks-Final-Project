@@ -1,9 +1,5 @@
 #include "LogProcessor.hpp"
-#include <iostream>
-#include "LogParser.hpp"
-#include <format>
-#include "../../utils/DBManager.hpp"
-#include "../../log_pipeline/source_manager/SourceManager.hpp"
+
 
 #define loop while(true)
 

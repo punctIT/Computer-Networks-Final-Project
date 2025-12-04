@@ -4,11 +4,13 @@
 
 #include <memory>
 #include "../page_system/Page.h"
-class DataRequester;
-class QLineEdit;
-class QWidget;
-class QPushButton;
-class QLabel;
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QLineEdit>
+#include "../page_system/PageManager.h"
+#include "../../server_request/DataRequester.hpp"
+#include <QtWidgets/QMainWindow>
 
 class ConnectPage:public Page{
     QLineEdit *ip_input ;

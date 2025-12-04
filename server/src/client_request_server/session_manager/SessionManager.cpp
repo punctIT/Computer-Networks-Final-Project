@@ -1,6 +1,5 @@
 #include "SessionManager.hpp"
-#include <iostream>
-#include <format>
+
 bool SessionManager::check_token(const std::string token){
     std::shared_lock lock(mutex);
     if(sessions.contains(token)){

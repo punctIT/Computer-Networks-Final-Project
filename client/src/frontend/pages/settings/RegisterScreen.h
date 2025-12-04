@@ -1,15 +1,16 @@
 #pragma once 
 
 #include <memory>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QPushButton>
 
-
-class DataRequester;
-class QLineEdit;
-class QWidget;
-class QLabel;
-class QPushButton;
-class PageManager;
-class DataRequester;
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMessageBox>
+#include "../../../server_request/DataRequester.hpp"    
+#include "../../page_system/PageManager.h"
+#include "../../../utils/JUNK.hpp"
 
 class RegisterScreen{
     std::shared_ptr<PageManager> page_manager;

@@ -9,6 +9,18 @@
 #include <memory>
 #include "page_system/Page.h"
 #include <vector>
+#include "../server_request/DataRequester.hpp"
+#include "pages/LoginPage.h"
+#include "page_system/PageManager.h"
+#include "pages/home/HomePage.h"
+#include "pages/settings/SettingsPage.h"
+#include "pages/dashboard/DashboardPage.h"
+#include "pages/security/SecurityPage.h"
+#include "pages/ConnectPage.h"
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QLabel>
+#include "widgets/MainMenu.hpp"
+
 class DataRequester;
 class PageManager;
 

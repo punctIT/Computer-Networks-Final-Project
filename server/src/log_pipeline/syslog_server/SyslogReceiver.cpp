@@ -1,12 +1,7 @@
 #include "SyslogReceiver.hpp"
 
 
-#include <unistd.h>
-#include <arpa/inet.h>
-#include <poll.h>
-#include <vector>
-#include <format>
-#include "../source_manager/SourceManager.hpp"
+
 #define loop while(true)
 
 

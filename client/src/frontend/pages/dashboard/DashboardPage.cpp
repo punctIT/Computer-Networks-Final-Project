@@ -1,11 +1,5 @@
+
 #include "DashboardPage.h"
-#include <QtWidgets/QGridLayout>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QLineEdit>
-#include "../../page_system/PageManager.h"
-#include "../../widgets/MainMenu.hpp"
-#include <QtWidgets/QMainWindow>
 
 void DashboardPage::bind_buttons(){
     QObject::connect(btn,&QPushButton::clicked,[this](){

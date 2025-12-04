@@ -7,8 +7,11 @@
 #include <shared_mutex>
 #include <string>
 #include <expected>
+#include <iostream>
+#include <format>
+#include "../../utils/DBManager.hpp"
+#include "../../utils/BetterString.hpp"
 
-class DBManager;
 class SourceManager{
     std::shared_mutex _mutex; 
     std::unordered_map<std::string,std::string> whitelist_source;

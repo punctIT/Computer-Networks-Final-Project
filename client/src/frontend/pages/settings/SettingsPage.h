@@ -5,7 +5,16 @@
 #include <memory>
 #include "../../page_system/Page.h"
 #include <QtWidgets/QStackedWidget>
-
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QLineEdit>
+#include "../../../utils/JUNK.hpp"
+#include "../../page_system/PageManager.h"
+#include "../../../server_request/DataRequester.hpp"
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMessageBox>
+#include "RegisterScreen.h"
 
 class RegisterScreen;
 class PageManager;

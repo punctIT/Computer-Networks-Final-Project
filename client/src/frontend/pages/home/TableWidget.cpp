@@ -1,11 +1,5 @@
 #include "TableWidget.h"
-#include <QtWidgets/QTableWidget>
-#include <QtWidgets/QGridLayout>
-#include <QtWidgets/QHeaderView>
-#include <string>
-#include <iostream>
 
-#include "../../../utils/BetterString.hpp"
 TableMenu::TableMenu()
 {
     last_id=0;

@@ -1,12 +1,5 @@
 #include "RequestHandler.hpp"
-#include "../session_manager/SessionManager.hpp"
-#include "../session_manager/AuthManager.hpp"
-#include "../../utils/JUNK.hpp"
-#include "commands/Logs.hpp"
-#include "commands/Auth.hpp"
-#include "commands/Source.hpp"
-#include <iostream>
-#include <format>
+
 
 std::expected<std::string,std::string> RequestHandler::match_request(int client,std::string request){
     //std::cout << "Request: "<< request << std::endl;

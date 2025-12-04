@@ -1,8 +1,5 @@
 #include "LogPipeline.hpp"
-#include "syslog_server/SyslogReceiver.hpp"
-#include "log_analiyzs/LogProcessor.hpp"
-#include "../utils/DBManager.hpp"
-#include <thread>
+
 
 LogPipeline::LogPipeline(std::shared_ptr<DBManager> db,std::shared_ptr<SourceManager> source){
     syslog_queue=std::make_shared<ThreadSafeQueue<std::pair<std::string,std::string>>>();

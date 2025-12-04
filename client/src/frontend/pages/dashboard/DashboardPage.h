@@ -4,14 +4,14 @@
 
 #include <memory>
 #include "../../page_system/Page.h"
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QLineEdit>
+#include "../../page_system/PageManager.h"
+#include "../../widgets/MainMenu.hpp"
+#include <QtWidgets/QMainWindow>
 
-class DataRequester;
-class QLineEdit;
-class QWidget;
-class QPushButton;
-
-class MainMenu;
-class PageManager;
 class DashboardPage:public Page{
     QPushButton *btn;
     void bind_buttons();

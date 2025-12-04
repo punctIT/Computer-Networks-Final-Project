@@ -6,23 +6,28 @@
 #include "../../page_system/Page.h"
 #include <QtCore/QTimer>
 #include <QtCore/QObject>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QMainWindow>
 
-class DataRequester;
-class QLineEdit;
-class QWidget;
-class QPushButton;
+#include <format>
 
-class TableMenu;
-class AddWhitelistPopup;
+#include "../../page_system/PageManager.h"
+#include "../../widgets/MainMenu.hpp"
+#include "../../../server_request/DataRequester.hpp"
+#include "../../../utils/BetterString.hpp"
+#include "WhiteListPopup.hpp"
 
 
-class MainMenu;
-class PageManager;
 class SecurityPage:public Page{
     QPushButton *btn;
     void bind_buttons();
-    std::shared_ptr<AddWhitelistPopup> popup_whitelist_add;
-    QTimer *updateTimer;
+    std::shared_ptr<std::vector<std::shared_ptr<Page>>> pages;
+    std::shared_ptr<PageManager> security_pages;
+    QGridLayout *layout;
+    QWidget* get_side_menu();
     public:
         SecurityPage(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager,std::shared_ptr <QMainWindow> window);
         void on_enter() override;

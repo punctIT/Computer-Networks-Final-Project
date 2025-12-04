@@ -8,9 +8,13 @@
 #include <optional>
 #include <expected>
 #include <utility>
+#include <unistd.h>
+#include <arpa/inet.h>
+#include <poll.h>
+#include <vector>
+#include <format>
+#include "../source_manager/SourceManager.hpp"
 
-
-class SourceManager;
 
 class SyslogReceiver{
     std::shared_ptr<ThreadSafeQueue<std::pair<std::string,std::string>>> log_queue;

@@ -1,14 +1,5 @@
 #include "SettingsPage.h"
-#include <QtWidgets/QGridLayout>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QLineEdit>
-#include "../../../utils/JUNK.hpp"
-#include "../../page_system/PageManager.h"
-#include "../../../server_request/DataRequester.hpp"
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QMessageBox>
-#include "RegisterScreen.h"
+
 
 
 void SettingsPage::bind_buttons(){

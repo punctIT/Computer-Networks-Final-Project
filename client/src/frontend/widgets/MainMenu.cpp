@@ -1,7 +1,5 @@
 #include "MainMenu.hpp"
-#include <QtWidgets/QGridLayout>
-#include <QtWidgets/QPushButton>
-#include "../page_system/PageManager.h"
+
 void MainMenu::bind_buttons()
 {
     QObject::connect(home_btn,&QPushButton::clicked,[this](){

@@ -1,6 +1,5 @@
 #include "Source.hpp"
-#include "../../../utils/JUNK.hpp"
-#include "../../../log_pipeline/source_manager/SourceManager.hpp"
+
 Source::Source(std::shared_ptr<SourceManager> &source_manager):source_manager(source_manager)
 {
     

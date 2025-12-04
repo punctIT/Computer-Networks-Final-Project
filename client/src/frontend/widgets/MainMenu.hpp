@@ -1,10 +1,9 @@
 #pragma once 
 
 #include <memory>
-class PageManager;
-class QWidget;
-class QPushButton;
-class QGridLayout;
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QPushButton>
+#include "../page_system/PageManager.h"
 
 class MainMenu{
     std::shared_ptr <PageManager> page_manager;

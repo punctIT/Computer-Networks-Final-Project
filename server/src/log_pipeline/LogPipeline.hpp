@@ -3,10 +3,11 @@
 #include <memory>
 #include <string>
 #include <utility>
-class DBManager;
-class SyslogReceiver;
-class LogProcessor;
-class SourceManager;
+#include "syslog_server/SyslogReceiver.hpp"
+#include "log_analiyzs/LogProcessor.hpp"
+#include "../utils/DBManager.hpp"
+#include <thread>
+
 class LogPipeline{
     std::shared_ptr<ThreadSafeQueue<std::pair<std::string,std::string>>> syslog_queue;
     std::shared_ptr<DBManager> logs_db;

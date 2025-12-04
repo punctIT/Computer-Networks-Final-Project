@@ -1,11 +1,17 @@
 #include "PageManager.h"
-#include "Page.h"
-#include "../app.h"
+
 PageManager::PageManager(std::shared_ptr<App> a)
 {
     stack= new QStackedWidget();
     current_page=0;
     this->app=a;
+}
+
+PageManager::PageManager(std::shared_ptr<Page> a)
+{
+    stack= new QStackedWidget();
+    current_page=0;
+    this->page=a;
 }
 
 void PageManager::add_page(QWidget* page){

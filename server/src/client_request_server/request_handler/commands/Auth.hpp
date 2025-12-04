@@ -3,9 +3,11 @@
 #include <string>
 #include <memory>
 #include "../ResponseFormater.hpp"
-class SessionManager;
-class JUNK;
-class AuthManager;
+#include "../../../utils/JUNK.hpp"
+#include "../../session_manager/SessionManager.hpp"
+#include "../../session_manager/AuthManager.hpp"
+#include <iostream>
+
 
 class Auth:public ResponseFormater{
     std::shared_ptr<SessionManager>& session;

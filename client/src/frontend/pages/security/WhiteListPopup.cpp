@@ -1,7 +1,5 @@
-#include "AddWhiteListPopup.hpp"
-#include "../../../server_request/DataRequester.hpp"
-#include <format>
-#include <string>
+#include "WhiteListPopup.hpp"
+
 void AddWhitelistPopup::connect_buttons()
 {
     QObject::connect(add_btn,&QPushButton::clicked,[this](){

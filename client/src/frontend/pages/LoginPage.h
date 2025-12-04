@@ -4,14 +4,15 @@
 
 #include <memory>
 #include "../page_system/Page.h"
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QLineEdit>
+#include "../../utils/JUNK.hpp"
+#include "../page_system/PageManager.h"
+#include "../../server_request/DataRequester.hpp"
+#include <QtWidgets/QMainWindow>
 
-class DataRequester;
-class QLineEdit;
-class QWidget;
-class QLabel;
-class QPushButton;
-
-class PageManager;
 class LoginPage:public Page{
     QLineEdit *username_input ;
     QLineEdit *password_input ;

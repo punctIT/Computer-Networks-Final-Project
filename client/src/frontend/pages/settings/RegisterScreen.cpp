@@ -1,14 +1,4 @@
 #include "RegisterScreen.h"
-#include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QPushButton>
-
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QMessageBox>
-#include "../../../server_request/DataRequester.hpp"    
-#include "../../page_system/PageManager.h"
-#include "../../../utils/JUNK.hpp"
 
 void RegisterScreen::bind_buttons()
 {

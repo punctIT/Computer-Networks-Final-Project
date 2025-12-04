@@ -1,12 +1,5 @@
 #include "LoginPage.h"
-#include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QLineEdit>
-#include "../../utils/JUNK.hpp"
-#include "../page_system/PageManager.h"
-#include "../../server_request/DataRequester.hpp"
-#include <QtWidgets/QMainWindow>
+
 void LoginPage::bind_buttons(){
     QObject::connect(this->signin_btn, &QPushButton::clicked, [this]() {
         error_lbn->setText("");

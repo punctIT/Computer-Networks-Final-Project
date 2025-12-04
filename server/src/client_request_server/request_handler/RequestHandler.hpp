@@ -4,15 +4,14 @@
 #include <memory>
 #include <expected>
 #include "ResponseFormater.hpp"
-class SessionManager;
-class JUNK;
-class AuthManager;
-class DBManager;
-class SourceManager;
-
-class Source;
-class Logs;
-class Auth;
+#include "../session_manager/SessionManager.hpp"
+#include "../session_manager/AuthManager.hpp"
+#include "../../utils/JUNK.hpp"
+#include "commands/Logs.hpp"
+#include "commands/Auth.hpp"
+#include "commands/Source.hpp"
+#include <iostream>
+#include <format>
 
 class RequestHandler:public ResponseFormater{
     protected:

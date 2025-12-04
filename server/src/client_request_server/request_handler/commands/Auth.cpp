@@ -1,8 +1,5 @@
 #include "Auth.hpp"
-#include "../../../utils/JUNK.hpp"
-#include "../../session_manager/SessionManager.hpp"
-#include "../../session_manager/AuthManager.hpp"
-#include <iostream>
+
 Auth::Auth(std::shared_ptr<SessionManager> &session, std::shared_ptr<AuthManager> &auth): session(session), auth(auth) {};
 
 std::expected<std::string, std::string> Auth::login_request(JUNK &request)

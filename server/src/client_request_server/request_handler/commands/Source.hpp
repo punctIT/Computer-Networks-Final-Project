@@ -2,10 +2,9 @@
 #include <memory>
 #include <expected>
 #include "../ResponseFormater.hpp"
+#include "../../../utils/JUNK.hpp"
+#include "../../../log_pipeline/source_manager/SourceManager.hpp"
 
-
-class SourceManager;
-class JUNK;
 class Source:ResponseFormater{
     std::shared_ptr<SourceManager>& source_manager; 
     public:

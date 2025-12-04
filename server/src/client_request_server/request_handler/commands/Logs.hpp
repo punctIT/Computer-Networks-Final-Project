@@ -3,9 +3,10 @@
 #include <string>
 #include <memory>
 #include "../ResponseFormater.hpp"
-
-class JUNK;
-class DBManager;
+#include "../../../utils/JUNK.hpp"
+#include "../../session_manager/SessionManager.hpp"
+#include "../../../utils/DBManager.hpp"
+#include <iostream>
 
 class Logs:public ResponseFormater{
     std::shared_ptr<DBManager>& logs;

@@ -4,8 +4,10 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QLineEdit>
+#include "../../../server_request/DataRequester.hpp"
+#include <format>
+#include <string>
 
-class DataRequester;
 class AddWhitelistPopup:public Popup{
     QPushButton *add_btn;
     QLineEdit *ip_entry,*source_name;

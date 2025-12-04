@@ -2,6 +2,13 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include <QtWidgets/QTableWidget>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QHeaderView>
+#include <string>
+#include <iostream>
+#include "../../../utils/BetterString.hpp"
+
 class PageManager;
 class QWidget;
 class QTableWidget;class QTableWidgetItem;
