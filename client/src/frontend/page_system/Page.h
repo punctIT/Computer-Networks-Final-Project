@@ -13,6 +13,7 @@ class QPushButton;
 class QMainWindow;
 
 class PageManager;
+
 class Page : public QWidget {
     Q_OBJECT
     protected:

@@ -5,7 +5,8 @@
 #include <memory>
 #include "../../page_system/PageManager.h"
 #include "../../widgets/MainMenu.hpp"
-#include "../../../server_request/DataRequester.hpp"
+#include "../../../server_request/DataRequester.h"
+#include "WhiteListPopup.hpp"
 
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QLabel>
@@ -17,6 +18,7 @@
 
 class WhiteListScreen:public Page{
     QPushButton *btn;
+     std::shared_ptr<AddWhitelistPopup> add_whitelist;
     void bind_buttons();
     public:
         WhiteListScreen(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager,std::shared_ptr <QMainWindow> window);

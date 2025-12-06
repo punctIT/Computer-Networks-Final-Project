@@ -5,7 +5,7 @@
 #include <memory>
 #include "../../page_system/PageManager.h"
 #include "../../widgets/MainMenu.hpp"
-#include "../../../server_request/DataRequester.hpp"
+#include "../../../server_request/DataRequester.h"
 
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QLabel>

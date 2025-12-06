@@ -81,21 +81,24 @@ void ConnectionServer::start()
                 }
                 read(client, buffer, len);
                 auto response =request_handler->match_request(client,buffer);
-                if(response){
-                    len = (*response).size();
-                    write(client, &len, sizeof(int));
-                    const char* data = (*response).c_str();
-
-                    for (int offset = 0; offset < len; offset += 4096) {
-                        int chunk = std::min(4096, len - offset);
-                        write(client, data + offset, chunk);
+                if (response) {
+                    std::string& dataStr = *response;
+                    int data_len =dataStr.size();
+                    write(client, &data_len, sizeof(data_len)); 
+                    const char* dataPtr = dataStr.c_str();
+                    size_t total_sent = 0;
+                    while(total_sent < data_len) {
+                        ssize_t sent = write(client, dataPtr + total_sent, data_len - total_sent);
+                        if(sent <= 0) break;
+                        total_sent += sent;
                     }
-                }
+                } 
                 else {
-                    std::string error = std::format("succes:{};type:{{error}};content:{{{}}};","false",response.error());
-                    len = error.size();
-                    write(client, &len, sizeof(int));
-                    write(client, error.c_str(), len);
+                    std::string error = std::format("succes:{};type:{{error}};content:{{{}}};", "false", response.error());
+                    uint32_t raw_len = static_cast<uint32_t>(error.size());
+                    uint32_t net_len = htonl(raw_len);
+                    write(client, &net_len, sizeof(net_len));
+                    write(client, error.c_str(), raw_len);
                 }
             }
             close(client);

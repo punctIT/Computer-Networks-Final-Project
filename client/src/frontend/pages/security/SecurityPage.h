@@ -17,10 +17,9 @@
 #include "../../page_system/PageManager.h"
 #include "../../page_system/Page.h"
 #include "../../widgets/MainMenu.hpp"
-#include "../../../server_request/DataRequester.hpp"
+#include "../../../server_request/DataRequester.h"
 #include "../../../utils/BetterString.hpp"
 #include "WhitelistScreen.h"
-#include "WhiteListPopup.hpp"
 #include "BlacklistScreen.h"
 
 class SecurityPage:public Page{

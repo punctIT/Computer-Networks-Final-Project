@@ -9,7 +9,7 @@
 #include <memory>
 #include "page_system/Page.h"
 #include <vector>
-#include "../server_request/DataRequester.hpp"
+#include "../server_request/DataRequester.h"
 #include "pages/LoginPage.h"
 #include "page_system/PageManager.h"
 #include "pages/home/HomePage.h"

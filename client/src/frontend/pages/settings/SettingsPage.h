@@ -11,7 +11,7 @@
 #include <QtWidgets/QLineEdit>
 #include "../../../utils/JUNK.hpp"
 #include "../../page_system/PageManager.h"
-#include "../../../server_request/DataRequester.hpp"
+#include "../../../server_request/DataRequester.h"
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMessageBox>
 #include "RegisterScreen.h"

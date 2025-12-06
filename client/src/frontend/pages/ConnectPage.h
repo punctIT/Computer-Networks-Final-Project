@@ -9,7 +9,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QLineEdit>
 #include "../page_system/PageManager.h"
-#include "../../server_request/DataRequester.hpp"
+#include "../../server_request/DataRequester.h"
 #include <QtWidgets/QMainWindow>
 
 class ConnectPage:public Page{

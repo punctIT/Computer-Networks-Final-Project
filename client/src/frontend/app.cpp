@@ -1,4 +1,5 @@
 #include "app.h"
+#include <QtCore/QThread>
 
 QWidget* App::get_window()
 {
@@ -24,7 +25,10 @@ App::App()
     page = new QWidget();      
     layout = new QGridLayout(page); 
     data_requster=std::make_shared<DataRequester>();
-    
+    QThread *receiveThread = QThread::create([this]() {
+        data_requster->start_receiving(); 
+    });
+    receiveThread->start();
     window =  std::make_shared<QMainWindow>();
     window->setFixedSize(500, 300);
     window->setWindowTitle("Network Device Monitor");

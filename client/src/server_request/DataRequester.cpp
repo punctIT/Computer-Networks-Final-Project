@@ -1,4 +1,4 @@
-#include "DataRequester.hpp"
+#include "DataRequester.h"
 #include <iostream>
 #include "../utils/JUNK.hpp"
 #include <format>
@@ -31,50 +31,110 @@ DataRequester &DataRequester::configure(){
     server_address.sin_port = htons(this->port);  
     
     if (inet_pton(AF_INET,this->ip.c_str(), &server_address.sin_addr) <= 0) {
-        close(sock);
+        ::close(sock);
         throw std::runtime_error("invalid ip");
     }
-    if (connect(sock, (struct sockaddr *)&server_address, sizeof(server_address)) < 0) {
-        close(sock);
+    if (::connect(sock, (struct sockaddr *)&server_address, sizeof(server_address)) < 0) {
+        ::close(sock);
         throw std::runtime_error("connection failed");
     }
     connected=true;
     return *this;
 }
 
-std::expected<std::string,std::string> DataRequester::sent_request(std::string data){  
-    if(!connected){
-        return std::unexpected("Error , connection error");
+bool DataRequester::send_all(const void* data, size_t length) {
+    const char* ptr = static_cast<const char*>(data);
+    size_t remaining = length;
+    while (remaining > 0) {
+        ssize_t written = ::send(sock, ptr, remaining, 0);
+        if (written <= 0) 
+            return false;
+        ptr += written;
+        remaining -= written;
     }
+    return true;
+}
+
+bool DataRequester::recv_all(void* data, size_t length) {
+    char* ptr = static_cast<char*>(data);
+    size_t remaining = length;
+    while (remaining > 0) {
+        ssize_t read = ::recv(sock, ptr, remaining, 0);
+        if (read <= 0)
+            return false;
+        ptr += read;
+        remaining -= read;
+    }
+    return true;
+}
+
+
+std::expected<void, std::string> DataRequester::sent(std::string data) {
+    if (!connected)
+        return std::unexpected("Error: Not connected");
     std::string content = "";
     auto test_data = JUNK::deserialize(data);
-    if (test_data){
-        if(this->token.has_value()){
-            data = std::format("token:{{{}}};{}",this->token.value(),data);
-        }
-        
-        int size = data.size();
-        send(sock, &size, sizeof(int), 0);
-        send(sock, data.c_str(), size, 0);
-    
-        
-        int received_size = 0;
-        recv(sock, &received_size, sizeof(int), 0);
-        char buffer[4096] = {0};
-        int remaining = received_size;
-        while (remaining > 0) {
-            int chunk = std::min(remaining, 4096);
-            int bytes_read = recv(sock, buffer, chunk, 0);
-            if (bytes_read <= 0) {
-                break;
-            }
-            content.append(buffer, bytes_read);
-            remaining -= bytes_read;
-        }
-        return content;
-    }
-    else {
+    if(!test_data){
         return std::unexpected(test_data.error());
+    }
+    if(this->token.has_value()){
+        data = std::format("token:{{{}}};{}",this->token.value(),data);
+    }
+    int size = data.size();
+    if (!send_all(&size, sizeof(int))) {
+        return std::unexpected("Failed to send size header");
+    }
+
+    if (!send_all(data.c_str(), data.size())) {
+        return std::unexpected("Failed to send data body");
+    }
+
+    return {};
+}
+
+std::expected<std::string, std::string> DataRequester::receive() {
+    if (!connected) return std::unexpected("Error: Not connected");
+    int size = 0;
+    if (!recv_all(&size, sizeof(int))) {
+        connected = false;
+        return std::unexpected("Connection closed or header read error");
+    }
+    std::string content;
+    try {
+        content.resize(size);
+    } catch (...) {
+        return std::unexpected("Memory allocation failed");
+    }
+    if (!recv_all(&content[0], size)) {
+        connected = false;
+        return std::unexpected("Connection closed during body read");
+    }
+    return content;
+}
+
+void DataRequester::start_receiving()
+{
+    while(true){
+        auto data = receive();
+        if(!data.has_value()){
+            continue;
+        }
+        std::string rawData = data.value();
+        qDebug() << "RAW DATA RECEIVED:" << QString::fromStdString(rawData);
+        auto junk_data = JUNK::deserialize(data.value());
+        if(!junk_data.has_value()){
+            continue;
+        }
+        if(!junk_data.value()["type"].has_value()){
+            continue;
+        }
+        auto type = junk_data.value()["type"].value();
+        if(type=="login"){
+            emit LoginData(QString::fromStdString(data.value()));
+        }
+        if(type=="logs"){
+            emit LogsData(QString::fromStdString(data.value()));
+        }
     }
     
 }

@@ -3,17 +3,10 @@
 
 void HomePage::bind_buttons()
 {
-    QObject::connect(btn,&QPushButton::clicked,[this](){
-        auto data = this->data_requester->sent_request("type:{logout};");
-        if(data){
-            qDebug()<<data.value().c_str();
-        }
-        else {
-            qDebug()<<data.error().c_str();
-        }
-        this->page_manager->change_page(1);
-
-    });
+    connect(data_requester.get(), &DataRequester::LogsData, 
+        this, [this](QString mesaj) {
+           table_widget->add(BetterString::split(mesaj.toStdString(),"{}"));
+        });
 }
 
 HomePage::HomePage(std::shared_ptr<DataRequester> data, const std::shared_ptr<PageManager> &page_manager,std::shared_ptr <QMainWindow> window) : Page(data, page_manager,window)
@@ -27,8 +20,6 @@ HomePage::HomePage(std::shared_ptr<DataRequester> data, const std::shared_ptr<Pa
     label->setAlignment(Qt::AlignCenter);
     layout->addWidget(label,1,0);
     layout->addWidget(table_widget->get_widget(),2,0);
-    btn = new QPushButton("login");
-    layout->addWidget(btn,3,0);
     page->setLayout(layout);
 
     updateTimer = new QTimer(this); 
@@ -47,11 +38,11 @@ void HomePage::on_enter()
     updateTimer->start();
 }
 void HomePage::update(){
-    auto data = data_requester->sent_request(std::format("type:{{logs}};last_id:{{{}}};",table_widget->get_id()));
+    auto data = data_requester->sent(std::format("type:{{logs}};last_id:{{{}}};",table_widget->get_id()));
     if(!data){
-        qDebug()<<data.error().c_str();
+         qDebug()<<data.error().c_str();
     }
-    table_widget->add(BetterString::split(data.value(),"{}"));
+     
     
 }
 void HomePage::on_exit()
