@@ -22,7 +22,7 @@ class SourceManager{
     SourceManager(std::shared_ptr<DBManager> sources_db);
     std::expected<void,std::string> add_whitelist(std::string ip,std::string source_name, std::string admin_username);
     std::expected<void,std::string> remove_whitelist(std::string ip);
-    std::expected<std::string,std::string> get_whitelist(std::string ip);
+    std::expected<std::vector<std::string>,std::string> get_whitelist();
     std::expected<void,std::string> add_blacklist(std::string ip, std::string admin_username);
     std::expected<void,std::string> remove_blacklist(std::string ip);
     std::expected<std::string,std::string> get_blacklist(std::string ip);

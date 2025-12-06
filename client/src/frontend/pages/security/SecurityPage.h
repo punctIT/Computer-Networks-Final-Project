@@ -7,11 +7,12 @@
 #include <QtCore/QTimer>
 #include <QtCore/QObject>
 #include <QtWidgets/QGridLayout>
+#include <QtWidgets/QBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
-
+#include <QHBoxLayout>
 #include <format>
 
 #include "../../page_system/PageManager.h"
@@ -21,14 +22,20 @@
 #include "../../../utils/BetterString.hpp"
 #include "WhitelistScreen.h"
 #include "BlacklistScreen.h"
+#include "FiltersScreen.h"
+
 
 class SecurityPage:public Page{
     void bind_buttons();
     std::shared_ptr<std::vector<std::shared_ptr<Page>>> pages;
     std::shared_ptr<PageManager> security_pages;
-    QGridLayout *layout;
+
+    QHBoxLayout *layout;
     QPushButton *whitelist;
     QPushButton *blacklist;
+    QPushButton *filtres;
+    QTimer *updateTimer;   
+   
     QWidget* get_side_menu();
     public:
         SecurityPage(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager,std::shared_ptr <QMainWindow> window);

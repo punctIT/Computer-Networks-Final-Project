@@ -53,6 +53,9 @@ std::expected<std::string, std::string> RequestHandler::match_type(JUNK &request
     if(type=="add_blacklist_ip"){
         return source_request->add_blacklist_request(request);
     }
+    if(type=="update_whitelist"){
+        return source_request->get_updated_whitelist(request);
+    }
     return std::unexpected("unknown type");
 }
 

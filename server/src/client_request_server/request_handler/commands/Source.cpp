@@ -30,3 +30,16 @@ std::expected<std::string, std::string> Source::add_blacklist_request(JUNK &requ
         return std::unexpected(data.error());
     return ResponseFormater::response_formater(true,"add_whitelist_ip","NONE");
 }
+
+std::expected<std::string, std::string> Source::get_updated_whitelist(JUNK &request)
+{
+    auto data = source_manager->get_whitelist();
+    if (!data){
+        return std::unexpected(data.error());
+    }
+    std::string result = "";
+    for (auto d :data.value()){
+        result=std::format("{}{{}}{}",result,d);
+    }
+    return ResponseFormater::response_formater(true,"update_whitelist",result);
+}

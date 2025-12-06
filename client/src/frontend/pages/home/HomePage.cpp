@@ -13,6 +13,7 @@ HomePage::HomePage(std::shared_ptr<DataRequester> data, const std::shared_ptr<Pa
 {
     QGridLayout *layout = new QGridLayout();
     table_widget= std::make_shared<TableMenu>();
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->setRowStretch(0, 1);  
     layout->setRowStretch(1, 99);  
 

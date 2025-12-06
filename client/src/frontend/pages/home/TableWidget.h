@@ -9,10 +9,6 @@
 #include <iostream>
 #include "../../../utils/BetterString.hpp"
 
-class PageManager;
-class QWidget;
-class QTableWidget;class QTableWidgetItem;
-
 class TableMenu{
     QWidget *widget;
     QTableWidget *table;

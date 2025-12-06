@@ -88,10 +88,14 @@ std::expected<void, std::string> SourceManager::remove_whitelist(std::string ip)
     return std::expected<void, std::string>();
 }
 
-std::expected<std::string, std::string> SourceManager::get_whitelist(std::string ip)
+std::expected<std::vector<std::string>, std::string> SourceManager::get_whitelist()
 {
     std::shared_lock lock(_mutex);
-    return std::expected<std::string, std::string>();
+    auto data = sources_db->get_unsafe("SELECT * from whitelist;");
+    if(!data){
+        return std::unexpected(data.error());
+    }
+    return data.value();
 }
 
 std::expected<void, std::string> SourceManager::add_blacklist(std::string ip, std::string admin_username)
@@ -114,6 +118,8 @@ std::expected<void, std::string> SourceManager::add_blacklist(std::string ip, st
 bool SourceManager::check_ip_whitelist(std::string ip)
 {
     std::shared_lock lock(_mutex);
+    
+
     return whitelist_source.contains(ip);
 }
 

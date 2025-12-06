@@ -66,7 +66,7 @@ void SyslogReceiver::start()
     fds.push_back(server_poll);
     
 
-    loop{
+    loop {
         const int ret=poll(fds.data(),fds.size(),-1);
         if(ret < 0 ){
             throw std::runtime_error("Error poll");

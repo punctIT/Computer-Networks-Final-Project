@@ -129,11 +129,15 @@ void DataRequester::start_receiving()
             continue;
         }
         auto type = junk_data.value()["type"].value();
+        auto qstr = QString::fromStdString(data.value());
         if(type=="login"){
-            emit LoginData(QString::fromStdString(data.value()));
+            emit LoginData(qstr);
         }
         if(type=="logs"){
-            emit LogsData(QString::fromStdString(data.value()));
+            emit LogsData(qstr);
+        }
+        if(type=="update_whitelist"){
+            emit UpdateWhitelist(qstr);
         }
     }
     

@@ -19,5 +19,6 @@ class PageManager{
     void add_page(QWidget* page);
     void set(std::shared_ptr<std::vector<std::shared_ptr<Page>>> pages);
     void change_page(int index);
+    int get_current();
     QStackedWidget* GetStack();
 };

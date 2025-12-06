@@ -72,7 +72,7 @@ int DBManager::callback(void *data, int argc, char **argv, char **colName){
 }
 
 std::expected<std::vector<std::string>, std::string> DBManager::get_unsafe(const std::string cmd){
-    std::shared_lock lock(db_RDLOCK);
+    std::unique_lock lock(db_RDLOCK);
     if (!db){
         return std::unexpected("Database not connected");
     }
