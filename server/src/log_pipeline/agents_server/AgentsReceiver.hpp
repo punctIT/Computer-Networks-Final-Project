@@ -16,7 +16,7 @@
 #include "../source_manager/SourceManager.hpp"
 
 
-class SyslogReceiver{
+class AgentsReceiver{
     std::shared_ptr<ThreadSafeQueue<LogEvent>> log_queue;
 
     std::optional<int> port,server_fd;
@@ -25,9 +25,9 @@ class SyslogReceiver{
     std::expected<void,std::string> RW_logs(int fd);
     std::shared_ptr<SourceManager> source_manager;
     public:
-    SyslogReceiver( std::shared_ptr<SourceManager> source_manager);
-    SyslogReceiver& set_thread_safe_queue(std::shared_ptr<ThreadSafeQueue<LogEvent>>);
-    SyslogReceiver& set_port(int port);
-    SyslogReceiver& configure_server();
+    AgentsReceiver( std::shared_ptr<SourceManager> source_manager);
+    AgentsReceiver& set_thread_safe_queue(std::shared_ptr<ThreadSafeQueue<LogEvent>>);
+    AgentsReceiver& set_port(int port);
+    AgentsReceiver& configure_server();
     void start();
 };

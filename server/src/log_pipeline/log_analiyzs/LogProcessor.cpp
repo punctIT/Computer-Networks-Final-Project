@@ -18,7 +18,6 @@ void LogProcessor::write_log(const std::vector<std::string>& log)
 LogProcessor::LogProcessor(std::shared_ptr<SourceManager> source_manager)
 {
     this->source_manager= source_manager;
-
 }
 
 LogProcessor &LogProcessor::set_database(std::shared_ptr<DBManager> logs_db)
@@ -27,30 +26,30 @@ LogProcessor &LogProcessor::set_database(std::shared_ptr<DBManager> logs_db)
     return *this;
 }
 
-LogProcessor &LogProcessor::set_syslog_queue(std::shared_ptr<ThreadSafeQueue<std::pair<std::string,std::string>>> syslog_queue)
+LogProcessor &LogProcessor::set_syslog_queue(std::shared_ptr<ThreadSafeQueue<LogEvent>> logEvents_queue)
 {
-    this->syslog_queue=syslog_queue;
+    this->logEvents_queue=logEvents_queue;
     return *this;
 
 }
 
 void LogProcessor::analyze_syslog(int id){
     loop{
-        auto data = syslog_queue->pop();
+        auto data = logEvents_queue->pop();
         if(!data.has_value()){
             continue;
         }
-        if(source_manager->check_ip_whitelist(data.value().first)){
-            std::cout<<"["<<id<<']'<<data.value().first<<" "<<data.value().second<<std::endl;      
-        }   
+        if(data.value().type==EventType::SYSLOG){
+            auto log = LogParser::split_syslog(data.value().payload);
+            if (!log.has_value()){
+                continue;
+            }   
+            write_log(log.value());
+        }
         else {
-            std::cout<<"["<<id<<']'<<"UNKNOWN"<<" "<<data.value().second<<std::endl; 
-        }  
-        auto log = LogParser::split_syslog(data.value().second);
-        if (!log.has_value()){
-            continue;
-        }   
-        write_log(log.value());
+            std::cout<<data.value().payload<<std::endl;
+        }
+        
          
     }
 

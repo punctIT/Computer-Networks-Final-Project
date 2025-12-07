@@ -29,3 +29,12 @@ class ThreadSafeQueue{
     }
     
 };
+
+
+enum EventType { SYSLOG, AGENT_METRIC };
+
+struct LogEvent {
+    EventType type;       
+    std::string source_ip;   
+    std::string payload;  
+};

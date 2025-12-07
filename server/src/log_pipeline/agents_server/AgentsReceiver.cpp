@@ -1,28 +1,28 @@
-#include "SyslogReceiver.hpp"
-
+#include "AgentsReceiver.hpp"
+#include <cstring>
 
 
 #define loop while(true)
 
 
-SyslogReceiver::SyslogReceiver( std::shared_ptr<SourceManager> source_manager)
+AgentsReceiver:: AgentsReceiver( std::shared_ptr<SourceManager> source_manager)
 {
     this->source_manager=source_manager;
 }
 
-SyslogReceiver &SyslogReceiver::set_thread_safe_queue(std::shared_ptr<ThreadSafeQueue<LogEvent>> queue)
+ AgentsReceiver & AgentsReceiver::set_thread_safe_queue(std::shared_ptr<ThreadSafeQueue<LogEvent>> queue)
 {
     this->log_queue=queue;
     return *this;
 }
 
-SyslogReceiver &SyslogReceiver::set_port(int port)
+ AgentsReceiver & AgentsReceiver::set_port(int port)
 {
    this->port=port;
    return *this;
 }
 
-SyslogReceiver &SyslogReceiver::configure_server()
+ AgentsReceiver & AgentsReceiver::configure_server()
 {
     sockaddr_in address;
     int opt = 1;
@@ -46,7 +46,7 @@ SyslogReceiver &SyslogReceiver::configure_server()
 }
 
 
-void SyslogReceiver::start()
+void  AgentsReceiver::start()
 {
     if(!this->port.has_value()){
         throw std::runtime_error("Error , port is none");
@@ -57,7 +57,7 @@ void SyslogReceiver::start()
     if (listen(server_fd.value(), 10) < 0) {
         throw std::runtime_error("listen failed");
     }
-    std::cout << "Syslog server started and listen on port "<<port.value()<<std::endl;
+    std::cout << "Agents server started and listen on port "<<port.value()<<std::endl;
     std::vector <pollfd> fds;
     pollfd server_poll;
 
@@ -113,7 +113,7 @@ void SyslogReceiver::start()
     }
 
 }
-std::expected<void, std::string> SyslogReceiver::RW_logs(int fd)
+std::expected<void, std::string>  AgentsReceiver::RW_logs(int fd)
 {
     const int buffer_size=4096;
     char buffer[buffer_size];
@@ -123,30 +123,34 @@ std::expected<void, std::string> SyslogReceiver::RW_logs(int fd)
         client_ips.erase(fd);
         return std::unexpected(std::format("[WARN]Active connection dropped (Blacklisted IP): IP:{}" ,ip));
     }
-    int n = read(fd, buffer, buffer_size - 1);
+    int n = read(fd, buffer, buffer_size);
     if (n > 0) {
-        buffer[n] = '\0';
-        client_buffers[fd] += buffer;
-        std::string& client_buffer = client_buffers[fd];
-        size_t pos = 0;
-        while ((pos = client_buffer.find('\n')) != std::string::npos) {
-            std::string complete_message = client_buffer.substr(0, pos);
-            if (!complete_message.empty()) {
-                LogEvent data;
-                data.payload=complete_message;
-                data.source_ip=client_ips[fd];
-                data.type=EventType::SYSLOG;
-                log_queue->push(data);
+        client_buffers[fd].append(buffer, n); 
+        std::string& cli_buf = client_buffers[fd];
+        while (true) {
+            if (cli_buf.size() < 4) {
+                break; 
             }
-            client_buffer.erase(0, pos + 1);
+            int msg_size = 0;
+            std::memcpy(&msg_size, cli_buf.data(), 4);
+            if (cli_buf.size() < 4 + msg_size) {
+                break;
+            }
+            std::string payload = cli_buf.substr(4, msg_size);
+            LogEvent data;
+            data.payload=payload;
+            data.source_ip=client_ips[fd];
+            data.type=EventType::AGENT_METRIC;
+            log_queue->push(data);
+            cli_buf.erase(0, 4 + msg_size);
         }
     }
     else if (n == 0) {
         client_buffers.erase(fd);
-        return std::unexpected("[INFO] Client disconnected)");
+        client_ips.erase(fd);
+        return std::unexpected("[INFO] Client disconnected");
     }
     else {
-
         client_buffers.erase(fd);
         return std::unexpected("[ERR] Read Error");
     }

@@ -2,8 +2,9 @@
 
 
 LogPipeline::LogPipeline(std::shared_ptr<DBManager> db,std::shared_ptr<SourceManager> source){
-    syslog_queue=std::make_shared<ThreadSafeQueue<std::pair<std::string,std::string>>>();
+    logEvents_queue=std::make_shared<ThreadSafeQueue<LogEvent>>();
     syslog_receiver= std::make_shared<SyslogReceiver>(source);
+    agent_receiver= std::make_shared<AgentsReceiver>(source);
     log_processor = std::make_shared<LogProcessor>(source);
     logs_db=db; 
     
@@ -40,7 +41,7 @@ LogPipeline &LogPipeline::start_syslog_receiver(){
     std::thread t1([this](){   
         try{
             syslog_receiver->set_port(1514).
-                            set_thread_safe_queue(syslog_queue).
+                            set_thread_safe_queue(logEvents_queue).
                             configure_server().
                             start();
         }
@@ -53,8 +54,25 @@ LogPipeline &LogPipeline::start_syslog_receiver(){
     return *this;
 }
 
-LogPipeline &LogPipeline::start_process_syslogs(){
-    log_processor->set_syslog_queue(syslog_queue)
+LogPipeline &LogPipeline::start_agent_receiver()
+{
+    std::thread t1([this](){   
+        try{
+            agent_receiver->set_port(9000).
+                            set_thread_safe_queue(logEvents_queue).
+                            configure_server().
+                            start();
+        }
+        catch(std::exception &e){
+            std::cerr<<e.what()<<std::endl;
+            exit(1);
+        }
+    });
+    t1.detach();
+    return *this;
+}
+LogPipeline &LogPipeline::start_process_logEvents(){
+    log_processor->set_syslog_queue(logEvents_queue)
                   .set_database(logs_db);
     for(int i=0;i<4;++i){
         std::thread t1([this,i](){

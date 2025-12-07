@@ -20,7 +20,8 @@ int main(){
         LogPipeline logs_pipeline(logs_db,source_manager);
         logs_pipeline.configure_database()
                      .start_syslog_receiver()
-                     .start_process_syslogs();
+                     .start_agent_receiver()
+                     .start_process_logEvents();
         clients_request_server.set_port(8080)
                                 .bind_data()
                                 .set_logs_db(logs_db)

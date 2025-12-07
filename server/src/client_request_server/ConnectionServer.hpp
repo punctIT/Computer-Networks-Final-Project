@@ -24,7 +24,7 @@ private:
     sockaddr_in address;
     int opt = 1;
     std::optional<int> port;
-    
+    void new_client(int client);
 public:
     ConnectionServer();
     ConnectionServer& set_port(int port);
