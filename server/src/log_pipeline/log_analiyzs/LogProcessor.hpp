@@ -5,7 +5,7 @@
 #include "LogParser.hpp"
 #include <format>
 #include "../../utils/DBManager.hpp"
-#include "../../log_pipeline/source_manager/SourceManager.hpp"
+#include "../../log_pipeline/data_managers/SourceManager.hpp"
 
 class LogProcessor{
     std::shared_ptr<ThreadSafeQueue<LogEvent>> logEvents_queue;

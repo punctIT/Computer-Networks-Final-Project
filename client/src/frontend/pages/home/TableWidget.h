@@ -8,7 +8,7 @@
 #include <string>
 #include <iostream>
 #include "../../../utils/BetterString.hpp"
-
+#include "../../style/HomeStyle.hpp"
 class TableMenu{
     QWidget *widget;
     QTableWidget *table;

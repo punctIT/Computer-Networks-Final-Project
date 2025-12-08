@@ -1,5 +1,5 @@
 #include "ConnectPage.h"
-
+#include "../style/ConnectStyle.hpp"
 
 void ConnectPage::bind_buttons()
 {
@@ -20,10 +20,13 @@ void ConnectPage::bind_buttons()
 ConnectPage::ConnectPage(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager,std::shared_ptr <QMainWindow> window):Page(data,page_manager,window){
     QVBoxLayout *layout = new QVBoxLayout();
     QLabel *label = new QLabel("Connect");
+    label->setObjectName("titleLabel");
     label->setAlignment(Qt::AlignCenter);
     error_lbn = new QLabel("");
+    error_lbn->setObjectName("errorLabel");
     connect_btn = new QPushButton("Connect");
     ip_input = new QLineEdit();
+    connect_btn->setCursor(Qt::PointingHandCursor);
     port_input = new QLineEdit();
     
     layout->addWidget(label);
@@ -35,6 +38,8 @@ ConnectPage::ConnectPage(std::shared_ptr <DataRequester> data,const std::shared_
     layout->addWidget(connect_btn);
     QPushButton *localhost = new QPushButton("localhost");
     layout->addWidget(localhost);
+    localhost->setObjectName("secondaryButton"); 
+    localhost->setCursor(Qt::PointingHandCursor);
     QObject::connect(localhost,&QPushButton::clicked,[this,page_manager](){
         try{
             data_requester->set_ip("127.0.0.1")
@@ -48,12 +53,14 @@ ConnectPage::ConnectPage(std::shared_ptr <DataRequester> data,const std::shared_
         }
     });
     page->setLayout(layout);
+    page->setAttribute(Qt::WA_StyledBackground, true); 
+    page->setStyleSheet(QString::fromStdString(connect_style()));
     bind_buttons();
 }
 
 void ConnectPage::on_enter()
 {
-    window->resize(500,300);
+    window->resize(600,400);
     error_lbn->hide(); 
 }
 

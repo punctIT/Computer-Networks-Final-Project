@@ -9,7 +9,7 @@ TableMenu::TableMenu()
     table->setColumnCount(6);
     
     table->setShowGrid(false); 
-    table->setAlternatingRowColors(true); 
+    //table->setAlternatingRowColors(true); 
     table->setSelectionBehavior(QAbstractItemView::SelectRows); 
     table->setSelectionMode(QAbstractItemView::SingleSelection); 
     table->setFocusPolicy(Qt::NoFocus);
@@ -30,32 +30,8 @@ TableMenu::TableMenu()
     header->resizeSection(3, 120); 
     header->resizeSection(4, 120); 
 
-    QString style = R"(
-        QTableWidget {
-            background-color: #FFFFFF;
-            border: none;
-            gridline-color: #F0F0F0; /* Linie foarte subtilă dacă activezi gridul */
-        }
-        QTableWidget::item {
-            padding: 8px; /* Spațiu ca să nu fie textul îngrămădit */
-            border-bottom: 1px solid #F0F0F0;
-        }
-        QTableWidget::item:selected {
-            background-color: #E3F2FD; /* Albastru deschis la selecție */
-            color: #000000;
-        }
-        QHeaderView::section {
-            background-color: #FAFAFA;
-            color: #666666;
-            padding: 8px;
-            font-weight: bold;
-            border: none;
-            border-bottom: 2px solid #E0E0E0;
-            text-transform: uppercase; /* Text majuscule pentru header */
-            font-size: 12px;
-        }
-    )";
-    table->setStyleSheet(style);
+    
+    table->setStyleSheet(QString::fromStdString(table_style()));
 
     layout->addWidget(table);
     widget->setLayout(layout);

@@ -1,5 +1,7 @@
 #include "MainMenu.hpp"
 #include <QStyle>
+#include "../style/AppStype.hpp"
+
 void MainMenu::bind_buttons()
 {
     QObject::connect(home_btn,&QPushButton::clicked,[this](){
@@ -20,49 +22,25 @@ MainMenu::MainMenu(std::shared_ptr<PageManager> page_manager) {
     this->page_manager = page_manager;
 
     menu = new QWidget();
-    menu->setStyleSheet("background-color: white; border-bottom: 1px solid #e0e0e0;");
-    
     grid = new QGridLayout();
 
     grid->setContentsMargins(10, 5, 10, 5); 
     grid->setSpacing(5);
-
+    menu->setObjectName("mainMenuContainer");
     home_btn = new QPushButton("Home");
     statistiscs_btn = new QPushButton("Dashboard");
     security_btn = new QPushButton("Security");
     settings_btn = new QPushButton("Settings");
 
-
-    QString btnStyle = 
-        "QPushButton {"
-        "   background-color: transparent;"
-        "   border: none;"
-        "   border-radius: 5px;"     
-        "   color: #555555;"         
-        "   font-weight: bold;"
-        "   font-size: 13px;"
-        "   padding: 8px 15px;"     
-        "   text-align: left;"       
-        "}"
-        "QPushButton:hover {"       
-        "   background-color: #f0f2f5;"
-        "   color: #1a73e8;"        
-        "}";
-
-
-    home_btn->setStyleSheet(btnStyle);
     home_btn->setIcon(menu->style()->standardIcon(QStyle::SP_DirHomeIcon)); 
     home_btn->setIconSize(QSize(24, 24));
 
-    statistiscs_btn->setStyleSheet(btnStyle);
     statistiscs_btn->setIcon(menu->style()->standardIcon(QStyle::SP_FileIcon));
     statistiscs_btn->setIconSize(QSize(24, 24));
 
-    security_btn->setStyleSheet(btnStyle);
     security_btn->setIcon(menu->style()->standardIcon(QStyle::SP_MessageBoxWarning));
     security_btn->setIconSize(QSize(24, 24));
 
-    settings_btn->setStyleSheet(btnStyle);
     settings_btn->setIcon(menu->style()->standardIcon(QStyle::SP_ComputerIcon));
     settings_btn->setIconSize(QSize(24, 24));
 
@@ -76,7 +54,7 @@ MainMenu::MainMenu(std::shared_ptr<PageManager> page_manager) {
     grid->addWidget(spacer, 0, 3); 
 
     grid->addWidget(settings_btn, 0, 4);
-
+    menu->setStyleSheet(QString::fromStdString(main_menu_style()));
     menu->setLayout(grid); 
     bind_buttons();
 }

@@ -1,7 +1,7 @@
 #include "client_request_server/ConnectionServer.hpp"
 #include "utils/DBManager.hpp"
 #include "log_pipeline/LogPipeline.hpp"
-#include "log_pipeline/source_manager/SourceManager.hpp"
+#include "log_pipeline/data_managers/SourceManager.hpp"
 
 #include <iostream>
 #include <memory>

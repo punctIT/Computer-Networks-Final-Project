@@ -1,5 +1,5 @@
 #include "LoginPage.h"
-
+#include "../style/LoginStyle.hpp"
 void LoginPage::bind_buttons(){
     QObject::connect(this->signin_btn, &QPushButton::clicked, [this]() {
         error_lbn->setText("");
@@ -45,14 +45,25 @@ void LoginPage::show_error()
 
 LoginPage::LoginPage(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager,std::shared_ptr <QMainWindow> window):Page(data,page_manager,window){
     QVBoxLayout *layout = new QVBoxLayout();
+    
     QLabel *label = new QLabel("Welcome Back");
+    label->setObjectName("titleLabel"); 
     label->setAlignment(Qt::AlignCenter);
-    error_lbn=new QLabel();
+    
+    error_lbn = new QLabel();
+    error_lbn->setObjectName("errorLabel"); 
     error_lbn->hide();
-    signin_btn =  new QPushButton("Connect");
+    
+    signin_btn = new QPushButton("Login"); 
+    signin_btn->setCursor(Qt::PointingHandCursor);
     
     username_input = new QLineEdit();
+    username_input->setPlaceholderText("Enter your username"); 
+
     password_input = new QLineEdit();
+    password_input->setEchoMode(QLineEdit::Password); 
+    password_input->setPlaceholderText("Enter your password");
+
     layout->addWidget(label);
     layout->addWidget(new QLabel("Username:"));
     layout->addWidget(username_input);
@@ -60,13 +71,19 @@ LoginPage::LoginPage(std::shared_ptr <DataRequester> data,const std::shared_ptr 
     layout->addWidget(password_input);
     layout->addWidget(error_lbn);
     layout->addWidget(signin_btn);
+    
+    layout->addStretch(); 
+
     page->setLayout(layout);
+    page->setAttribute(Qt::WA_StyledBackground, true);
+    page->setStyleSheet(QString::fromStdString(login_style()));
+    
     bind_buttons();
 }
 
 void LoginPage::on_enter()
 {
-    window->resize(500,300);
+    window->resize(600,400);
     clear_data();
 }
 

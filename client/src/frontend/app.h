@@ -20,6 +20,7 @@
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QLabel>
 #include "widgets/MainMenu.hpp"
+#include "style/AppStype.hpp"
 
 class DataRequester;
 class PageManager;

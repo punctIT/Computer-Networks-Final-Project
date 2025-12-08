@@ -30,9 +30,9 @@ App::App()
     });
     receiveThread->start();
     window =  std::make_shared<QMainWindow>();
-    window->setFixedSize(500, 300);
+    window->setFixedSize(600, 400);
     window->setWindowTitle("Network Device Monitor");
-
+    window->setStyleSheet(QString::fromStdString(main_app_style()));
     auto app_ptr = std::shared_ptr<App>(this, [](App*) {});
     page_manager = std::make_shared<PageManager>(app_ptr);
     main_menu = std::make_shared<MainMenu>(page_manager);

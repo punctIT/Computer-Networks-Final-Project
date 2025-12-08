@@ -8,13 +8,19 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QLineEdit>
+#include <QtWidgets/QBoxLayout>
 #include "../../page_system/PageManager.h"
 #include "../../widgets/MainMenu.hpp"
 #include <QtWidgets/QMainWindow>
 
 class DashboardPage:public Page{
-    QPushButton *btn;
+    std::shared_ptr<std::vector<std::shared_ptr<Page>>> pages;
+    std::shared_ptr<PageManager> dashboard_pages;
+    QHBoxLayout *layout;
+    QPushButton *syslog_dashbord;
+    QPushButton *agents_dashbord;
     void bind_buttons();
+    QWidget* get_bottom_menu();
     public:
         DashboardPage(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager,std::shared_ptr <QMainWindow> window);
         void on_enter() override;

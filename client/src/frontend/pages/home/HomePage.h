@@ -7,6 +7,7 @@
 #include <QtCore/QTimer>
 #include <QtCore/QObject>
 #include <QtWidgets/QGridLayout>
+#include <QtWidgets/QBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QLineEdit>
@@ -25,6 +26,7 @@ class HomePage:public Page{
     QPushButton *btn;
     std::shared_ptr<TableMenu> table_widget;
     
+    QWidget *get_top_layout();
     void bind_buttons();
     QTimer *updateTimer;
     public:
