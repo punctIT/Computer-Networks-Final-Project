@@ -70,8 +70,11 @@ bool DataRequester::recv_all(void* data, size_t length) {
 
 
 std::expected<void, std::string> DataRequester::sent(std::string data) {
-    if (!connected)
+    if (!connected){
+        emit lost_connection();
         return std::unexpected("Error: Not connected");
+    }
+        
     std::string content = "";
     auto test_data = JUNK::deserialize(data);
     if(!test_data){

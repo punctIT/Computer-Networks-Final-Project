@@ -8,7 +8,7 @@ void LogProcessor::write_log(const std::vector<std::string>& log)
     if(log.size()!=5){
         return;
     }
-    auto result= logs_db->query("INSERT INTO alerts (pri, timestamp, host, source, message) VALUES (?, ?, ?, ?, ?);",log);
+    auto result= logs_db->query("INSERT INTO logs (pri, timestamp, host, source, message) VALUES (?, ?, ?, ?, ?);",log);
     if(!result.has_value()){
         std::cerr<<"[ERR]"<<result.error()<<std::endl;
     }

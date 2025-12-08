@@ -2,6 +2,7 @@
 
 #include "HomePage.h"
 #include "../../style/HomeStyle.hpp"
+#include <QMessageBox>
 
 void make_big_tile(QPushButton* btn) {
     btn->setCursor(Qt::PointingHandCursor);
@@ -58,6 +59,10 @@ void HomePage::bind_buttons()
         this, [this](QString mesaj) {
            table_widget->add(BetterString::split(mesaj.toStdString(),"{}"));
         });
+    connect(data_requester.get(), &DataRequester::lost_connection, this, [this]() {
+        QMessageBox::critical(window.get(), "Connection Error", "connextion lost..");
+        page_manager->change_page(0);    
+    });
 }
 
 HomePage::HomePage(std::shared_ptr<DataRequester> data, const std::shared_ptr<PageManager> &page_manager,std::shared_ptr <QMainWindow> window) : Page(data, page_manager,window)

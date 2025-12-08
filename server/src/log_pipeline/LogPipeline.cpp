@@ -1,12 +1,13 @@
 #include "LogPipeline.hpp"
 
 
-LogPipeline::LogPipeline(std::shared_ptr<DBManager> db,std::shared_ptr<SourceManager> source){
+LogPipeline::LogPipeline(std::shared_ptr<DBManager> db,std::shared_ptr<DBManager> db_agents,std::shared_ptr<SourceManager> source){
     logEvents_queue=std::make_shared<ThreadSafeQueue<LogEvent>>();
     syslog_receiver= std::make_shared<SyslogReceiver>(source);
     agent_receiver= std::make_shared<AgentsReceiver>(source);
     log_processor = std::make_shared<LogProcessor>(source);
     logs_db=db; 
+    agents_db=db_agents;
     
 }
 
@@ -15,10 +16,9 @@ LogPipeline &LogPipeline::configure_database()
     this->logs_db->set_path("databases/logs.db")
                   .create()
                   .open();
-    std::cout<<"Logs database has open succesful"<<std::endl;
-    // id ,pri , timestamp(NOW) , host , source , message , username_resolved NULL ,solved ,  rezolved time , by , message  
-    const std::string create_alerts = R"(
-        CREATE TABLE IF NOT EXISTS alerts (
+    std::cout<<"Logs database has open succesful"<<std::endl;  
+    std::string sql = R"(
+        CREATE TABLE IF NOT EXISTS logs (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             pri TEXT,
             timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -31,7 +31,37 @@ LogPipeline &LogPipeline::configure_database()
             resolution_message TEXT DEFAULT NULL
         );
     )";
-    auto result = this->logs_db->run_command_unsafe(create_alerts);
+    auto result = this->logs_db->run_command_unsafe(sql);
+    if(!result.has_value())
+        throw std::runtime_error(result.error());
+    this->agents_db->set_path("databases/agents.db")
+                  .create()
+                  .open();
+    sql = R"(
+        CREATE TABLE IF NOT EXISTS metrics (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        hostname TEXT,               
+        cpu_load REAL,
+        ram_usage REAL,
+        disk_usage REAL,
+        message TEXT,                
+        timestamp INTEGER            
+    );
+    )";
+    result = this->agents_db->run_command_unsafe(sql);
+    if(!result.has_value())
+        throw std::runtime_error(result.error());
+    sql = R"(
+        CREATE TABLE IF NOT EXISTS agents (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        hostname TEXT UNIQUE,       
+        ip_address TEXT,
+        os_info TEXT,
+        status TEXT,                
+        last_seen INTEGER          
+    );
+    )";
+    result = this->agents_db->run_command_unsafe(sql);
     if(!result.has_value())
         throw std::runtime_error(result.error());
     return *this;

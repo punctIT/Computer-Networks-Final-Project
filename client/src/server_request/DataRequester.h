@@ -37,6 +37,7 @@ class DataRequester: public QWidget , public ProtocolFormater {
     void start_receiving();
     signals:
 
+    void lost_connection();
     void LoginData(QString mesaj);
     void LogsData(QString mesaj);
 

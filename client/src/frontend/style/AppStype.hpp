@@ -4,10 +4,9 @@
 
 inline std::string main_app_style(){
     return R"(
-        /* 1. SETĂRI GLOBALE */
         QMainWindow, QDialog {
-            background-color: #121212; /* Fundalul principal negru-profund */
-            color: #E0E0E0; /* Text alb-gri peste tot */
+            background-color: #121212; 
+            color: #E0E0E0;
         }
         
         QWidget {
@@ -16,26 +15,25 @@ inline std::string main_app_style(){
             color: #E0E0E0;
         }
 
-        /* 2. SCROLLBAR VERTICAL (Foarte important pentru tabel) */
         QScrollBar:vertical {
             border: none;
-            background: #1E1E1E; /* Canalul barei - gri închis */
-            width: 10px; /* Subțire */
+            background: #1E1E1E; 
+            width: 10px;
             margin: 0px 0px 0px 0px;
         }
 
         QScrollBar::handle:vertical {
-            background: #333333; /* Butonul de scroll - gri mai deschis */
+            background: #333333;
             min-height: 20px;
-            border-radius: 5px; /* Rotunjit */
+            border-radius: 5px; 
         }
 
         QScrollBar::handle:vertical:hover {
-            background: #1ABC9C; /* Devine TURCOAZ când pui mouse-ul pe el */
+            background: #1ABC9C; 
         }
 
         QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
-            height: 0px; /* Ascundem săgețile sus/jos standard */
+            height: 0px;
         }
 
         /* 3. SCROLLBAR ORIZONTAL */
@@ -60,7 +58,6 @@ inline std::string main_app_style(){
             width: 0px;
         }
 
-        /* 4. TOOLTIPS (Mesajele care apar când ții mouse-ul) */
         QToolTip {
             background-color: #333333;
             color: #1ABC9C;
@@ -69,7 +66,6 @@ inline std::string main_app_style(){
             border-radius: 3px;
         }
 
-        /* 5. MENIURI (Dacă ai meniu sus File/Edit etc.) */
         QMenuBar {
             background-color: #1E1E1E;
             color: #E0E0E0;
@@ -91,7 +87,7 @@ inline std::string main_app_style(){
             color: #121212;
         }
         QLineEdit {
-            background-color: #1E1E1E; /* Puțin mai deschis ca fundalul */
+            background-color: #1E1E1E; 
             border: 2px solid #333333;
             border-radius: 15px;
             padding: 8px 15px;
@@ -99,47 +95,38 @@ inline std::string main_app_style(){
             font-size: 15px;
         }
 
-        /* Focus cu Turcoaz */
+    
         QLineEdit:focus {
-            border: 2px solid #1ABC9C; /* Bordură turcoaz la focus */
+            border: 2px solid #1ABC9C;
             background-color: #252525;
         }
 
     )";
 }
 
-#pragma once 
-
-#include <string>
-
 inline std::string main_menu_style(){
     return R"(
-        /* 1. CONTAINERUL PRINCIPAL (Bara de sus) */
+       
         QWidget#mainMenuContainer {
-            background-color: #1E1E1E; /* Puțin mai deschis decât fundalul paginii (#121212) */
-            border-bottom: 2px solid #1ABC9C; /* Linie de accent Turcoaz jos */
+            background-color: #1E1E1E;
+            border-bottom: 2px solid #1ABC9C; 
         }
-
-        /* 2. BUTOANELE DIN MENIU */
         QPushButton {
             background-color: transparent;
             border: none;
             border-radius: 5px;     
-            color: #B0B0B0; /* Gri deschis */        
+            color: #B0B0B0;        
             font-weight: 600;
             font-size: 14px;
             padding: 8px 15px;    
             text-align: left;
             margin-right: 5px;
         }
-
-        /* 3. HOVER (Când pui mouse-ul) */
         QPushButton:hover {      
-            background-color: rgba(26, 188, 156, 0.1); /* Turcoaz foarte transparent */
-            color: #1ABC9C; /* Textul devine Turcoaz vibrant */
+            background-color: rgba(26, 188, 156, 0.1);
+            color: #1ABC9C;
         }
 
-        /* 4. PRESSED */
         QPushButton:pressed {
             background-color: rgba(26, 188, 156, 0.2);
             color: #16A085;

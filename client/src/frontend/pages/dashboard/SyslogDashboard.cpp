@@ -1,5 +1,5 @@
 #include "SyslogDashboard.h"
-
+#include "../../style/DashboardStyle.hpp"
 void SyslogDashboardScreen::bind_buttons()
 {
 
@@ -55,40 +55,7 @@ SyslogTable::SyslogTable()
     table->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Fixed); 
     table->setColumnWidth(4, 120); 
 
-   
-    QString style = R"(
-     
-        QFrame#TableFrame {
-            background-color: #FFFFFF;
-            border-radius: 15px;  /* Aici e rotunjirea mare */
-            border: 1px solid #E0E0E0;
-        }
-
-      
-        QTableWidget {
-            background-color: transparent; /* Transparent ca să se vadă rama */
-            border: none;
-        }
-
-        
-        QHeaderView::section {
-            background-color: transparent;
-            color: #7F8C8D;
-            font-weight: bold;
-            border: none;
-            padding: 5px;
-            font-size: 13px;
-            border-bottom: 2px solid #F0F0F0; /* Linie sub header */
-        }
-
-        
-        QTableWidget::item {
-            color: #2C3E50;
-            padding: 10px;
-            border-bottom: 1px solid #F5F5F5; /* Linie fină între rânduri */
-        }
-    )";
-    widget->setStyleSheet(style);
+    widget->setStyleSheet(QString::fromStdString(get_table_style()));
 
    
     frameLayout->addWidget(table);

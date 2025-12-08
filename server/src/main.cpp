@@ -9,6 +9,7 @@
 
 int main(){
     std::shared_ptr<DBManager> logs_db = std::make_shared<DBManager>();
+    std::shared_ptr<DBManager> agents_db = std::make_shared<DBManager>();
     std::shared_ptr<DBManager> source_db = std::make_shared<DBManager>();
     ConnectionServer clients_request_server;
     std::shared_ptr<SourceManager> source_manager=nullptr;
@@ -17,7 +18,7 @@ int main(){
         if (!std::filesystem::exists("databases")){
             std::filesystem::create_directory("databases");
         }
-        LogPipeline logs_pipeline(logs_db,source_manager);
+        LogPipeline logs_pipeline(logs_db,agents_db,source_manager);
         logs_pipeline.configure_database()
                      .start_syslog_receiver()
                      .start_agent_receiver()

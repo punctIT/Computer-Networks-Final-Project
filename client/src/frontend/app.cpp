@@ -49,6 +49,7 @@ App::App()
         page_manager->add_page(page->get_page());
     }
     page_manager->change_page(0);
+  
     window->setCentralWidget(get_window());
     window->show();
 }
