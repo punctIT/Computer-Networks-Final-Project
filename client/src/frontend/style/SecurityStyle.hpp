@@ -1,33 +1,8 @@
-#pragma once
+#pragma once 
 
 #include <string>
 
-inline std::string get_dashboard_menu_Style(){
-    return R"(
-        QPushButton {
-            background-color: rgba(255, 255, 255, 0.05);
-            color: #B0B0B0;
-            border: none;
-            border-radius: 20px;
-            padding: 10px 30px;
-            font-size: 14px;
-            font-weight: 600;
-            min-width: 100px;
-        }
 
-        QPushButton:hover {
-            background-color: #1ABC9C;
-            color: #121212;
-        }
-
-        QPushButton:pressed {
-            background-color: #0E6655;
-            color: #FFFFFF;
-            padding-top: 12px;
-            padding-bottom: 8px;
-        }
-    )";
-}
 inline std::string get_table_style(){
     return R"(
         /* 1. Cadrul principal - GRI ÎNCHIS (nu negru) */

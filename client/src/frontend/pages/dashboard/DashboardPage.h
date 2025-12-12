@@ -19,6 +19,8 @@ class DashboardPage:public Page{
     QHBoxLayout *layout;
     QPushButton *syslog_dashbord;
     QPushButton *agents_dashbord;
+    QPushButton *unknown_syslog_dashboard;
+     QPushButton *unknown_agent_dashboard;
     void bind_buttons();
     QWidget* get_bottom_menu();
     public:

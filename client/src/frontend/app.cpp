@@ -1,6 +1,11 @@
 #include "app.h"
 #include <QtCore/QThread>
 
+#include "widgets/MainMenu.hpp"
+#include "style/AppStype.hpp"
+#include "widgets/AlertPopup.h"
+
+
 QWidget* App::get_window()
 {
     layout->addWidget(page_manager->GetStack(), 1, 0);
@@ -11,6 +16,7 @@ QWidget* App::get_window()
 void App::show_menu()
 {
     main_menu->get_widget()->show();
+    alert_popup->showMessage("Security Alert", "Port 8080 accessed.", true);
     //qDebug() << "show";
 }
 
@@ -36,6 +42,7 @@ App::App()
     auto app_ptr = std::shared_ptr<App>(this, [](App*) {});
     page_manager = std::make_shared<PageManager>(app_ptr);
     main_menu = std::make_shared<MainMenu>(page_manager);
+    alert_popup = std::make_shared<AlertPopup>(nullptr);
     pages = std::make_shared<std::vector<std::shared_ptr<Page>>>();
     pages->push_back(std::make_shared<ConnectPage>(data_requster,page_manager,window));
     pages->push_back(std::make_shared<LoginPage>(data_requster,page_manager,window));

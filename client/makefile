@@ -6,8 +6,8 @@ TARGET = $(TARGET_DIR)/program
 SRC := $(shell find src -name "*.cpp")
 MOC_HEADERS := src/frontend/page_system/Page.h \
 			   src/frontend/page_system/Popup.h \
-			   src/server_request/DataRequester.h
-
+			   src/server_request/DataRequester.h \
+			   src/frontend/widgets/AlertPopup.h
  
 
 MOCS := $(MOC_HEADERS:src/%.h=$(TARGET_DIR)/moc_%.cpp)

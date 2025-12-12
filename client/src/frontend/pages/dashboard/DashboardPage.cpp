@@ -1,6 +1,8 @@
 #include "DashboardPage.h"
 #include "SyslogDashboard.h"
 #include "AgentsDashboard.h"
+#include "UnknownSyslogDashboard.h"
+#include "UnknownAgentDashboard.h"
 #include "../../style/DashboardStyle.hpp"
 
 void DashboardPage::bind_buttons(){
@@ -9,6 +11,12 @@ void DashboardPage::bind_buttons(){
     });
     QObject::connect(agents_dashbord, &QPushButton::clicked, [this](){
         this->dashboard_pages->change_page(1);
+    });
+    QObject::connect(unknown_syslog_dashboard, &QPushButton::clicked, [this](){
+        this->dashboard_pages->change_page(2);
+    });
+    QObject::connect(unknown_agent_dashboard, &QPushButton::clicked, [this](){
+        this->dashboard_pages->change_page(3);
     });
 }
 QWidget *DashboardPage::get_bottom_menu()
@@ -32,6 +40,17 @@ QWidget *DashboardPage::get_bottom_menu()
     agents_dashbord->setCursor(Qt::PointingHandCursor);
     agents_dashbord->setStyleSheet(buttonStyle);
     layout->addWidget(agents_dashbord);
+
+    unknown_syslog_dashboard = new QPushButton("Unknown Syslog Data");
+    unknown_syslog_dashboard->setCursor(Qt::PointingHandCursor);
+    unknown_syslog_dashboard->setStyleSheet(buttonStyle);
+    layout->addWidget(unknown_syslog_dashboard);
+
+    unknown_agent_dashboard = new QPushButton("Unknown Agent Data");
+    unknown_agent_dashboard->setCursor(Qt::PointingHandCursor);
+    unknown_agent_dashboard->setStyleSheet(buttonStyle);
+    layout->addWidget(unknown_agent_dashboard);
+
     layout->addStretch(); 
 
     menu->setLayout(layout);
@@ -54,7 +73,8 @@ DashboardPage::DashboardPage(std::shared_ptr<DataRequester> data, const std::sha
 
     pages->push_back(std::make_shared<SyslogDashboardScreen>(data, page_manager, window));
     pages->push_back(std::make_shared<AgentsDashboardScreen>(data, page_manager, window));
-    
+    pages->push_back(std::make_shared<UnknownSyslogDashboardScreen>(data, page_manager, window));
+    pages->push_back(std::make_shared<UnknownAgentDashboardScreen>(data, page_manager, window));
     for (auto page : *pages){
        dashboard_pages->add_page(page->get_page());
     }
@@ -62,6 +82,7 @@ DashboardPage::DashboardPage(std::shared_ptr<DataRequester> data, const std::sha
     main_layout->addWidget(dashboard_pages->GetStack());
     main_layout->addWidget(get_bottom_menu());
     
+    dashboard_pages->change_page(0);
     page->setLayout(main_layout);
     bind_buttons();
 }

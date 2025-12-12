@@ -10,6 +10,7 @@ SyslogDashboardScreen::SyslogDashboardScreen(std::shared_ptr<DataRequester> data
     QGridLayout *layout = new QGridLayout;
     SyslogDashboard_table= std::make_shared<SyslogTable>();
     btn = new QPushButton("Dashboard Syslog");
+    btn->setStyleSheet("background-color: black; color: white;");
     layout->addWidget(btn,0,0);
     layout->addWidget(SyslogDashboard_table->get_widget(),1,0);
     bind_buttons();

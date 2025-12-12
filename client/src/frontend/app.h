@@ -19,14 +19,11 @@
 #include "pages/ConnectPage.h"
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QLabel>
-#include "widgets/MainMenu.hpp"
-#include "style/AppStype.hpp"
 
-class DataRequester;
-class PageManager;
 
-class QGridLayout;
+
 class MainMenu;
+class AlertPopup;
 
 class App{
     std::shared_ptr<QMainWindow> window;
@@ -34,6 +31,8 @@ class App{
     std::shared_ptr<DataRequester> data_requster;
     std::shared_ptr<MainMenu> main_menu;
     std::shared_ptr<std::vector<std::shared_ptr<Page>>> pages;
+    std::shared_ptr<AlertPopup> alert_popup;
+
     
     QGridLayout* layout;
     QWidget* page;

@@ -1,27 +1,28 @@
-#include "AgentsDashboard.h"
+#include "UnknownAgentDashboard.h"
 #include "../../style/DashboardStyle.hpp"
-void AgentsDashboardScreen::bind_buttons()
+
+void UnknownAgentDashboardScreen::bind_buttons()
 {
 
 }
 
-AgentsDashboardScreen::AgentsDashboardScreen(std::shared_ptr<DataRequester> data, const std::shared_ptr<PageManager> &page_manager, std::shared_ptr<QMainWindow> window) : Page(data, page_manager, window)
+UnknownAgentDashboardScreen::UnknownAgentDashboardScreen(std::shared_ptr<DataRequester> data, const std::shared_ptr<PageManager> &page_manager, std::shared_ptr<QMainWindow> window) : Page(data, page_manager, window)
 {
     QGridLayout *layout = new QGridLayout;
-    AgentsDashboard_table= std::make_shared<AgentsTable>();
-    btn = new QPushButton("Dashboard Agents");
+    SyslogDashboard_table= std::make_shared<UnknownAgentTable>();
+    btn = new QPushButton("UNKNOWN Dashboard AGENT");
     btn->setStyleSheet("background-color: black; color: white;");
     layout->addWidget(btn,0,0);
-    layout->addWidget(AgentsDashboard_table->get_widget(),1,0);
+    layout->addWidget(SyslogDashboard_table->get_widget(),1,0);
     bind_buttons();
     page->setLayout(layout);
 }
-void AgentsDashboardScreen::on_enter() {
+void UnknownAgentDashboardScreen::on_enter() {
     qDebug()<<"whitelsit enter";
    
 }
 
-void AgentsDashboardScreen::on_exit() {
+void UnknownAgentDashboardScreen::on_exit() {
     qDebug()<<"whitelsit leave";
  
 }
@@ -29,7 +30,7 @@ void AgentsDashboardScreen::on_exit() {
 
 
 
-AgentsTable::AgentsTable()
+UnknownAgentTable::UnknownAgentTable()
 {
     widget = new QWidget();
     QVBoxLayout *mainLayout = new QVBoxLayout(widget);
@@ -56,24 +57,23 @@ AgentsTable::AgentsTable()
     table->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Fixed); 
     table->setColumnWidth(4, 120); 
 
-   
-    
     widget->setStyleSheet(QString::fromStdString(get_table_style()));
+
    
     frameLayout->addWidget(table);
     mainLayout->addWidget(frame);
 }
 
-QWidget *AgentsTable::get_widget()
+QWidget *UnknownAgentTable::get_widget()
 {
     return this->widget;
 }
 
-void AgentsTable::clear()
+void UnknownAgentTable::clear()
 {
     table->setRowCount(0); 
 }
-void AgentsTable::add(std::vector<std::string> whitelist_data)
+void UnknownAgentTable::add(std::vector<std::string> whitelist_data)
 {
     table->setUpdatesEnabled(false); 
 
