@@ -1,7 +1,12 @@
-#include "LogParser.hpp"
+#include "DataParser.hpp"
 #include <regex>
+#include <iostream>
+#include <nlohmann/json.hpp>
 
-std::optional<std::vector<std::string>> LogParser::split_syslog(std::string log){
+using json = nlohmann::json;
+
+
+std::optional<std::vector<std::string>> DataParser::split_syslog(std::string log){
     auto get_pri = [](int x){
         int value = x%8;
         std::vector<std::string> pri = {
@@ -31,4 +36,26 @@ std::optional<std::vector<std::string>> LogParser::split_syslog(std::string log)
     }
    
     return logs;
+}
+
+std::expected<std::vector<std::string>,std::string> DataParser::get_agent_data(std::string agent_log)
+{
+    //std::cout <<agent_log<< std::endl;
+    try {
+        json j = json::parse(agent_log);
+        for (auto& [key, val] : j.items()) {
+        std::cout << "Cheia: " << key << " | Valoarea: " << val << std::endl;
+    
+        if (val.is_string()) {
+            std::cout << "   -> (Asta este un string)" << std::endl;
+        }
+        if (val.is_object()) {
+            std::cout << "   -> (Asta este un alt obiect JSON imbricat)" << std::endl;
+        }
+    }
+    }
+    catch (std::exception &e){
+        return std::unexpected(e.what());
+    }
+    return std::unexpected("ceva");
 }

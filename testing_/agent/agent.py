@@ -5,7 +5,7 @@ import psutil
 import struct
 import os
 
-SERVER_IP = '10.100.0.32'
+SERVER_IP = '127.0.0.1'
 SERVER_PORT = 9000
 HOSTNAME = socket.gethostname()
 

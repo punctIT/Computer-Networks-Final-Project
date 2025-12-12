@@ -9,6 +9,7 @@
 #include <expected>
 #include <iostream>
 #include <format>
+#include <optional>
 #include "../../utils/DBManager.hpp"
 #include "../../utils/BetterString.hpp"
 
@@ -27,6 +28,6 @@ class SourceManager{
     std::expected<void,std::string> remove_blacklist(std::string ip);
     std::expected<std::string,std::string> get_blacklist(std::string ip);
 
-    bool check_ip_whitelist(std::string ip);
+    std::optional<std::string> check_ip_whitelist(std::string ip);
     bool check_ip_blacklist(std::string ip);
 };

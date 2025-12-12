@@ -1,11 +1,11 @@
 #include "LogPipeline.hpp"
 
 
-LogPipeline::LogPipeline(std::shared_ptr<DBManager> db,std::shared_ptr<DBManager> db_agents,std::shared_ptr<SourceManager> source){
+LogPipeline::LogPipeline(std::shared_ptr<DBManager> db,std::shared_ptr<DBManager> db_agents,std::shared_ptr<SourceManager> source,std::shared_ptr<AlertsManager> alerts){
     logEvents_queue=std::make_shared<ThreadSafeQueue<LogEvent>>();
     syslog_receiver= std::make_shared<SyslogReceiver>(source);
     agent_receiver= std::make_shared<AgentsReceiver>(source);
-    log_processor = std::make_shared<LogProcessor>(source);
+    log_processor = std::make_shared<DataProcessor>(source,alerts);
     logs_db=db; 
     agents_db=db_agents;
     
@@ -25,6 +25,7 @@ LogPipeline &LogPipeline::configure_database()
             host TEXT,
             source TEXT,
             message TEXT,
+            ip_name TEXT,
 
             resolved_by TEXT DEFAULT NULL,
             resolved_at DATETIME DEFAULT NULL,
@@ -32,6 +33,19 @@ LogPipeline &LogPipeline::configure_database()
         );
     )";
     auto result = this->logs_db->run_command_unsafe(sql);
+    if(!result.has_value())
+        throw std::runtime_error(result.error());
+    sql = R"(
+        CREATE TABLE IF NOT EXISTS unknown_log (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            pri TEXT,
+            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+            host TEXT,
+            source TEXT,
+            message TEXT
+        );
+    )";
+    result = this->logs_db->run_command_unsafe(sql);
     if(!result.has_value())
         throw std::runtime_error(result.error());
     this->agents_db->set_path("databases/agents.db")
@@ -103,7 +117,8 @@ LogPipeline &LogPipeline::start_agent_receiver()
 }
 LogPipeline &LogPipeline::start_process_logEvents(){
     log_processor->set_syslog_queue(logEvents_queue)
-                  .set_database(logs_db);
+                  .set_logs_database(logs_db)
+                  .set_agents_database(agents_db);
     for(int i=0;i<4;++i){
         std::thread t1([this,i](){
             log_processor->analyze_syslog(i);

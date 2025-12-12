@@ -1,8 +1,8 @@
 #include "client_request_server/ConnectionServer.hpp"
 #include "utils/DBManager.hpp"
 #include "log_pipeline/LogPipeline.hpp"
-#include "log_pipeline/data_managers/SourceManager.hpp"
-
+#include "log_pipeline/source_managers/SourceManager.hpp"
+#include "log_pipeline/alerts_manager/AlertsManager.hpp"
 #include <iostream>
 #include <memory>
 #include <filesystem>
@@ -14,11 +14,13 @@ int main(){
         std::shared_ptr<DBManager> logs_db = std::make_shared<DBManager>();
         std::shared_ptr<DBManager> agents_db = std::make_shared<DBManager>();
         std::shared_ptr<DBManager> source_db = std::make_shared<DBManager>();
+        std::shared_ptr<DBManager> alerts_db = std::make_shared<DBManager>();
         std::shared_ptr<SourceManager> source_manager=std::make_shared<SourceManager>(source_db);
+        std::shared_ptr<AlertsManager> alerts_manager=std::make_shared<AlertsManager>(alerts_db);
         if (!std::filesystem::exists("databases")){
             std::filesystem::create_directory("databases");
         }
-        LogPipeline logs_pipeline(logs_db,agents_db,source_manager);
+        LogPipeline logs_pipeline(logs_db,agents_db,source_manager,alerts_manager);
         logs_pipeline.configure_database()
                      .start_syslog_receiver()
                      .start_agent_receiver()

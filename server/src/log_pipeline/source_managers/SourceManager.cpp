@@ -115,12 +115,13 @@ std::expected<void, std::string> SourceManager::add_blacklist(std::string ip, st
     return {};
 }
 
-bool SourceManager::check_ip_whitelist(std::string ip)
+std::optional<std::string> SourceManager::check_ip_whitelist(std::string ip)
 {
     std::shared_lock lock(_mutex);
-    
-
-    return whitelist_source.contains(ip);
+    if (whitelist_source.contains(ip)){
+        return whitelist_source[ip];
+    }    
+    return std::nullopt;
 }
 
 bool SourceManager::check_ip_blacklist(std::string ip)
