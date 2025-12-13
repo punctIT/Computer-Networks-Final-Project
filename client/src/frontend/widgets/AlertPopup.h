@@ -102,13 +102,12 @@ public:
             "    background-color: #16A085; "   /* Verde mai închis la hover */
             "}"
             "QPushButton:pressed { "
-            "    background-color: #0E6655; "   /* Verde foarte închis la apăsare */
+            "    background-color: #0E6655; " 
             "}"
         );
         connect(debugBtn, &QPushButton::clicked, this, []() {
            
         });
-        
         contentLayout->addSpacing(10);
         contentLayout->addWidget(debugBtn);
         

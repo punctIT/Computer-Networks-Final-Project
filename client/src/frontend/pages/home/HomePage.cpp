@@ -34,6 +34,18 @@ QWidget *HomePage::get_top_layout()
     layout->addWidget(filters, 1, 0);
     layout->addWidget(settings, 1, 1);
 
+    QObject::connect(dashboard,&QPushButton::clicked,[this](){
+        page_manager->change_page(3);   
+    });
+    QObject::connect(security,&QPushButton::clicked,[this](){
+        page_manager->change_page(5);   
+    });
+    QObject::connect(filters,&QPushButton::clicked,[this](){
+        
+    });
+    QObject::connect(settings,&QPushButton::clicked,[this](){
+        page_manager->change_page(4);   
+    });
     
     QLabel *title = new QLabel("Home Menu");
     title->setAlignment(Qt::AlignCenter);

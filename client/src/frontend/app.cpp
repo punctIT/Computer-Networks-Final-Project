@@ -53,7 +53,7 @@ App::App()
     pages->push_back(std::make_shared<DashboardPage>(data_requster,page_manager,window));
     pages->push_back(std::make_shared<SettingsPage>(data_requster,page_manager,window));
     pages->push_back(std::make_shared<SecurityPage>(data_requster,page_manager,window));
-
+    pages->push_back(std::make_shared<FiltresPage>(data_requster,page_manager,window));
     page_manager->set(pages);
     for (auto page : *pages){
         page_manager->add_page(page->get_page());

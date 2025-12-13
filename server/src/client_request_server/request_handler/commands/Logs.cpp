@@ -17,3 +17,8 @@ std::expected<std::string, std::string> Logs::logs_request(JUNK &request)
     }
     return response_formater(true,"logs",result);
 }
+
+std::expected<std::string, std::string> Logs::update_syslog_dashboard(JUNK &request)
+{
+    return std::expected<std::string, std::string>();
+}

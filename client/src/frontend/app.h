@@ -16,6 +16,7 @@
 #include "pages/settings/SettingsPage.h"
 #include "pages/dashboard/DashboardPage.h"
 #include "pages/security/SecurityPage.h"
+#include "pages/filtres/FiltresPage.h"
 #include "pages/ConnectPage.h"
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QLabel>

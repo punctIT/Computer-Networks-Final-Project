@@ -8,17 +8,23 @@
 void DashboardPage::bind_buttons(){
     QObject::connect(syslog_dashbord, &QPushButton::clicked, [this](){
         this->dashboard_pages->change_page(0);
+        this->on_exit();
+        this->pages->at(0)->on_enter();
     });
     QObject::connect(agents_dashbord, &QPushButton::clicked, [this](){
         this->dashboard_pages->change_page(1);
+        this->on_exit();
     });
     QObject::connect(unknown_syslog_dashboard, &QPushButton::clicked, [this](){
         this->dashboard_pages->change_page(2);
+        this->on_exit();
     });
     QObject::connect(unknown_agent_dashboard, &QPushButton::clicked, [this](){
         this->dashboard_pages->change_page(3);
+        this->on_exit();
     });
 }
+
 QWidget *DashboardPage::get_bottom_menu()
 {
     QWidget *menu = new QWidget();
@@ -95,5 +101,7 @@ void DashboardPage::on_enter()
 
 void DashboardPage::on_exit()
 {
-     qDebug() << "leave dashboard";
+    for (int i=0;i<this->pages->size();i++){
+            this->pages->at(i)->on_exit();
+        }
 }
