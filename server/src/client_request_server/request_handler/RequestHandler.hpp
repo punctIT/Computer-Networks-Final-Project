@@ -9,6 +9,7 @@
 #include "../../utils/JUNK.hpp"
 #include "commands/Logs.hpp"
 #include "commands/Auth.hpp"
+#include "commands/Alerts.hpp"
 #include "commands/Source.hpp"
 #include <iostream>
 #include <format>
@@ -18,6 +19,7 @@ class RequestHandler:public ResponseFormater{
     std::shared_ptr<SessionManager>& session;
     std::shared_ptr<Auth> auth_requests;
     std::shared_ptr<Logs> logs_requests;
+    std::shared_ptr<Alerts> alerts_requests;
     std::shared_ptr<Source> source_request;
     public:
     RequestHandler(std::shared_ptr<SessionManager> &session,std::shared_ptr<AuthManager> &auth, std::shared_ptr<DBManager>& logs_db,std::shared_ptr<SourceManager>& source);

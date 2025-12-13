@@ -5,62 +5,77 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QGraphicsDropShadowEffect>
+#include <QApplication>
+
 
 class AlertPopup : public QWidget {
     Q_OBJECT
 private:
     QLabel* titleLabel;
     QLabel* messageLabel;
+    QFrame* container;
 
 public:
     AlertPopup(QWidget* parent) : QWidget(parent) {
-        this->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool | Qt::WindowStaysOnTopHint);
+        this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
         this->setAttribute(Qt::WA_TranslucentBackground);
-        this->setAttribute(Qt::WA_ShowWithoutActivating);
+        this->setFixedSize(420, 210);
 
-        this->setFixedSize(320, 110);
+     
+        auto shadow = new QGraphicsDropShadowEffect(this);
+        shadow->setBlurRadius(20);
+        shadow->setColor(QColor(0, 0, 0, 150));
+        shadow->setOffset(0, 5);
+        this->setGraphicsEffect(shadow);
 
         QVBoxLayout* mainLayout = new QVBoxLayout(this);
-        mainLayout->setContentsMargins(10, 10, 10, 10);
+        mainLayout->setContentsMargins(15, 15, 15, 15);
 
-        QFrame* container = new QFrame(this);
+        container = new QFrame(this);
         container->setObjectName("AlertFrame");
+        container->setAttribute(Qt::WA_StyledBackground, true);
         
         container->setStyleSheet(
             "QFrame#AlertFrame {"
-            "    background-color: #252525;"
+            "    background-color:  #252525;"
             "    border: 1px solid #1ABC9C;"
             "    border-radius: 10px;"
             "}"
             "QLabel {"
-            "    color: #E0E0E0;"
+            "    color:  #E0E0E0;"
             "    border: none;"
             "}"
         );
 
-        QGraphicsDropShadowEffect* shadow = new QGraphicsDropShadowEffect(this);
-        shadow->setBlurRadius(15);
-        shadow->setColor(QColor(0, 0, 0, 150));
-        shadow->setOffset(0, 4);
-        container->setGraphicsEffect(shadow);
-
         QVBoxLayout* contentLayout = new QVBoxLayout(container);
 
         titleLabel = new QLabel("Notification", container);
-        titleLabel->setStyleSheet("color: #1ABC9C; font-weight: bold; font-size: 14px;");
+        titleLabel->setStyleSheet("color:  #1ABC9C; font-weight: bold; font-size:  14px;");
         
         messageLabel = new QLabel("", container);
         messageLabel->setWordWrap(true);
         messageLabel->setStyleSheet("font-size: 12px;");
 
         QPushButton* closeBtn = new QPushButton("×", container);
-        closeBtn->setFixedSize(20, 20);
+        closeBtn->setFixedSize(25, 25);
         closeBtn->setCursor(Qt::PointingHandCursor);
         closeBtn->setStyleSheet(
-            "QPushButton { background: transparent; color: #888; border: none; font-weight: bold; font-size: 16px; }"
-            "QPushButton:hover { color: #FF5555; }"
+            "QPushButton { "
+            "    background: transparent; "
+            "    color: #888; "
+            "    border: none; "
+            "    font-weight:  bold; "
+            "    font-size: 18px; "
+            "}"
+            "QPushButton:hover { "
+            "    color: #FF5555; "
+            "    background-color: rgba(255, 85, 85, 30);"
+            "}"
         );
-        connect(closeBtn, &QPushButton::clicked, this, &AlertPopup::hide);
+        connect(closeBtn, &QPushButton::clicked, this, [this]() {
+            qDebug() << "✓ Close button clicked! ";
+            this->hide();
+        });
 
         QHBoxLayout* headerLayout = new QHBoxLayout();
         headerLayout->addWidget(titleLabel);
@@ -69,6 +84,33 @@ public:
 
         contentLayout->addLayout(headerLayout);
         contentLayout->addWidget(messageLabel);
+        
+        QPushButton* debugBtn = new QPushButton("Show Alerts", container);
+        debugBtn->setFixedHeight(40);
+        debugBtn->setCursor(Qt::PointingHandCursor);
+        debugBtn->setStyleSheet(
+            "QPushButton { "
+            "    background-color: #1ABC9C; "   /* Verdele principal (Teal) */
+            "    color: white; "
+            "    border: 2px solid #16A085; "   /* Un verde puțin mai închis pentru contur */
+            "    border-radius: 5px; "
+            "    font-weight: bold; "
+            "    font-size: 13px; "
+            "    padding: 8px;"
+            "}"
+            "QPushButton:hover { "
+            "    background-color: #16A085; "   /* Verde mai închis la hover */
+            "}"
+            "QPushButton:pressed { "
+            "    background-color: #0E6655; "   /* Verde foarte închis la apăsare */
+            "}"
+        );
+        connect(debugBtn, &QPushButton::clicked, this, []() {
+           
+        });
+        
+        contentLayout->addSpacing(10);
+        contentLayout->addWidget(debugBtn);
         
         mainLayout->addWidget(container);
 
@@ -79,26 +121,53 @@ public:
         titleLabel->setText(title);
         messageLabel->setText(message);
 
-        QFrame* frame = this->findChild<QFrame*>("AlertFrame");
-        if(isError && frame) {
-            titleLabel->setStyleSheet("color: #E74C3C; font-weight: bold; font-size: 14px;");
-            frame->setStyleSheet("QFrame#AlertFrame { background-color: #252525; border: 1px solid #E74C3C; border-radius: 10px; }");
-        } else if (frame) {
-             titleLabel->setStyleSheet("color: #1ABC9C; font-weight: bold; font-size: 14px;");
-             frame->setStyleSheet("QFrame#AlertFrame { background-color: #252525; border: 1px solid #1ABC9C; border-radius: 10px; }");
+        if(isError) {
+            titleLabel->setStyleSheet("color:  #E74C3C; font-weight: bold; font-size: 14px;");
+            container->setStyleSheet(
+                "QFrame#AlertFrame { "
+                "    background-color: #252525; "
+                "    border: 1px solid #E74C3C; "
+                "    border-radius: 10px; "
+                "}"
+                "QLabel {"
+                "    color: #E0E0E0;"
+                "    border: none;"
+                "}"
+            );
+        } else {
+            titleLabel->setStyleSheet("color: #1ABC9C; font-weight: bold; font-size: 14px;");
+            container->setStyleSheet(
+                "QFrame#AlertFrame { "
+                "    background-color: #252525; "
+                "    border: 1px solid #1ABC9C; "
+                "    border-radius: 10px; "
+                "}"
+                "QLabel {"
+                "    color: #E0E0E0;"
+                "    border:  none;"
+                "}"
+            );
         }
 
         positionBottomRight();
-        this->show();
         this->raise();
+        this->show();
+        QApplication::beep();
+        
+        qDebug() << "AlertPopup displayed at:" << this->pos();
     }
 
 private:
     void positionBottomRight() {
         if(parentWidget()) {
+            QWidget* parent = parentWidget();
+            QPoint globalParentPos = parent->mapToGlobal(QPoint(0,0));
+            
             int margin = 20;
-            int x = parentWidget()->width() - this->width() - margin;
-            int y = parentWidget()->height() - this->height() - margin;
+
+            int x = globalParentPos.x() + parent->width() - this->width() - margin - 10;
+            int y = globalParentPos.y() + parent->height() - this->height() - margin - 10;
+
             this->move(x, y);
         }
     }

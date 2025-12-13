@@ -123,7 +123,6 @@ void DataRequester::start_receiving()
             continue;
         }
         std::string rawData = data.value();
-        qDebug() << "RAW DATA RECEIVED:" << QString::fromStdString(rawData);
         auto junk_data = JUNK::deserialize(data.value());
         if(!junk_data.has_value()){
             continue;
@@ -141,6 +140,10 @@ void DataRequester::start_receiving()
         }
         if(type=="update_whitelist"){
             emit UpdateWhitelist(qstr);
+        }
+        if(type == "update_alerts"){
+            qDebug()<<"ok";
+            emit UpdateAlersPopup(qstr);
         }
     }
     

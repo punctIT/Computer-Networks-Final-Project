@@ -56,6 +56,9 @@ std::expected<std::string, std::string> RequestHandler::match_type(JUNK &request
     if(type=="update_whitelist"){
         return source_request->get_updated_whitelist(request);
     }
+    if(type=="update_alerts"){
+        return alerts_requests->last_alert(request);
+    }
     return std::unexpected("unknown type");
 }
 
@@ -64,6 +67,7 @@ RequestHandler::RequestHandler(std::shared_ptr<SessionManager> &session, std::sh
     : session(session){
        auth_requests=std::make_shared<Auth>(session,auth);
        logs_requests=std::make_shared<Logs>(logs_db);
+       alerts_requests=std::make_shared<Alerts>(logs_db);
        source_request=std::make_shared<Source>(source);
     };
 

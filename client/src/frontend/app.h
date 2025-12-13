@@ -19,7 +19,7 @@
 #include "pages/ConnectPage.h"
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QLabel>
-
+#include <QtCore/QTimer>
 
 
 class MainMenu;
@@ -36,6 +36,7 @@ class App{
     
     QGridLayout* layout;
     QWidget* page;
+    QTimer* alerts_update;
     QWidget* get_window();
     public:
         void show_menu();
