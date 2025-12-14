@@ -47,6 +47,7 @@ void PageManager::change_page(int index) {
 int PageManager::get_current(){
     return current_page;
 }
+
 QStackedWidget *PageManager::GetStack(){
     return stack;
 }

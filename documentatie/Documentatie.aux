@@ -1,0 +1,77 @@
+\relax 
+\@writefile{toc}{\contentsline {title}{NetworkDevicesMonitor: Sistem Integrat de Monitorizare și Management Log-uri în Rețele Distribuite}{1}{}\protected@file@percent }
+\@writefile{toc}{\authcount {1}}
+\@writefile{toc}{\contentsline {author}{Ivaniciuc Teodor-Arsenie}{1}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introducere și Context}{1}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Motivație}{1}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}Obiective Tehnice}{1}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}Arhitectura Sistemului}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Vedere de Ansamblu}{2}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Arhitectura completă NetworkDevicesMonitor}}{2}{}\protected@file@percent }
+\newlabel{fig:architecture}{{1}{2}{}{figure.1}{}}
+\@writefile{toc}{\contentsline {subsubsection}{1. Server Backend (C++23)}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{2. Client GUI (Qt6)}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{3. Agenți de Monitorizare (Python)}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Pipeline-ul de Date}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Port 1514 - Syslog Receiver}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Port 9000 - Agent Receiver}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Port 8080 - Admin API}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Implementare Tehnică Detaliată}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Server: Concurență și Thread Safety}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Thread-Safe Queue Implementation}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Database Manager (SQLite3 WAL Mode)}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Source Manager - Sistem de Securitate}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Client: Interfață Grafică Asincronă}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Page Management System}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Dashboard Vizualizări}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Comunicare Asincronă cu Signals}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Sistem de Alertare}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{AlertsManager (Server)}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{AlertPopup (Client)}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Protocol de Comunicare}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Structura Pachetului (Admin API)}{7}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Format pachet TCP}}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Comenzi Disponibile}{8}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces API endpoints}}{8}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Validare cu Wireshark}{8}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Captură Wireshark - Analiza pachetelor JUNK}}{8}{}\protected@file@percent }
+\newlabel{fig:wireshark}{{2}{8}{}{figure.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Scenarii de Utilizare}{8}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Scenarii de Succes}{8}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Scenario 1: Monitorizare Agent în Timp Real}{8}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Scenario 2: Detectare Tentativă de Intruziune}{9}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Scenario 3: Onboarding Echipament Nou}{9}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Scenarii de Eșec și Recuperare}{9}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Scenario 4: Trafic Malițios Blocat}{9}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Scenario 5: Pachet Corupt Primit}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Scenario 6: Token Expirat}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6}Performanță și Scalabilitate}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Benchmarking}{10}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Metrici de performanță}}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Optimizări Implementate}{11}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7}Securitate și Limitări Actuale}{11}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Măsuri de Securitate Implementate}{11}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Vulnerabilități și TODOs}{11}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Analiză securitate}}{11}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {8}Testing și Validare}{11}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.1}Unități de Test}{11}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.2}Rezultate Testare}{12}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {9}Concluzii și Dezvoltări Viitoare}{12}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.1}Realizări Cheie}{12}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.2}Roadmap Viitor}{12}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Faza 1: Securitate (Prioritate Înaltă)}{12}{}\protected@file@percent }
+\bibcite{rfc5424}{1}
+\bibcite{qt_docs}{2}
+\bibcite{cpp_concurrency}{3}
+\bibcite{sqlite_wal}{4}
+\bibcite{curs_retele}{5}
+\bibcite{psutil}{6}
+\@writefile{toc}{\contentsline {subsubsection}{Faza 2: Features Avansate}{13}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Faza 3: Scalabilitate Enterprise}{13}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.3}Lecții Învățate}{13}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.4}Impact și Aplicabilitate}{13}{}\protected@file@percent }
+\bibcite{poll_syscall}{7}
+\bibcite{producer_consumer}{8}
+\bibcite{wireshark_analysis}{9}
+\bibcite{siem_fundamentals}{10}
+\gdef \@abspage@last{14}

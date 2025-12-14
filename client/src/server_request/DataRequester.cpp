@@ -142,8 +142,11 @@ void DataRequester::start_receiving()
             emit UpdateWhitelist(qstr);
         }
         if(type == "update_alerts"){
-            qDebug()<<"ok";
             emit UpdateAlersPopup(qstr);
+        }
+        if(type == "update_syslog_dashboard"){
+            
+            emit UpdateSyslogDashboard(qstr);
         }
     }
     

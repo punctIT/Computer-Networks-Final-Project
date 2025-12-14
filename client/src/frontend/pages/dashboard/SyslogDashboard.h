@@ -56,9 +56,11 @@ class SyslogDonutChart{
     QPieSeries *series;
     QChart *chart;
     QChartView *chartView;
+    int high,medium,low;
     public:
     SyslogDonutChart();
     QWidget *get_chart();
+    void updateAnim();
     void updateValues(int info, int warning, int error);
 };
 
@@ -86,6 +88,7 @@ class SyslogDashboardScreen:public Page{
         SyslogDashboardScreen(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager,std::shared_ptr <QMainWindow> window);
         void on_enter() override;
         void on_exit() override;
+        
 };
 
 

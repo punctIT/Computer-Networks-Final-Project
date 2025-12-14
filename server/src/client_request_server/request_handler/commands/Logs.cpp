@@ -1,9 +1,9 @@
 #include "Logs.hpp"
-
+#include "../../../utils/BetterString.hpp"
+#include <format>
 Logs::Logs( std::shared_ptr<DBManager> &logs): logs(logs) {}
 std::expected<std::string, std::string> Logs::logs_request(JUNK &request)
 {
-    std::string cmd = "select * from logs;";
     if(!request.contains("last_id")){
         return std::unexpected("Invalid , there is no LAST_ID ");
     }
@@ -18,7 +18,52 @@ std::expected<std::string, std::string> Logs::logs_request(JUNK &request)
     return response_formater(true,"logs",result);
 }
 
+
+
+/*
+ CREATE TABLE IF NOT EXISTS logs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            pri TEXT,
+            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+            host TEXT,
+            source TEXT,
+            message TEXT,
+            ip_name TEXT,
+*/
 std::expected<std::string, std::string> Logs::update_syslog_dashboard(JUNK &request)
 {
-    return std::expected<std::string, std::string>();
+    std::string cmd = R"(
+        SELECT 
+            SUM(CASE WHEN pri IN ('Error', 'Critical', 'Alert', 'Emergency') THEN 1 ELSE 0 END),
+            SUM(CASE WHEN pri = 'Warning' THEN 1 ELSE 0 END),
+            SUM(CASE WHEN pri IN ('Notice', 'Informational', 'Debug') THEN 1 ELSE 0 END)
+        FROM logs;
+    )";
+    auto data = logs->get_unsafe(cmd);
+    if(!data.has_value()){
+        return std::unexpected(data.error());
+    }
+    auto values = BetterString::split(data.value()[0],"[]");
+    // for(auto val :values){
+    //     std::cout<<val<<std::endl;
+    // }
+    if(!request.contains("last_log")){
+        return std::unexpected("Invalid , there is no LAST_ID ");
+    }
+    auto data_logs = logs->query("SELECT * FROM (SELECT * FROM logs WHERE id >= ? ORDER BY id DESC LIMIT 10) AS subquery ORDER BY id;",{request["last_log"].value()});
+    if(!data_logs.has_value()){
+        return std::unexpected(data.error());
+    }
+    std::string result="";
+    for(auto log : data_logs.value()){
+        result=std::format("{}**{}",result,log);
+    }
+    auto last_log = logs->get_unsafe("select max(id) from logs;");
+    if (last_log.has_value()==false){
+        return std::unexpected(last_log.error());
+    }
+    std::string response = std::format("high:{{{}}};medium:{{{}}};low:{{{}}};logs:{{{}}};last_log:{{{}}};",values[0],values[1],values[2],result,last_log.value()[0]);
+
+
+    return response_formater(true,"update_syslog_dashboard",response);
 }

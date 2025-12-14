@@ -21,6 +21,7 @@ class Page : public QWidget {
         std::shared_ptr <DataRequester> data_requester;
         std::shared_ptr <PageManager> page_manager;
         std::shared_ptr <QMainWindow> window;
+        
     public:
         Page(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager,std::shared_ptr <QMainWindow> window){
             this->page = new QWidget();
@@ -33,6 +34,7 @@ class Page : public QWidget {
         QWidget* get_page(){
             return this->page;
         }
+        int last_log;
 
 
 };

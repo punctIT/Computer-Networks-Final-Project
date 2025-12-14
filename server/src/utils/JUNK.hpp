@@ -21,6 +21,7 @@ class JUNK{
     void display();
     static std::expected<std::string,std::string> serialize(JUNK data);
     static std::expected<JUNK,std::string> deserialize(std::string);
+    
     bool empty();
     bool contains(std::string key);
     void add(std::string,std::string);

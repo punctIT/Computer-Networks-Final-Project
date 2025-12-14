@@ -30,8 +30,6 @@ std::expected<std::string,std::string> JUNK::serialize(JUNK data)
     return JUNK;
 }
 
-// 'NUME':{nume:nume};
-
 std::expected<JUNK,std::string> JUNK::deserialize(std::string data)
 {
     JUNK new_data;
