@@ -28,7 +28,27 @@ std::expected<std::string, std::string> Source::add_blacklist_request(JUNK &requ
     auto data = source_manager->add_blacklist(request["ip"].value(),request["admin_username"].value());
     if(!data)
         return std::unexpected(data.error());
-    return ResponseFormater::response_formater(true,"add_whitelist_ip","NONE");
+    return ResponseFormater::response_formater(true,"add_blacklist_ip","NONE");
+}
+
+std::expected<std::string, std::string> Source::remove_blacklist_request(JUNK &request)
+{
+    if(!request.contains("ip"))
+        return std::unexpected("invalid format");
+    auto data = source_manager->remove_blacklist(request["ip"].value());
+    if(!data)
+        return std::unexpected(data.error());
+    return ResponseFormater::response_formater(true,"remove_blacklist_ip","NONE");
+}
+
+std::expected<std::string, std::string> Source::remove_whitelist_request(JUNK &request)
+{
+   if(!request.contains("ip"))
+        return std::unexpected("invalid format");
+    auto data = source_manager->remove_whitelist(request["ip"].value());
+    if(!data)
+        return std::unexpected(data.error());
+    return ResponseFormater::response_formater(true,"remove_whitelist_ip","NONE");
 }
 
 std::expected<std::string, std::string> Source::get_updated_whitelist(JUNK &request)
@@ -42,4 +62,17 @@ std::expected<std::string, std::string> Source::get_updated_whitelist(JUNK &requ
         result=std::format("{}{{}}{}",result,d);
     }
     return ResponseFormater::response_formater(true,"update_whitelist",result);
+}
+
+std::expected<std::string, std::string> Source::get_updated_blacklist(JUNK &request)
+{
+    auto data = source_manager->get_blacklist();
+    if (!data){
+        return std::unexpected(data.error());
+    }
+    std::string result = "";
+    for (auto d :data.value()){
+        result=std::format("{}{{}}{}",result,d);
+    }
+    return ResponseFormater::response_formater(true,"update_blacklist",result);
 }

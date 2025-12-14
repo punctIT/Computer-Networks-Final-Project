@@ -12,5 +12,8 @@ class Source:ResponseFormater{
     Source(std::shared_ptr<SourceManager>& source_manager);
     std::expected<std::string, std::string> add_whitelist_request(JUNK &request);
     std::expected<std::string, std::string> add_blacklist_request(JUNK &request);
+    std::expected<std::string, std::string> remove_blacklist_request(JUNK &request);
+    std::expected<std::string, std::string> remove_whitelist_request(JUNK &request);
     std::expected<std::string, std::string> get_updated_whitelist(JUNK&request);
+    std::expected<std::string, std::string> get_updated_blacklist(JUNK&request);
 };

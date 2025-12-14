@@ -85,7 +85,12 @@ std::expected<void, std::string> SourceManager::add_whitelist(std::string ip, st
 std::expected<void, std::string> SourceManager::remove_whitelist(std::string ip)
 {
     std::unique_lock lock(_mutex);
-    return std::expected<void, std::string>();
+    auto data = sources_db->query("DELETE from whitelist where ip=?;",{ip});
+    if(data.has_value()==false){
+        return std::unexpected(data.error());
+    }
+    whitelist_source.erase(ip);
+    return {};
 }
 
 std::expected<std::vector<std::string>, std::string> SourceManager::get_whitelist()
@@ -113,6 +118,27 @@ std::expected<void, std::string> SourceManager::add_blacklist(std::string ip, st
     }
     blacklist_source.insert(ip);
     return {};
+}
+
+std::expected<void, std::string> SourceManager::remove_blacklist(std::string ip)
+{
+    std::unique_lock lock(_mutex);
+    auto data = sources_db->query("DELETE from blacklist where ip=?;",{ip});
+    if(data.has_value()==false){
+        return std::unexpected(data.error());
+    }
+    blacklist_source.erase(ip);
+    return {};
+}
+
+std::expected<std::vector<std::string>, std::string> SourceManager::get_blacklist()
+{
+    std::shared_lock lock(_mutex);
+    auto data = sources_db->get_unsafe("SELECT * from blacklist;");
+    if(!data){
+        return std::unexpected(data.error());
+    }
+    return data.value();
 }
 
 std::optional<std::string> SourceManager::check_ip_whitelist(std::string ip)

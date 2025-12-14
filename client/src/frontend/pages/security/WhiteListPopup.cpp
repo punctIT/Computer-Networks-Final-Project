@@ -6,6 +6,7 @@ void AddWhitelistPopup::connect_buttons()
         const std::string cmd = std::format("type:add_whitelist_ip;source_name:{{{}}};ip:{{{}}};admin_username:admin;",
             source_name->text().toStdString(),ip_entry->text().toStdString());
         auto data = data_requester->sent(cmd);
+        this->hide();
     });
 }
 

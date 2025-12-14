@@ -1,0 +1,20 @@
+#pragma once
+
+#include "../../page_system/Popup.h"
+#include <QLabel>
+#include <QPushButton>
+#include <QLineEdit>
+#include "../../../server_request/DataRequester.h"
+
+#include <format>
+#include <string>
+
+class AddBlacklistPopup:public Popup{
+    QPushButton *add_btn;
+    QLineEdit *ip_entry;
+    QLabel *error;
+   
+    void connect_buttons();
+    public:
+    AddBlacklistPopup(QWidget* parent,std::shared_ptr <DataRequester> data,int x,int y);
+};

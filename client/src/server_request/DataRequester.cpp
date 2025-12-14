@@ -119,9 +119,11 @@ void DataRequester::start_receiving()
 {
     while(true){
         auto data = receive();
+    
         if(!data.has_value()){
             continue;
         }
+        qDebug()<<data.value().c_str();
         std::string rawData = data.value();
         auto junk_data = JUNK::deserialize(data.value());
         if(!junk_data.has_value()){
@@ -132,6 +134,7 @@ void DataRequester::start_receiving()
         }
         auto type = junk_data.value()["type"].value();
         auto qstr = QString::fromStdString(data.value());
+
         if(type=="login"){
             emit LoginData(qstr);
         }
@@ -140,6 +143,9 @@ void DataRequester::start_receiving()
         }
         if(type=="update_whitelist"){
             emit UpdateWhitelist(qstr);
+        }
+        if(type=="update_blacklist"){
+            emit UpdateBlacklist(qstr);
         }
         if(type == "update_alerts"){
             emit UpdateAlersPopup(qstr);

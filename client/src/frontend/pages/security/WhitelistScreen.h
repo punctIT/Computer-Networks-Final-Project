@@ -23,9 +23,9 @@
 class WhitelistTable{
     QWidget *widget;
     QTableWidget *table;
-
+    std::shared_ptr<DataRequester> data_requester;
     public:
-    WhitelistTable();
+    WhitelistTable(std::shared_ptr<DataRequester> data_requester);
     QWidget* get_widget();
     void add(std::vector<std::string> whitelist_data);
     void clear();

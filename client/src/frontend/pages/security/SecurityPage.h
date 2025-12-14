@@ -22,7 +22,7 @@
 #include "../../../utils/BetterString.hpp"
 #include "WhitelistScreen.h"
 #include "BlacklistScreen.h"
-#include "FiltersScreen.h"
+
 
 
 class SecurityPage:public Page{
@@ -33,7 +33,7 @@ class SecurityPage:public Page{
     QHBoxLayout *layout;
     QPushButton *whitelist;
     QPushButton *blacklist;
-    QPushButton *filtres;
+
     QTimer *updateTimer;   
    
     QWidget* get_side_menu();

@@ -42,6 +42,7 @@ class DataRequester: public QWidget , public ProtocolFormater {
     void LogsData(QString mesaj);
 
     void UpdateWhitelist(QString response);
+    void UpdateBlacklist(QString response);
     void UpdateAlersPopup(QString response);
     void UpdateSyslogDashboard(QString response);
 };
