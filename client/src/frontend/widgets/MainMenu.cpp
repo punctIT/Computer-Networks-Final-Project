@@ -19,6 +19,9 @@ void MainMenu::bind_buttons()
      QObject::connect(filtres_btn,&QPushButton::clicked,[this](){
         page_manager->change_page(6); 
     });
+     QObject::connect(alerts_btn,&QPushButton::clicked,[this](){
+        page_manager->change_page(7); 
+    });
     //home_btn
 }
 MainMenu::MainMenu(std::shared_ptr<PageManager> page_manager) {
@@ -35,6 +38,7 @@ MainMenu::MainMenu(std::shared_ptr<PageManager> page_manager) {
     security_btn = new QPushButton("Security");
     settings_btn = new QPushButton("Settings");
     filtres_btn = new QPushButton("Filtres");
+    alerts_btn = new QPushButton("Alerts");
 
     home_btn->setIcon(menu->style()->standardIcon(QStyle::SP_DirHomeIcon)); 
     home_btn->setIconSize(QSize(24, 24));
@@ -51,19 +55,23 @@ MainMenu::MainMenu(std::shared_ptr<PageManager> page_manager) {
 
     settings_btn->setIcon(menu->style()->standardIcon(QStyle::SP_ComputerIcon));
     settings_btn->setIconSize(QSize(24, 24));
+    
+    alerts_btn->setIcon(menu->style()->standardIcon(QStyle::SP_MessageBoxWarning));
+    alerts_btn->setIconSize(QSize(24, 24));
 
 
     grid->addWidget(home_btn, 0, 0);
     grid->addWidget(statistiscs_btn, 0, 1);
     grid->addWidget(security_btn, 0, 2);
     grid->addWidget(filtres_btn, 0, 3);
+    grid->addWidget(alerts_btn, 0, 4);
 
 
     QWidget* spacer = new QWidget();
     spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    grid->addWidget(spacer, 0, 4); 
+    grid->addWidget(spacer, 0, 5); 
 
-    grid->addWidget(settings_btn, 0, 5);
+    grid->addWidget(settings_btn, 0, 6);
     menu->setStyleSheet(QString::fromStdString(main_menu_style()));
     menu->setLayout(grid); 
     bind_buttons();

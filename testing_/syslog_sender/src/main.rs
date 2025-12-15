@@ -12,7 +12,11 @@ fn main() -> io::Result<()> {
         println!("{}", log);
         
         stream.write_all(format!("{}\n", log).as_bytes())?;
-        thread::sleep(Duration::from_secs(2)); 
+        stream.write_all(format!("{}\n", log).as_bytes())?;
+        stream.write_all(format!("{}\n", log).as_bytes())?;
+        stream.write_all(format!("{}\n", log).as_bytes())?;
+        stream.write_all(format!("{}\n", log).as_bytes())?;
+        thread::sleep(Duration::from_secs(1)); 
     }
 
     Ok(())

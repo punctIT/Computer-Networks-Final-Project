@@ -28,6 +28,7 @@ int main(){
         clients_request_server.set_port(8080)
                                 .bind_data()
                                 .set_logs_db(logs_db)
+                                .set_alerts_db(alerts_db)
                                 .set_source_manager(source_manager)
                                 .start();
                         

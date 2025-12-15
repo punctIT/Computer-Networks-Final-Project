@@ -12,6 +12,7 @@ class MainMenu{
     QPushButton *security_btn;
     QPushButton *settings_btn;
     QPushButton *filtres_btn;
+    QPushButton *alerts_btn;
     QGridLayout *grid;
     QWidget *menu;
     void bind_buttons();

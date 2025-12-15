@@ -29,6 +29,7 @@ void App::hide_menu()
 
 App::App()
 {
+    last_alert_id=0;
     page = new QWidget();      
     layout = new QGridLayout(page); 
     data_requster=std::make_shared<DataRequester>();
@@ -54,23 +55,36 @@ App::App()
     pages->push_back(std::make_shared<SettingsPage>(data_requster,page_manager,window));
     pages->push_back(std::make_shared<SecurityPage>(data_requster,page_manager,window));
     pages->push_back(std::make_shared<FiltresPage>(data_requster,page_manager,window));
+    pages->push_back(std::make_shared<AlertsPage>(data_requster,page_manager,window));
     page_manager->set(pages);
     for (auto page : *pages){
         page_manager->add_page(page->get_page());
     }
     page_manager->change_page(0);
     QObject::connect(this->alerts_update, &QTimer::timeout, [this]() {
-        auto data = data_requster->sent("type:{update_alerts};");
+        auto data = data_requster->sent(std::format("type:{{update_alerts}};last_id:{{{}}};",last_alert_id));
         if (!data.has_value()){
             qDebug()<<data.error().c_str();
         }
     });
     QObject::connect(data_requster.get(), &DataRequester::UpdateAlersPopup, window.get(), [this](QString mesaj) {
-        qDebug()<<mesaj;
+        //qDebug()<<mesaj;
         auto data = JUNK::deserialize(mesaj.toStdString());
         if(!data.has_value() || !data.value()["succes"].has_value()|| data.value()["succes"].value()=="false"){
             return;
         }
+        if(!data.value()["last_id"].has_value()){
+            qDebug()<<"no last_id";
+            return;
+        }
+        try{
+            last_alert_id=stoi(data.value()["last_id"].value())+1;
+        }
+        catch(const std::exception& e){
+            qDebug()<<"invaid laast_id";
+            return;
+        }
+        
         alert_popup->showMessage("Security Alert", "Port 8080 accessed.", true);
     });
     window->setCentralWidget(get_window());

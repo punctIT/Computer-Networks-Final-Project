@@ -22,7 +22,7 @@ class RequestHandler:public ResponseFormater{
     std::shared_ptr<Alerts> alerts_requests;
     std::shared_ptr<Source> source_request;
     public:
-    RequestHandler(std::shared_ptr<SessionManager> &session,std::shared_ptr<AuthManager> &auth, std::shared_ptr<DBManager>& logs_db,std::shared_ptr<SourceManager>& source);
+    RequestHandler(std::shared_ptr<SessionManager> &session,std::shared_ptr<AuthManager> &auth, std::shared_ptr<DBManager>& logs_db,std::shared_ptr<SourceManager>& source,std::shared_ptr<DBManager>& alerts);
     std::expected<std::string,std::string> match_type(JUNK &request);
     std::expected<std::string,std::string> match_request(int client,std::string request);
     

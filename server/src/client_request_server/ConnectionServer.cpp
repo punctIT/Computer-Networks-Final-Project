@@ -43,6 +43,12 @@ ConnectionServer &ConnectionServer::set_logs_db(std::shared_ptr<DBManager> db)
     return *this;
 }
 
+ConnectionServer &ConnectionServer::set_alerts_db(std::shared_ptr<DBManager> db)
+{
+    alert_db = db;
+    return *this;
+}
+
 ConnectionServer &ConnectionServer::set_source_manager(std::shared_ptr<SourceManager> source)
 {
     source_manager = source;
@@ -53,7 +59,7 @@ void ConnectionServer::start()
 {
     this->session_manager = std::make_shared<SessionManager>();
     this->auth = std::make_shared<AuthManager>();
-    this->request_handler = std::make_shared<RequestHandler>(session_manager, auth, logs_db, source_manager);
+    this->request_handler = std::make_shared<RequestHandler>(session_manager, auth, logs_db, source_manager,alert_db);
 
     if (!this->port.has_value())
     {

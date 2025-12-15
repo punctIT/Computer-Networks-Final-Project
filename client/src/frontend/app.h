@@ -16,6 +16,7 @@
 #include "pages/settings/SettingsPage.h"
 #include "pages/dashboard/DashboardPage.h"
 #include "pages/security/SecurityPage.h"
+#include "pages/alerts/AlertsPage.h"
 #include "pages/filtres/FiltresPage.h"
 #include "pages/ConnectPage.h"
 #include <QtWidgets/QGridLayout>
@@ -34,6 +35,7 @@ class App{
     std::shared_ptr<std::vector<std::shared_ptr<Page>>> pages;
     std::shared_ptr<AlertPopup> alert_popup;
 
+    int last_alert_id=0;
     
     QGridLayout* layout;
     QWidget* page;

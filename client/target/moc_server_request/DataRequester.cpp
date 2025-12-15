@@ -26,18 +26,19 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 namespace {
 struct qt_meta_stringdata_DataRequester_t {
-    uint offsetsAndSizes[22];
+    uint offsetsAndSizes[24];
     char stringdata0[14];
     char stringdata1[16];
     char stringdata2[1];
     char stringdata3[10];
     char stringdata4[6];
     char stringdata5[9];
-    char stringdata6[16];
+    char stringdata6[22];
     char stringdata7[9];
     char stringdata8[16];
-    char stringdata9[17];
-    char stringdata10[22];
+    char stringdata9[16];
+    char stringdata10[17];
+    char stringdata11[22];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(sizeof(qt_meta_stringdata_DataRequester_t::offsetsAndSizes) + ofs), len 
@@ -49,11 +50,12 @@ Q_CONSTINIT static const qt_meta_stringdata_DataRequester_t qt_meta_stringdata_D
         QT_MOC_LITERAL(31, 9),  // "LoginData"
         QT_MOC_LITERAL(41, 5),  // "mesaj"
         QT_MOC_LITERAL(47, 8),  // "LogsData"
-        QT_MOC_LITERAL(56, 15),  // "UpdateWhitelist"
-        QT_MOC_LITERAL(72, 8),  // "response"
-        QT_MOC_LITERAL(81, 15),  // "UpdateBlacklist"
-        QT_MOC_LITERAL(97, 16),  // "UpdateAlersPopup"
-        QT_MOC_LITERAL(114, 21)   // "UpdateSyslogDashboard"
+        QT_MOC_LITERAL(56, 21),  // "UpdateAlertsDashboard"
+        QT_MOC_LITERAL(78, 8),  // "response"
+        QT_MOC_LITERAL(87, 15),  // "UpdateWhitelist"
+        QT_MOC_LITERAL(103, 15),  // "UpdateBlacklist"
+        QT_MOC_LITERAL(119, 16),  // "UpdateAlersPopup"
+        QT_MOC_LITERAL(136, 21)   // "UpdateSyslogDashboard"
     },
     "DataRequester",
     "lost_connection",
@@ -61,8 +63,9 @@ Q_CONSTINIT static const qt_meta_stringdata_DataRequester_t qt_meta_stringdata_D
     "LoginData",
     "mesaj",
     "LogsData",
-    "UpdateWhitelist",
+    "UpdateAlertsDashboard",
     "response",
+    "UpdateWhitelist",
     "UpdateBlacklist",
     "UpdateAlersPopup",
     "UpdateSyslogDashboard"
@@ -76,26 +79,28 @@ Q_CONSTINIT static const uint qt_meta_data_DataRequester[] = {
       10,       // revision
        0,       // classname
        0,    0, // classinfo
-       7,   14, // methods
+       8,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       7,       // signalCount
+       8,       // signalCount
 
  // signals: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,   56,    2, 0x06,    1 /* Public */,
-       3,    1,   57,    2, 0x06,    2 /* Public */,
-       5,    1,   60,    2, 0x06,    4 /* Public */,
-       6,    1,   63,    2, 0x06,    6 /* Public */,
-       8,    1,   66,    2, 0x06,    8 /* Public */,
-       9,    1,   69,    2, 0x06,   10 /* Public */,
-      10,    1,   72,    2, 0x06,   12 /* Public */,
+       1,    0,   62,    2, 0x06,    1 /* Public */,
+       3,    1,   63,    2, 0x06,    2 /* Public */,
+       5,    1,   66,    2, 0x06,    4 /* Public */,
+       6,    1,   69,    2, 0x06,    6 /* Public */,
+       8,    1,   72,    2, 0x06,    8 /* Public */,
+       9,    1,   75,    2, 0x06,   10 /* Public */,
+      10,    1,   78,    2, 0x06,   12 /* Public */,
+      11,    1,   81,    2, 0x06,   14 /* Public */,
 
  // signals: parameters
     QMetaType::Void,
     QMetaType::Void, QMetaType::QString,    4,
     QMetaType::Void, QMetaType::QString,    4,
+    QMetaType::Void, QMetaType::QString,    7,
     QMetaType::Void, QMetaType::QString,    7,
     QMetaType::Void, QMetaType::QString,    7,
     QMetaType::Void, QMetaType::QString,    7,
@@ -119,6 +124,9 @@ Q_CONSTINIT const QMetaObject DataRequester::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         QtPrivate::TypeAndForceComplete<QString, std::false_type>,
         // method 'LogsData'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        QtPrivate::TypeAndForceComplete<QString, std::false_type>,
+        // method 'UpdateAlertsDashboard'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         QtPrivate::TypeAndForceComplete<QString, std::false_type>,
         // method 'UpdateWhitelist'
@@ -146,10 +154,11 @@ void DataRequester::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _i
         case 0: _t->lost_connection(); break;
         case 1: _t->LoginData((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
         case 2: _t->LogsData((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 3: _t->UpdateWhitelist((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 4: _t->UpdateBlacklist((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 5: _t->UpdateAlersPopup((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 6: _t->UpdateSyslogDashboard((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 3: _t->UpdateAlertsDashboard((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 4: _t->UpdateWhitelist((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 5: _t->UpdateBlacklist((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 6: _t->UpdateAlersPopup((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 7: _t->UpdateSyslogDashboard((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -177,29 +186,36 @@ void DataRequester::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _i
         }
         {
             using _t = void (DataRequester::*)(QString );
-            if (_t _q_method = &DataRequester::UpdateWhitelist; *reinterpret_cast<_t *>(_a[1]) == _q_method) {
+            if (_t _q_method = &DataRequester::UpdateAlertsDashboard; *reinterpret_cast<_t *>(_a[1]) == _q_method) {
                 *result = 3;
                 return;
             }
         }
         {
             using _t = void (DataRequester::*)(QString );
-            if (_t _q_method = &DataRequester::UpdateBlacklist; *reinterpret_cast<_t *>(_a[1]) == _q_method) {
+            if (_t _q_method = &DataRequester::UpdateWhitelist; *reinterpret_cast<_t *>(_a[1]) == _q_method) {
                 *result = 4;
                 return;
             }
         }
         {
             using _t = void (DataRequester::*)(QString );
-            if (_t _q_method = &DataRequester::UpdateAlersPopup; *reinterpret_cast<_t *>(_a[1]) == _q_method) {
+            if (_t _q_method = &DataRequester::UpdateBlacklist; *reinterpret_cast<_t *>(_a[1]) == _q_method) {
                 *result = 5;
                 return;
             }
         }
         {
             using _t = void (DataRequester::*)(QString );
-            if (_t _q_method = &DataRequester::UpdateSyslogDashboard; *reinterpret_cast<_t *>(_a[1]) == _q_method) {
+            if (_t _q_method = &DataRequester::UpdateAlersPopup; *reinterpret_cast<_t *>(_a[1]) == _q_method) {
                 *result = 6;
+                return;
+            }
+        }
+        {
+            using _t = void (DataRequester::*)(QString );
+            if (_t _q_method = &DataRequester::UpdateSyslogDashboard; *reinterpret_cast<_t *>(_a[1]) == _q_method) {
+                *result = 7;
                 return;
             }
         }
@@ -227,13 +243,13 @@ int DataRequester::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 7)
+        if (_id < 8)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 7;
+        _id -= 8;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 7)
+        if (_id < 8)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 7;
+        _id -= 8;
     }
     return _id;
 }
@@ -259,31 +275,38 @@ void DataRequester::LogsData(QString _t1)
 }
 
 // SIGNAL 3
-void DataRequester::UpdateWhitelist(QString _t1)
+void DataRequester::UpdateAlertsDashboard(QString _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
     QMetaObject::activate(this, &staticMetaObject, 3, _a);
 }
 
 // SIGNAL 4
-void DataRequester::UpdateBlacklist(QString _t1)
+void DataRequester::UpdateWhitelist(QString _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
     QMetaObject::activate(this, &staticMetaObject, 4, _a);
 }
 
 // SIGNAL 5
-void DataRequester::UpdateAlersPopup(QString _t1)
+void DataRequester::UpdateBlacklist(QString _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
     QMetaObject::activate(this, &staticMetaObject, 5, _a);
 }
 
 // SIGNAL 6
-void DataRequester::UpdateSyslogDashboard(QString _t1)
+void DataRequester::UpdateAlersPopup(QString _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
     QMetaObject::activate(this, &staticMetaObject, 6, _a);
+}
+
+// SIGNAL 7
+void DataRequester::UpdateSyslogDashboard(QString _t1)
+{
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    QMetaObject::activate(this, &staticMetaObject, 7, _a);
 }
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE

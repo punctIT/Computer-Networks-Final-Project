@@ -71,15 +71,18 @@ std::expected<std::string, std::string> RequestHandler::match_type(JUNK &request
     if(type=="update_alerts"){
         return alerts_requests->last_alert(request);
     }
+    if(type=="alerts_dashboard"){
+        return alerts_requests->update_alerts_dashboard(request);
+    }
     return std::unexpected("unknown type");
 }
 
 
-RequestHandler::RequestHandler(std::shared_ptr<SessionManager> &session, std::shared_ptr<AuthManager> &auth, std::shared_ptr<DBManager>& logs_db,std::shared_ptr<SourceManager>&source)
+RequestHandler::RequestHandler(std::shared_ptr<SessionManager> &session, std::shared_ptr<AuthManager> &auth, std::shared_ptr<DBManager>& logs_db,std::shared_ptr<SourceManager>&source,std::shared_ptr<DBManager>& alerts)
     : session(session){
        auth_requests=std::make_shared<Auth>(session,auth);
        logs_requests=std::make_shared<Logs>(logs_db);
-       alerts_requests=std::make_shared<Alerts>(logs_db);
+       alerts_requests=std::make_shared<Alerts>(alerts);
        source_request=std::make_shared<Source>(source);
     };
 
