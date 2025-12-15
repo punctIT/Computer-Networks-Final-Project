@@ -9,6 +9,7 @@
 #include "request_handler/RequestHandler.hpp"
 #include "session_manager/SessionManager.hpp"
 #include "session_manager/AuthManager.hpp"
+#include "../log_pipeline/filtres/FiltresManager.hpp"
 #include <iostream>
 #include <format>
 
@@ -22,6 +23,7 @@ private:
     std::shared_ptr<DBManager> logs_db;
     std::shared_ptr<DBManager> alert_db;
     std::shared_ptr<SourceManager> source_manager;
+     std::shared_ptr<FiltresManager> filtres_manager;
     sockaddr_in address;
     int opt = 1;
     std::optional<int> port;
@@ -32,6 +34,7 @@ public:
     ConnectionServer& bind_data();
     ConnectionServer& set_logs_db(std::shared_ptr<DBManager> db);
     ConnectionServer& set_alerts_db(std::shared_ptr<DBManager> db);
+    ConnectionServer& set_filtres_manager(std::shared_ptr<FiltresManager> fl);
     ConnectionServer& set_source_manager(std::shared_ptr<SourceManager> source);
     void start();
     ~ConnectionServer();

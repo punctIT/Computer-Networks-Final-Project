@@ -35,4 +35,23 @@ AlertsManager::AlertsManager(std::shared_ptr<DBManager> alerts_db)
     std::cout << "Alerts Manager succesful connfigured"<<std::endl;
 }
 
-
+std::expected<void, std::string> AlertsManager::add()
+{
+    std::string insert2 = R"(
+        INSERT INTO alerts (alert_name, category, severity, entity, details, status, comment) 
+        VALUES (
+            'High CPU Usage',
+            'Performance',
+            2,
+            'Server-01',
+            'CPU usage exceeded 90% for more than 5 minutes',
+            'IN_PROGRESS',
+            'Team notified, investigating'
+        );
+    )";
+    auto data = alerts_db->run_command_unsafe(insert2);
+    if (data.has_value()==false){
+        return std::unexpected(data.error());
+    }
+    return {};
+}

@@ -1,11 +1,11 @@
 #include "LogPipeline.hpp"
 
 
-LogPipeline::LogPipeline(std::shared_ptr<DBManager> db,std::shared_ptr<DBManager> db_agents,std::shared_ptr<SourceManager> source,std::shared_ptr<AlertsManager> alerts){
+LogPipeline::LogPipeline(std::shared_ptr<DBManager> db,std::shared_ptr<DBManager> db_agents,std::shared_ptr<SourceManager> source,std::shared_ptr<AlertsManager> alerts,std::shared_ptr<FiltresManager> filtres){
     logEvents_queue=std::make_shared<ThreadSafeQueue<LogEvent>>();
     syslog_receiver= std::make_shared<SyslogReceiver>(source);
     agent_receiver= std::make_shared<AgentsReceiver>(source);
-    log_processor = std::make_shared<DataProcessor>(source,alerts);
+    log_processor = std::make_shared<DataProcessor>(source,alerts,filtres);
     logs_db=db; 
     agents_db=db_agents;
     
@@ -59,7 +59,7 @@ LogPipeline &LogPipeline::configure_database()
         ram_usage REAL,
         disk_usage REAL,
         message TEXT,                
-        timestamp INTEGER            
+        timestamp INTEGER DEFAULT (strftime('%s','now'))       
     );
     )";
     result = this->agents_db->run_command_unsafe(sql);

@@ -43,16 +43,14 @@ std::expected<std::vector<std::string>,std::string> DataParser::get_agent_data(s
     //std::cout <<agent_log<< std::endl;
     try {
         json j = json::parse(agent_log);
-        for (auto& [key, val] : j.items()) {
-        std::cout << "Cheia: " << key << " | Valoarea: " << val << std::endl;
-    
-        if (val.is_string()) {
-            std::cout << "   -> (Asta este un string)" << std::endl;
-        }
-        if (val.is_object()) {
-            std::cout << "   -> (Asta este un alt obiect JSON imbricat)" << std::endl;
-        }
-    }
+        std::vector<std::string> result;
+        result.push_back(j["hostname"]);
+        result.push_back(std::to_string(j["cpu_load"].get<double>()));
+        result.push_back(std::to_string(j["ram_usage"].get<double>()));
+        result.push_back(std::to_string(j["disk_usage"].get<double>()));
+        result.push_back(j["status_message"]);
+
+        return result;
     }
     catch (std::exception &e){
         return std::unexpected(e.what());

@@ -14,10 +14,18 @@ std::expected<std::string, std::string> Alerts::last_alert(JUNK &request)
     if(data.has_value()==false ){
         return std::unexpected(data.error());
     }
-    if(data.value().empty()||data.value()[0]=="NULL"||data.value()[0]==request["last_id"].value()){
+    std::cout<<data.value()[0]<<" "<<request["last_id"].value()<<std::endl;
+    if(data.value().empty()||data.value()[0]=="NULL"||data.value()[0]<request["last_id"].value()){
         return response_formater(false,"update_alerts","NIMIC");
     }
-    return std::format("succes:{{{}}};type:{{{}}};content:{{{}}};last_id:{{{}}};",true,"update_alerts","",last_id);
+    auto data_log = this->alerts->get_unsafe(std::format("select * from alerts where id = {};",data.value()[0]));
+    if(data_log.has_value()==false){
+        return std::unexpected(data_log.error());
+    }
+    if(data_log.value().empty()){
+        return response_formater(false,"update_alerts","NIMIC");
+    }
+    return std::format("succes:{{{}}};type:{{{}}};content:{{{}}};last_id:{{{}}};",true,"update_alerts",data_log.value()[0],data.value()[0]);
 }
 
 std::expected<std::string, std::string> Alerts::update_alerts_dashboard(JUNK &request){

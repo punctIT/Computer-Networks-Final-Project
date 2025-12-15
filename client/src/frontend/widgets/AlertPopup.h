@@ -6,7 +6,8 @@
 #include <QHBoxLayout>
 #include <QGraphicsDropShadowEffect>
 #include <QApplication>
-
+#include "../page_system/PageManager.h"
+#include <memory>
 
 class AlertPopup : public QWidget {
     Q_OBJECT
@@ -14,9 +15,9 @@ private:
     QLabel* titleLabel;
     QLabel* messageLabel;
     QFrame* container;
-
+    std::shared_ptr<PageManager> page_manager;
 public:
-    AlertPopup(QWidget* parent) : QWidget(parent) {
+    AlertPopup(QWidget* parent,std::shared_ptr<PageManager> page) : QWidget(parent),page_manager(page) {
         this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
         this->setAttribute(Qt::WA_TranslucentBackground);
         this->setFixedSize(420, 210);
@@ -73,7 +74,7 @@ public:
             "}"
         );
         connect(closeBtn, &QPushButton::clicked, this, [this]() {
-            qDebug() << "✓ Close button clicked! ";
+          
             this->hide();
         });
 
@@ -105,8 +106,9 @@ public:
             "    background-color: #0E6655; " 
             "}"
         );
-        connect(debugBtn, &QPushButton::clicked, this, []() {
-           
+        connect(debugBtn, &QPushButton::clicked, this, [this]() {
+            this->page_manager->change_page(7);
+            this->hide();
         });
         contentLayout->addSpacing(10);
         contentLayout->addWidget(debugBtn);

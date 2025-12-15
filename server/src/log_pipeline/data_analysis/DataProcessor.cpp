@@ -19,16 +19,31 @@ void DataProcessor::write_log(std::vector<std::string>& log,std::string source)
     else {
         result = logs_db->query("INSERT INTO unknown_log (pri, timestamp, host, source, message) VALUES (?, ?, ?, ?, ? );",log);
     }
+    if (log[4].contains("ceva")){
+        alerts_manager->add();
+    }
+
     if(!result.has_value()){
         std::cerr<<"[ERR]"<<result.error()<<std::endl;
     }
 }
 
+void DataProcessor::write_agent(std::vector<std::string> &agent_metrics)
+{
+    const char* sql =
+        "INSERT INTO metrics (hostname, cpu_load, ram_usage, disk_usage, message) "
+        "VALUES (?, ?, ?, ?, ?);";
+    auto status = this->agents_db->query(sql,agent_metrics);
+    if(status.has_value()==false){
+        std::cerr<<status.error()<<std::endl;
+    }
+}
 
-DataProcessor::DataProcessor(std::shared_ptr<SourceManager> source_manager,std::shared_ptr<AlertsManager> alerts)
+DataProcessor::DataProcessor(std::shared_ptr<SourceManager> source_manager,std::shared_ptr<AlertsManager> alerts, std::shared_ptr<FiltresManager> filtres_manager)
 {
     this->source_manager= source_manager;
     this->alerts_manager=alerts;
+    this->filtres_manager= filtres_manager;
 }
 
 DataProcessor &DataProcessor::set_logs_database(std::shared_ptr<DBManager> logs_db)
@@ -66,7 +81,11 @@ void DataProcessor::analyze_syslog(int id){
         }
         if(data.value().type= EventType::AGENT_METRIC){
             auto agent_metric = DataParser::get_agent_data(data.value().payload);
-           
+            if(agent_metric.has_value()==false){
+                std::cout<<agent_metric.error()<<std::endl;
+                continue;
+            }
+            write_agent(agent_metric.value());
         } 
     }
 

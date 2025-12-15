@@ -78,11 +78,13 @@ std::expected<std::string, std::string> RequestHandler::match_type(JUNK &request
 }
 
 
-RequestHandler::RequestHandler(std::shared_ptr<SessionManager> &session, std::shared_ptr<AuthManager> &auth, std::shared_ptr<DBManager>& logs_db,std::shared_ptr<SourceManager>&source,std::shared_ptr<DBManager>& alerts)
+RequestHandler::RequestHandler(std::shared_ptr<SessionManager> &session, 
+    std::shared_ptr<AuthManager> &auth, std::shared_ptr<DBManager>& logs_db,std::shared_ptr<SourceManager>&source,std::shared_ptr<DBManager>& alerts, std::shared_ptr<FiltresManager> filtres)
     : session(session){
        auth_requests=std::make_shared<Auth>(session,auth);
        logs_requests=std::make_shared<Logs>(logs_db);
        alerts_requests=std::make_shared<Alerts>(alerts);
        source_request=std::make_shared<Source>(source);
-    };
+       filtres_request= std::make_shared<Filtres>(filtres);
+    }
 
