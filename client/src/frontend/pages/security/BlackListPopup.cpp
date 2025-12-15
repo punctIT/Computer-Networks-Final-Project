@@ -14,6 +14,23 @@ AddBlacklistPopup::AddBlacklistPopup(QWidget *parent, std::shared_ptr<DataReques
 {
     add_btn= new QPushButton("Add to Blacklist");
     ip_entry= new QLineEdit();
+    add_btn->setStyleSheet(R"(
+            QPushButton {
+                background-color: #1ABC9C;
+                color: white;
+                border-radius: 6px;
+                padding: 8px 15px;
+                font-weight: bold;
+                font-size: 14px;
+                border: none;
+            }
+            QPushButton:hover {
+                background-color: #16A085;
+            }
+            QPushButton:pressed {
+                background-color: #0E6655;
+            }
+        )");
     error = new QLabel();
     error->hide();
     layout->addWidget(new QLabel("Add new ip source to blacklist"),0,0);

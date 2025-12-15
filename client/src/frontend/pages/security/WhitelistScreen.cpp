@@ -41,7 +41,11 @@ WhiteListScreen::WhiteListScreen(std:: shared_ptr<DataRequester> data, const std
             background-color: #0E6655;
         }
     )");
-    layout->addWidget(new QLabel("Whitelist"),0,0);
+    QLabel *title = new QLabel("Whitelist");
+    title->setStyleSheet("font-size: 40px; font-weight: bold; color: white;");
+    title->setAlignment(Qt::AlignCenter);
+
+    layout->addWidget(title, 0, 0);
     layout->addWidget(btn,2,0);
     layout->addWidget(whitelist_table->get_widget(),1,0);
     QObject::connect(btn,&QPushButton:: clicked,[this](){
@@ -75,11 +79,11 @@ WhitelistTable::WhitelistTable(std::shared_ptr<DataRequester> data_requester)
     table = new QTableWidget();
     table->setColumnCount(5);
     
-    QStringList headers = {"Source Name", "IP Address", "Time", "Admin", "Remove Rule"}; 
+    QStringList headers = { "IP Address","Source Name",  "Admin","Time", "Remove Rule"}; 
     table->setHorizontalHeaderLabels(headers);
 
-    // Setări importante pentru înălțimea rândurilor
-    table->verticalHeader()->setDefaultSectionSize(60); // Înălțime rând mai mare
+   
+    table->verticalHeader()->setDefaultSectionSize(60); 
     table->verticalHeader()->setVisible(false);
     
     table->setShowGrid(false);
@@ -109,7 +113,7 @@ void WhitelistTable:: clear()
 void WhitelistTable:: add(std::vector<std:: string> whitelist_data)
 {
     table->setUpdatesEnabled(false); 
-    table->clear();
+    
     for(auto entry : whitelist_data) 
     {
         auto content = BetterString::split(entry, "[]");

@@ -13,6 +13,23 @@ void AddWhitelistPopup::connect_buttons()
 AddWhitelistPopup::AddWhitelistPopup(QWidget *parent, std::shared_ptr<DataRequester> data, int x, int y) : Popup(parent, data, x, y)
 {
     add_btn= new QPushButton("Add to whitelist");
+    add_btn->setStyleSheet(R"(
+            QPushButton {
+                background-color: #1ABC9C;
+                color: white;
+                border-radius: 6px;
+                padding: 8px 15px;
+                font-weight: bold;
+                font-size: 14px;
+                border: none;
+            }
+            QPushButton:hover {
+                background-color: #16A085;
+            }
+            QPushButton:pressed {
+                background-color: #0E6655;
+            }
+        )");
     ip_entry= new QLineEdit();
     source_name = new QLineEdit();
     error = new QLabel();

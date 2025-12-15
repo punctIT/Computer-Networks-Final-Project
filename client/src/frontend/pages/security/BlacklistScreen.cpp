@@ -18,7 +18,7 @@ BlackListScreen::BlackListScreen(std::shared_ptr<DataRequester> data, const std:
 {
     QGridLayout *layout = new QGridLayout;
     Blacklist_table = std::make_shared<BlacklistTable>(data_requester);
-    add_Blacklist = std::make_shared<AddBlacklistPopup>(window.get(), data_requester, 400, 200); 
+    add_Blacklist = std::make_shared<AddBlacklistPopup>(window.get(), data_requester, 400, 300); 
     btn = new QPushButton("Add new blacklist rule");
     btn->setCursor(Qt::PointingHandCursor);
     btn->setFixedHeight(40);
@@ -41,7 +41,11 @@ BlackListScreen::BlackListScreen(std::shared_ptr<DataRequester> data, const std:
             background-color: #0E6655;
         }
     )");
-    layout->addWidget(new QLabel("Blacklist"), 0, 0);
+    QLabel *title = new QLabel("Blacklist");
+    
+    title->setStyleSheet("font-size: 40px; font-weight: bold; color: white;");
+    title->setAlignment(Qt::AlignCenter);
+    layout->addWidget(title, 0, 0);
     layout->addWidget(btn, 2, 0);
     layout->addWidget(Blacklist_table->get_widget(), 1, 0);
     QObject::connect(btn, &QPushButton::clicked, [this](){
@@ -74,7 +78,7 @@ BlacklistTable::BlacklistTable( std::shared_ptr<DataRequester> data_requester)
     table = new QTableWidget();
     table->setColumnCount(4);
     
-    QStringList headers = { "IP Address", "Time", "Admin", "Remove rule"}; 
+    QStringList headers = { "IP Address", "Admin", "Time", "Remove rule"}; 
     table->setHorizontalHeaderLabels(headers);
 
     table->verticalHeader()->setDefaultSectionSize(60); 
