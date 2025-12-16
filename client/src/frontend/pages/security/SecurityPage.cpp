@@ -5,6 +5,7 @@ void SecurityPage::bind_buttons()
 {
     QObject::connect(whitelist,&QPushButton::clicked,[this](){
         security_pages->change_page(0);
+        update();
         whitelist->setProperty("active", true);
         blacklist->setProperty("active", false);
         whitelist->style()->unpolish(whitelist);
@@ -14,6 +15,7 @@ void SecurityPage::bind_buttons()
     });
     QObject::connect(blacklist,&QPushButton::clicked,[this](){
         security_pages->change_page(1);
+        update();
         blacklist->setProperty("active", true);
         whitelist->setProperty("active", false);
         whitelist->style()->unpolish(whitelist);

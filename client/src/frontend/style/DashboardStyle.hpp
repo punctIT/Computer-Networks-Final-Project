@@ -80,3 +80,67 @@ inline std::string get_table_style(){
         }
     )";
 }
+inline std::string get_combobox(){
+    return R"(
+        QComboBox {
+            background-color: #1E1E1E;
+            color: #FFFFFF;
+            border: 2px solid #333333;
+            border-radius: 15px;
+            padding: 8px 15px;
+            font-size:  15px;
+        }
+        QComboBox: hover, QComboBox:on {
+            border:  2px solid #1ABC9C;
+        }
+
+        /* Dropdown arrow verde */
+        QComboBox:: drop-down { 
+            border: none; 
+            width: 30px; 
+        }
+        QComboBox:: down-arrow {
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 8px solid #1ABC9C;
+            margin-right: 10px;
+        }
+
+        /* Lista dropdown - FORȚEAZĂ VERDE */
+        QListView {
+            background-color: #1E1E1E;
+            border: 2px solid #1ABC9C;  /* VERDE */
+            border-radius: 10px;
+            color: #E0E0E0;
+            outline: 0;
+            padding: 4px;
+            selection-background-color: #1ABC9C; /* VERDE pentru selecție */
+        }
+
+        QListView::item {
+            padding: 8px;
+            border-radius: 5px;
+            background-color: transparent;
+            color: #FFFFFF;
+        }
+
+        QListView::item:selected, QListView::item:hover {
+            background-color: #1ABC9C; /* VERDE */
+            color:  #121212;
+        }
+
+        /* Dacă ai scrollbar în dropdown */
+        QScrollBar: vertical {
+            background: #1E1E1E;
+            width: 12px;
+            border-radius: 6px;
+        }
+        QScrollBar::handle:vertical {
+            background: #1ABC9C; /* VERDE */
+            border-radius: 6px;
+        }
+        QScrollBar::handle:vertical:hover {
+            background: #16A085; /* VERDE mai închis */
+        }
+    )";
+}

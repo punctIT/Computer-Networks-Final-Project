@@ -10,10 +10,13 @@ void DashboardPage::bind_buttons(){
     QObject::connect(syslog_dashbord, &QPushButton::clicked, [this](){
         this->dashboard_pages->change_page(0);
         pages->at(0)->on_enter();
+        update();
     });
     QObject::connect(agents_dashbord, &QPushButton::clicked, [this](){
         this->dashboard_pages->change_page(1);
+        std::string cmd = std::format("type:{{update_agents_dashboard}};source:{{{}}};",pages->at(1)->source);
         pages->at(1)->on_enter();
+        update();
     });
     QObject::connect(unknown_syslog_dashboard, &QPushButton::clicked, [this](){
         this->dashboard_pages->change_page(2);
@@ -95,8 +98,15 @@ DashboardPage::DashboardPage(std::shared_ptr<DataRequester> data, const std::sha
 }
 void DashboardPage::update()
 {
-    if(this->dashboard_pages->get_current()==0){\
+    if(this->dashboard_pages->get_current()==0){
         std::string cmd = std::format("type:{{update_syslog_dashboard}};last_log:{{{}}};",pages->at(0)->last_log);
+        auto data = data_requester->sent(cmd);
+        if(!data.has_value()){
+            qDebug()<<data.error().c_str();
+        }
+    }
+    if(this->dashboard_pages->get_current()==1){
+        std::string cmd = std::format("type:{{update_agents_dashboard}};source:{{{}}};",pages->at(1)->source);
         auto data = data_requester->sent(cmd);
         if(!data.has_value()){
             qDebug()<<data.error().c_str();

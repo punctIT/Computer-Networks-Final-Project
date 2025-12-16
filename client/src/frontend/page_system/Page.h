@@ -35,6 +35,6 @@ class Page : public QWidget {
             return this->page;
         }
         int last_log;
-
+        std::string source;               
 
 };

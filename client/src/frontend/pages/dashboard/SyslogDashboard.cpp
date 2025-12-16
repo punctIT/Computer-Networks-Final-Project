@@ -198,7 +198,7 @@ void SyslogTable::add(std::vector<std::string> whitelist_data)
     {
         auto content = BetterString::split(entry, "[]");
         if(content.size() < 7) { 
-            qDebug() << "Skip invalid entry (size too small):" << QString::fromStdString(entry);
+            //qDebug() << "Skip invalid entry (size too small):" << QString::fromStdString(entry);
             continue; 
         }
 

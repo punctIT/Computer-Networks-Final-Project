@@ -14,7 +14,7 @@ def get_metrics():
         "hostname": HOSTNAME,
         "ip_address": socket.gethostbyname(HOSTNAME),
         "os_info": os.name, 
-        "cpu_load": psutil.cpu_percent(interval=1),
+        "cpu_load": psutil.cpu_percent(interval=None),
         "ram_usage": psutil.virtual_memory().percent,
         "disk_usage": psutil.disk_usage('/').percent,
         "status_message": "OK",

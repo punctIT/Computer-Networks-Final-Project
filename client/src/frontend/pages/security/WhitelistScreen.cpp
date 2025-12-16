@@ -118,7 +118,7 @@ void WhitelistTable:: add(std::vector<std:: string> whitelist_data)
     {
         auto content = BetterString::split(entry, "[]");
         if(content.size() <= 4) { 
-            qDebug() << "Skip invalid entry (size too small):" << QString::fromStdString(entry);
+            //qDebug() << "Skip invalid entry (size too small):" << QString::fromStdString(entry);
             continue; 
         }
 

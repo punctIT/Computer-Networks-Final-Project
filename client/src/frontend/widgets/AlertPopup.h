@@ -90,22 +90,24 @@ public:
         debugBtn->setFixedHeight(40);
         debugBtn->setCursor(Qt::PointingHandCursor);
         debugBtn->setStyleSheet(
-            "QPushButton { "
-            "    background-color: #1ABC9C; "   /* Verdele principal (Teal) */
-            "    color: white; "
-            "    border: 2px solid #16A085; "   /* Un verde puțin mai închis pentru contur */
-            "    border-radius: 5px; "
-            "    font-weight: bold; "
-            "    font-size: 13px; "
+            "QPushButton {"
+            "    background-color: #FF5555;" 
+            "    color: white;"
+            "    border: 2px solid #FF5555;"
+            "    border-radius: 5px;"
+            "    font-weight: bold;"
+            "    font-size: 13px;"
             "    padding: 8px;"
             "}"
-            "QPushButton:hover { "
-            "    background-color: #16A085; "   /* Verde mai închis la hover */
+            "QPushButton:hover {"
+            "    background-color: #E64545;" 
+            "    border-color: #E64545;"
             "}"
-            "QPushButton:pressed { "
-            "    background-color: #0E6655; " 
+            "QPushButton:pressed {"
+            "    background-color: #FF5555;"   
             "}"
         );
+
         connect(debugBtn, &QPushButton::clicked, this, [this]() {
             this->page_manager->change_page(7);
             this->hide();

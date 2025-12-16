@@ -75,7 +75,7 @@ std::expected<std::string, std::string> RequestHandler::match_type(JUNK &request
         return alerts_requests->update_alerts_dashboard(request);
     }
     if(type == "update_agents_dashboard"){
-
+        return agents_requests->update_dashboard(request);
     }
     return std::unexpected("unknown type");
 }

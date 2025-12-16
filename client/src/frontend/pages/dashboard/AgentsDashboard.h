@@ -25,7 +25,7 @@
 #include <QtCharts/QValueAxis>
 #include <QDateEdit>
 #include <QFrame>
-
+#include <QComboBox>
 
 
 
@@ -42,12 +42,25 @@ public:
     void updateValues(int val);
 };
 
+class AgentsTable{
+    QWidget *widget;
+    QTableWidget *table;
+
+public: 
+    AgentsTable();
+    QWidget* get_widget();
+    void add(std::vector<std::string> metrics_data);
+    void clear();
+};
+
 class AgentsDashboardScreen: public Page{
     QPushButton *btn;
+    QComboBox *types;
     int total_logs;
     std::shared_ptr<AgentsDonutChart> ram_chart;
     std::shared_ptr<AgentsDonutChart> disk_chart;
     std::shared_ptr<AgentsDonutChart> cpu_chart;
+    std::shared_ptr<AgentsTable> agents_table;
     void bind_buttons();
     QWidget* get_top_menu();
     
