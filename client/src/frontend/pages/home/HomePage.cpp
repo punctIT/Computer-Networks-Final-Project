@@ -96,6 +96,7 @@ HomePage::HomePage(std::shared_ptr<DataRequester> data, const std::shared_ptr<Pa
 
 void HomePage::on_enter()
 {
+      update();
     window->showMaximized();
     
     qDebug()<<"enter Home";

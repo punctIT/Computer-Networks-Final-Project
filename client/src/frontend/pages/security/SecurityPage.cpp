@@ -120,6 +120,7 @@ SecurityPage::SecurityPage(std:: shared_ptr<DataRequester> data, const std::shar
 
 void SecurityPage:: on_enter()
 {
+      update();
     updateTimer->start();
     security_pages->change_page(0);
     

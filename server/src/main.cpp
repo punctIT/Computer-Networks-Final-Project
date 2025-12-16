@@ -32,6 +32,7 @@ int main(){
                                 .set_logs_db(logs_db)
                                 .set_alerts_db(alerts_db)
                                 .set_source_manager(source_manager)
+                                .set_agents_db(agents_db)
                                 .set_filtres_manager(filtres_manager)
                                 .start();
                         

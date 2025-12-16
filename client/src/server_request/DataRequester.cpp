@@ -154,6 +154,10 @@ void DataRequester::start_receiving()
             
             emit UpdateSyslogDashboard(qstr);
         }
+        if(type == "update_agents_dashboard"){
+            
+            emit UpdateSyslogDashboard(qstr);
+        }
         if(type == "alerts_dashboard"){
             emit UpdateAlertsDashboard(qstr);
         }

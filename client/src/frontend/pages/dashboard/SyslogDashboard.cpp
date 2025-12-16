@@ -131,6 +131,7 @@ QWidget* SyslogDashboardScreen::get_top_menu(){
 void SyslogDashboardScreen::on_enter()
 {
     auto status = data_requester->sent("type:{update_syslog_dashboard};");
+    
     syslog_donut_chart->updateAnim();
 }
 

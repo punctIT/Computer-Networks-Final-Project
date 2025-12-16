@@ -13,6 +13,7 @@ void DashboardPage::bind_buttons(){
     });
     QObject::connect(agents_dashbord, &QPushButton::clicked, [this](){
         this->dashboard_pages->change_page(1);
+        pages->at(1)->on_enter();
     });
     QObject::connect(unknown_syslog_dashboard, &QPushButton::clicked, [this](){
         this->dashboard_pages->change_page(2);
@@ -105,6 +106,7 @@ void DashboardPage::update()
 
 void DashboardPage::on_enter()
 {
+    update();
     window->showMaximized();
     update_timer->start();
     qDebug() << "enter dashboard";

@@ -1,5 +1,3 @@
-
-
 #pragma once
 
 #include <memory>
@@ -17,27 +15,44 @@
 #include <QtWidgets/QHeaderView>
 #include <QtCore/QTimer>
 
+#include <QtCharts/QChartView>
+#include <QtCharts/QPieSeries>
+#include <QtCharts/QPieSlice>
+#include <QtCharts/QChart>
+
+#include <QtCharts/QLineSeries>
+#include <QtCharts/QDateTimeAxis>
+#include <QtCharts/QValueAxis>
+#include <QDateEdit>
+#include <QFrame>
 
 
-class AgentsTable{
-    QWidget *widget;
-    QTableWidget *table;
 
-    public:
-    AgentsTable();
-    QWidget* get_widget();
-    void add(std::vector<std::string> AgentsDashboard_data);
-    void clear();
+
+class AgentsDonutChart{
+    QPieSeries *series;
+    QChart *chart;
+    QChartView *chartView;
+    int last_val;
+    
+public:
+    AgentsDonutChart (const std::string name, const std::string usedColor, const std::string freeColor);
+    QWidget *get_chart();
+    void updateAnim();
+    void updateValues(int val);
 };
 
-class AgentsDashboardScreen:public Page{
+class AgentsDashboardScreen: public Page{
     QPushButton *btn;
-    std::shared_ptr<AgentsTable> AgentsDashboard_table;
+    int total_logs;
+    std::shared_ptr<AgentsDonutChart> ram_chart;
+    std::shared_ptr<AgentsDonutChart> disk_chart;
+    std::shared_ptr<AgentsDonutChart> cpu_chart;
     void bind_buttons();
-    public:
-        AgentsDashboardScreen(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager,std::shared_ptr <QMainWindow> window);
-        void on_enter() override;
-        void on_exit() override;
+    QWidget* get_top_menu();
+    
+public:
+    AgentsDashboardScreen(std::shared_ptr<DataRequester> data,const std::shared_ptr<PageManager> &page_manager,std::shared_ptr<QMainWindow> window);
+    void on_enter() override;
+    void on_exit() override;
 };
-
-

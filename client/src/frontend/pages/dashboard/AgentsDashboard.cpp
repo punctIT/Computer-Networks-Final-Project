@@ -1,137 +1,169 @@
 #include "AgentsDashboard.h"
+
 #include "../../style/DashboardStyle.hpp"
+#include <QCheckBox>
+#include <QWidget>
+#include "../../../utils/JUNK.hpp"
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QLabel>
+#include <QFrame>
+
 void AgentsDashboardScreen::bind_buttons()
 {
-
 }
 
-AgentsDashboardScreen::AgentsDashboardScreen(std::shared_ptr<DataRequester> data, const std::shared_ptr<PageManager> &page_manager, std::shared_ptr<QMainWindow> window) : Page(data, page_manager, window)
+AgentsDashboardScreen:: AgentsDashboardScreen(std::shared_ptr<DataRequester> data, const std::shared_ptr<PageManager> &page_manager, std::shared_ptr<QMainWindow> window) : Page(data, page_manager, window)
 {
     QGridLayout *layout = new QGridLayout;
-    AgentsDashboard_table= std::make_shared<AgentsTable>();
+    last_log=0;
+    total_logs=0;
+    ram_chart = std:: make_shared<AgentsDonutChart>("Ram", "#3498db", "#1abc9c");
+    disk_chart = std::make_shared<AgentsDonutChart>("Disk", "#e74c3c", "#95a5a6");
+    cpu_chart = std::make_shared<AgentsDonutChart>("Cpu", "#9b59b6", "#f39c12");
+
     btn = new QPushButton("Dashboard Agents");
-    btn->setStyleSheet("background-color: black; color: white;");
-    layout->addWidget(btn,0,0);
-    layout->addWidget(AgentsDashboard_table->get_widget(),1,0);
+    btn->setStyleSheet("background-color: black; color:  black;");
+    layout->addWidget(get_top_menu(),0,0);
+
+    QGridLayout *top_layout= new QGridLayout();
+    top_layout->addWidget(ram_chart->get_chart(),0,0);
+    top_layout->addWidget(cpu_chart->get_chart(),0,1);
+    layout->addLayout(top_layout,1,0);
+    QGridLayout *bottom_layout= new QGridLayout();
+    bottom_layout->addWidget(disk_chart->get_chart(),0,0);
+    layout->addLayout(bottom_layout,2,0);
     bind_buttons();
     page->setLayout(layout);
 }
-void AgentsDashboardScreen::on_enter() {
-    qDebug()<<"whitelsit enter";
-   
+
+QWidget* AgentsDashboardScreen::get_top_menu(){
+    QWidget *widget = new QWidget();
+    QCheckBox *ram_checkbox = new QCheckBox("RAM", this);
+    ram_checkbox->setCheckState(Qt::Checked);
+    QCheckBox *cpu_checkbox = new QCheckBox("CPU", this);
+    cpu_checkbox->setCheckState(Qt::Checked);
+    QCheckBox *disk_checkbox = new QCheckBox("DISK", this);
+    disk_checkbox->setCheckState(Qt:: Checked);
+
+    QGridLayout *layout= new QGridLayout();
+
+    layout->addWidget(ram_checkbox,0,0);
+    layout->addWidget(cpu_checkbox,0,1);
+    layout->addWidget(disk_checkbox,0,2);
+    
+    connect(cpu_checkbox, &QCheckBox::stateChanged, [this](int state){
+       if(state == Qt::Checked) {
+           this->cpu_chart->get_chart()->show();
+        } else {
+            this->cpu_chart->get_chart()->hide();
+        }
+    });
+    connect(ram_checkbox, &QCheckBox::stateChanged, [this](int state){
+        if(state == Qt:: Checked) {
+           this->ram_chart->get_chart()->show();
+        } else {
+            this->ram_chart->get_chart()->hide();
+        }
+    });
+    connect(disk_checkbox, &QCheckBox:: stateChanged, [this](int state){
+       if(state == Qt::Checked) {
+           this->disk_chart->get_chart()->show();
+        } else {
+            this->disk_chart->get_chart()->hide();
+        }
+    });
+    
+    widget->setLayout(layout);
+    return widget;
+}
+
+void AgentsDashboardScreen:: on_enter()
+{
+    auto status = data_requester->sent("type:{update_Agents_dashboard};");
+    
+    ram_chart->updateAnim();
+    cpu_chart->updateAnim();
+    disk_chart->updateAnim();
 }
 
 void AgentsDashboardScreen::on_exit() {
     qDebug()<<"whitelsit leave";
- 
 }
 
-
-
-
-AgentsTable::AgentsTable()
+AgentsDonutChart:: AgentsDonutChart(const std::string name, const std::string usedColor, const std::string freeColor)
 {
-    widget = new QWidget();
-    QVBoxLayout *mainLayout = new QVBoxLayout(widget);
-    mainLayout->setContentsMargins(10, 10, 10, 10);
+    last_val=32;
+    series = new QPieSeries();
+    series->setHoleSize(0.50); 
 
-    QFrame *frame = new QFrame();
-    frame->setObjectName("TableFrame");
-    QVBoxLayout *frameLayout = new QVBoxLayout(frame);
-    frameLayout->setContentsMargins(0, 10, 0, 10); 
-
-    table = new QTableWidget();
-    table->setColumnCount(5);
-    
-    QStringList headers = {"Nume", "IP Address", "Timp", "Admin", ""}; 
-    table->setHorizontalHeaderLabels(headers);
-
-  
-    table->setShowGrid(false);
-    table->setFocusPolicy(Qt::NoFocus); 
-    table->setSelectionMode(QAbstractItemView::NoSelection); 
-    table->verticalHeader()->setVisible(false); 
-   
-    table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    table->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Fixed); 
-    table->setColumnWidth(4, 120); 
-
+    series->append("Used", 70);
+    series->append("Free", 30);
    
     
-    widget->setStyleSheet(QString::fromStdString(get_table_style()));
-   
-    frameLayout->addWidget(table);
-    mainLayout->addWidget(frame);
+    QPieSlice *sliceUsed = series->slices().at(0);
+    sliceUsed->setLabelVisible(true);
+    sliceUsed->setBrush(QColor(QString:: fromStdString(usedColor))); 
+    sliceUsed->setLabelColor(Qt:: white);   
+    sliceUsed->setLabel("Used:  70");
+    sliceUsed->setBorderColor(QColor("#2d2d2d")); 
+    sliceUsed->setBorderWidth(2);
+
+    QPieSlice *sliceFree = series->slices().at(1);
+    sliceFree->setLabelVisible(true);
+    sliceFree->setBrush(QColor(QString::fromStdString(freeColor))); 
+    sliceFree->setLabelColor(Qt::white);
+    sliceFree->setLabel("Free:  20");
+    sliceFree->setBorderColor(QColor("#2d2d2d"));
+    sliceFree->setBorderWidth(2);
+    
+    chart = new QChart();
+    chart->addSeries(series);
+    chart->setTitle(QString:: fromStdString(name)+" Statistics");
+    chart->setAnimationOptions(QChart::AllAnimations);
+
+    chart->setBackgroundBrush(QBrush(QColor("#2d2d2d"))); 
+    chart->setTitleBrush(QBrush(Qt:: white));          
+    QFont titleFont("Segoe UI", 12, QFont::Bold);
+    chart->setTitleFont(titleFont);
+    
+    chart->legend()->hide(); 
+
+    chartView = new QChartView(chart);
+    chartView->setRenderHint(QPainter::Antialiasing);
+    chartView->setStyleSheet("background:  transparent; border: none;");
 }
 
-QWidget *AgentsTable::get_widget()
-{
-    return this->widget;
+QWidget* AgentsDonutChart::get_chart(){
+    return chartView;
 }
 
-void AgentsTable::clear()
+void AgentsDonutChart::updateValues(int val)
 {
-    table->setRowCount(0); 
+    last_val=val;
+    if (series->slices().size() < 2) return;
+    
+    QPieSlice *sliceUsed = series->slices().at(0);
+    sliceUsed->setValue(val);
+    sliceUsed->setLabel("Used: " + QString::number(val));
+
+    QPieSlice *sliceFree = series->slices().at(1);
+    sliceFree->setValue(100-val);
+    sliceFree->setLabel("Free: " + QString:: number(100-val));
 }
-void AgentsTable::add(std::vector<std::string> whitelist_data)
+
+void AgentsDonutChart:: updateAnim()
 {
-    table->setUpdatesEnabled(false); 
+    chart->removeSeries(series);
 
-    for(auto entry : whitelist_data) 
-    {
-       
-        auto content = BetterString::split(entry, "[]");
-        if(content.size() <= 4) { 
-            qDebug() << "Skip invalid entry (size too small):" << QString::fromStdString(entry);
-            continue; 
-        }
+    QPieSlice *sliceUsed = series->slices().at(0);
+    sliceUsed->setValue(last_val);
+    sliceUsed->setLabel("Used: " + QString:: number(last_val));
 
-        table->insertRow(0);
+    QPieSlice *sliceFree = series->slices().at(1);
+    sliceFree->setValue(100-last_val);
+    sliceFree->setLabel("Free:  " + QString::number(100-last_val));
 
-        for(int i = 0; i < 4; ++i) {
-            if((i + 1) >= content.size()) break;
 
-            QTableWidgetItem *item = new QTableWidgetItem(QString::fromStdString(content[i+1]));
-            item->setTextAlignment(Qt::AlignCenter); // Centrat frumos
-            table->setItem(0, i, item);
-        }
-
-        QWidget* btnWidget = new QWidget();
-        QHBoxLayout* btnLayout = new QHBoxLayout(btnWidget);
-        btnLayout->setContentsMargins(0,0,0,0);
-        btnLayout->setAlignment(Qt::AlignCenter);
-
-        QPushButton *deleteBtn = new QPushButton("Șterge");
-        deleteBtn->setCursor(Qt::PointingHandCursor);
-     
-        deleteBtn->setStyleSheet(R"(
-            QPushButton {
-                background-color: #FFEBEE;
-                color: #D32F2F;
-                border-radius: 15px; 
-                padding: 6px 15px;
-                font-weight: bold;
-                border: none;
-            }
-            QPushButton:hover {
-                background-color: #FFCDD2;
-            }
-        )");
-
-        QObject::connect(deleteBtn, &QPushButton::clicked, [this, deleteBtn]() {
-            QWidget *w = deleteBtn->parentWidget();
-            if(!w) return;
-            for(int r = 0; r < table->rowCount(); ++r) {
-                if(table->cellWidget(r, 4) == w) {
-                    table->removeRow(r);
-                    break;
-                }
-            }
-        });
-
-        btnLayout->addWidget(deleteBtn);
-        table->setCellWidget(0, 4, btnWidget);
-    }
-
-    table->setUpdatesEnabled(true);
+    chart->addSeries(series);
 }
