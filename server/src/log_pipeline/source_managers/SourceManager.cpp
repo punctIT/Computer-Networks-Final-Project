@@ -155,3 +155,9 @@ bool SourceManager::check_ip_blacklist(std::string ip)
     std::shared_lock lock(_mutex);
     return blacklist_source.contains(ip);
 }
+
+std::pair<int, int> SourceManager::get_count()
+{
+    std::shared_lock lock(_mutex);
+    return std::pair<int, int>(whitelist_source.size(),blacklist_source.size());
+}

@@ -34,5 +34,6 @@ class RequestHandler:public ResponseFormater{
         );
     std::expected<std::string,std::string> match_type(JUNK &request);
     std::expected<std::string,std::string> match_request(int client,std::string request);
+    std::expected<std::string,std::string> home_request(JUNK &request);
     
 };

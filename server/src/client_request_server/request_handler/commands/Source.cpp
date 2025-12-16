@@ -76,3 +76,8 @@ std::expected<std::string, std::string> Source::get_updated_blacklist(JUNK &requ
     }
     return ResponseFormater::response_formater(true,"update_blacklist",result);
 }
+
+std::pair<int, int> Source::get_count()
+{
+    return source_manager->get_count();
+}

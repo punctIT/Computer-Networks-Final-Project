@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include <expected>
+#include <utility>
 #include <format>
 #include "../ResponseFormater.hpp"
 #include "../../../utils/JUNK.hpp"
@@ -16,4 +17,5 @@ class Source:ResponseFormater{
     std::expected<std::string, std::string> remove_whitelist_request(JUNK &request);
     std::expected<std::string, std::string> get_updated_whitelist(JUNK&request);
     std::expected<std::string, std::string> get_updated_blacklist(JUNK&request);
+    std::pair<int,int> get_count();
 };

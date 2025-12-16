@@ -9,6 +9,7 @@
 #include <expected>
 #include <iostream>
 #include <format>
+#include <utility>
 #include <optional>
 #include "../../utils/DBManager.hpp"
 #include "../../utils/BetterString.hpp"
@@ -30,4 +31,5 @@ class SourceManager{
 
     std::optional<std::string> check_ip_whitelist(std::string ip);
     bool check_ip_blacklist(std::string ip);
+    std::pair<int,int> get_count();
 };

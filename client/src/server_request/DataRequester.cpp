@@ -123,7 +123,7 @@ void DataRequester::start_receiving()
         if(!data.has_value()){
             continue;
         }
-        //qDebug()<<data.value().c_str();
+        qDebug()<<data.value().c_str();
         std::string rawData = data.value();
         auto junk_data = JUNK::deserialize(data.value());
         if(!junk_data.has_value()){

@@ -1,7 +1,6 @@
 #include "Alerts.hpp"
 
-Alerts::Alerts(std::shared_ptr<DBManager> &alerts):alerts(alerts)
-{
+Alerts::Alerts(std::shared_ptr<DBManager> &alerts):alerts(alerts){
     this->last_id=-1;
 }
 
@@ -29,5 +28,16 @@ std::expected<std::string, std::string> Alerts::last_alert(JUNK &request)
 }
 
 std::expected<std::string, std::string> Alerts::update_alerts_dashboard(JUNK &request){
-    return response_formater(false,"alerts_dashboard","nimic");
+    if(!request.contains("last_alert")){
+        return std::unexpected("Invalid , there is no LAST_ID ");
+    }
+    auto data = alerts->query("select * from alerts where id >= ?;",{request["last_alert"].value()});
+    if(data.has_value()==false){
+        return std::unexpected(data.error());
+    }
+    std::string result="";
+    for(auto line : data.value()){
+        result= std::format("{}{{}}{}",result,line);
+    }
+    return response_formater(false,"alerts_dashboard",result);
 }

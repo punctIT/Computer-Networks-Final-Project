@@ -1,5 +1,5 @@
 #include "RequestHandler.hpp"
-
+#include <format>
 
 std::expected<std::string,std::string> RequestHandler::match_request(int client,std::string request){
     //std::cout << "Request: "<< request << std::endl;
@@ -20,6 +20,8 @@ std::expected<std::string,std::string> RequestHandler::match_request(int client,
     
 
 }
+
+
 
 std::expected<std::string, std::string> RequestHandler::match_type(JUNK &request){
     if(!request["type"].has_value()){
@@ -45,7 +47,7 @@ std::expected<std::string, std::string> RequestHandler::match_type(JUNK &request
         return auth_requests->logout_request(request);
     }
     if(type=="logs"){
-        return logs_requests->logs_request(request);
+        return home_request(request);
     }
     if(type=="update_syslog_dashboard"){
         return logs_requests->update_syslog_dashboard(request);
@@ -94,3 +96,9 @@ RequestHandler::RequestHandler(std::shared_ptr<SessionManager> &session,
        agents_requests=std::make_shared<Agents>(agents);
     }
 
+std::expected<std::string, std::string> RequestHandler::home_request(JUNK &request)
+{
+    auto source_data = source_request->get_count();
+    return std::format("type:{{{}}};succes:{{{}}};whitelist:{{{}}};blacklist:{{{}}};",
+        "logs",true,source_data.first,source_data.second);
+}
