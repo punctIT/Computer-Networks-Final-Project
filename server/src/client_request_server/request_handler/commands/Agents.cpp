@@ -37,3 +37,25 @@ std::expected<std::string, std::string> Agents::update_dashboard(JUNK &request)
     }
     return std::format("type:{{{}}};succes:{{{}}};sources:{{{}}};agent_data:{{{}}};agents:{{{}}};","update_agents_dashboard",true,all_sourece,data.value()[0],source_status_data);
 }
+
+std::expected<std::string, std::string> Agents::update_unknown_agents(JUNK &request)
+{
+    auto data_logs = agents->get_unsafe("select * from unknown_metrics limit 100;");
+    if(!data_logs.has_value()){
+        return std::unexpected(data_logs.error());
+    }
+    std::string result="";
+    for(auto log : data_logs.value()){
+        result=std::format("{}{{}}{}",result,log);
+    }
+    auto sources_logs = agents->get_unsafe("select distinct(ip) from unknown_metrics ;");
+    if(!sources_logs.has_value()){
+        return std::unexpected(sources_logs.error());
+    }
+    std::string sources="";
+    for(auto log : sources_logs.value()){
+        sources=std::format("{}{{}}{}",sources,log);
+    }
+    return std::format("type:{{{}}};succes:{{{}}};agents:{{{}}};sources:{{{}}};","update_unknown_agents",true,result,sources);
+
+}

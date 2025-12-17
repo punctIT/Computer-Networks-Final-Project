@@ -3,34 +3,44 @@
 
 void UnknownAgentDashboardScreen::bind_buttons()
 {
-
+    connect(data_requester. get(), &DataRequester::UpdateUnknownAgent, this, [this](QString msg) {
+        auto data = JUNK::deserialize(msg.toStdString());
+        if (data.value()["sources"].has_value()){
+            sources_table->add(BetterString::split(data. value()["sources"].value(),"{}"));
+        }
+        if (data.value()["agents"].has_value()){
+            Logs_table->add(BetterString::split(data. value()["agents"].value(),"{}"));
+        }
+    });
 }
 
 UnknownAgentDashboardScreen::UnknownAgentDashboardScreen(std::shared_ptr<DataRequester> data, const std::shared_ptr<PageManager> &page_manager, std::shared_ptr<QMainWindow> window) : Page(data, page_manager, window)
 {
     QGridLayout *layout = new QGridLayout;
-    SyslogDashboard_table= std::make_shared<UnknownAgentTable>();
+    
+    Logs_table = std::make_shared<AgentLogsTable>();
+    sources_table = std:: make_shared<AgentSourcesTable>();
+    
     btn = new QPushButton("UNKNOWN Dashboard AGENT");
     btn->setStyleSheet("background-color: black; color: white;");
-    layout->addWidget(btn,0,0);
-    layout->addWidget(SyslogDashboard_table->get_widget(),1,0);
+    
+    layout->addWidget(btn, 0, 0, 1, 2);
+    layout->addWidget(Logs_table->get_widget(), 1, 0);
+    layout->addWidget(sources_table->get_widget(), 1, 1);
+    
     bind_buttons();
     page->setLayout(layout);
 }
+
 void UnknownAgentDashboardScreen::on_enter() {
     qDebug()<<"whitelsit enter";
-   
 }
 
 void UnknownAgentDashboardScreen::on_exit() {
     qDebug()<<"whitelsit leave";
- 
 }
 
-
-
-
-UnknownAgentTable::UnknownAgentTable()
+AgentLogsTable::AgentLogsTable()
 {
     widget = new QWidget();
     QVBoxLayout *mainLayout = new QVBoxLayout(widget);
@@ -39,98 +49,108 @@ UnknownAgentTable::UnknownAgentTable()
     QFrame *frame = new QFrame();
     frame->setObjectName("TableFrame");
     QVBoxLayout *frameLayout = new QVBoxLayout(frame);
-    frameLayout->setContentsMargins(0, 10, 0, 10); 
+    frameLayout->setContentsMargins(0, 10, 0, 10);
 
     table = new QTableWidget();
-    table->setColumnCount(5);
+    table->setColumnCount(1);
     
-    QStringList headers = {"Nume", "IP Address", "Timp", "Admin", ""}; 
+    QStringList headers = {"Unknowns ip source"};
     table->setHorizontalHeaderLabels(headers);
 
-  
     table->setShowGrid(false);
-    table->setFocusPolicy(Qt::NoFocus); 
-    table->setSelectionMode(QAbstractItemView::NoSelection); 
-    table->verticalHeader()->setVisible(false); 
-   
+    table->setFocusPolicy(Qt::NoFocus);
+    table->setSelectionMode(QAbstractItemView:: NoSelection);
+    table->verticalHeader()->setVisible(false);
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    table->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Fixed); 
-    table->setColumnWidth(4, 120); 
 
     widget->setStyleSheet(QString::fromStdString(get_table_style()));
 
-   
     frameLayout->addWidget(table);
     mainLayout->addWidget(frame);
 }
 
-QWidget *UnknownAgentTable::get_widget()
+QWidget *AgentLogsTable::get_widget()
 {
     return this->widget;
 }
 
-void UnknownAgentTable::clear()
+void AgentLogsTable::clear()
 {
-    table->setRowCount(0); 
+    table->setRowCount(0);
 }
-void UnknownAgentTable::add(std::vector<std::string> whitelist_data)
+
+void AgentLogsTable::add(std::vector<std::string> data)
 {
-    table->setUpdatesEnabled(false); 
+    table->setUpdatesEnabled(false);
+    clear();
 
-    for(auto entry : whitelist_data) 
+    for(auto entry : data) 
     {
-       
-        auto content = BetterString::split(entry, "[]");
-        if(content.size() <= 4) { 
-            //qDebug() << "Skip invalid entry (size too small):" << QString::fromStdString(entry);
-            continue; 
+        if(entry.empty()){
+            continue;
         }
+        table->insertRow(table->rowCount());
+        QTableWidgetItem *item = new QTableWidgetItem(QString::fromStdString(entry));
+        item->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+        table->setItem(table->rowCount() - 1, 0, item);
+    }
 
-        table->insertRow(0);
+    table->setUpdatesEnabled(true);
+}
 
-        for(int i = 0; i < 4; ++i) {
-            if((i + 1) >= content.size()) break;
+AgentSourcesTable::AgentSourcesTable()
+{
+    widget = new QWidget();
+    QVBoxLayout *mainLayout = new QVBoxLayout(widget);
+    mainLayout->setContentsMargins(10, 10, 10, 10);
 
-            QTableWidgetItem *item = new QTableWidgetItem(QString::fromStdString(content[i+1]));
-            item->setTextAlignment(Qt::AlignCenter); // Centrat frumos
-            table->setItem(0, i, item);
+    QFrame *frame = new QFrame();
+    frame->setObjectName("TableFrame");
+    QVBoxLayout *frameLayout = new QVBoxLayout(frame);
+    frameLayout->setContentsMargins(0, 10, 0, 10);
+
+    table = new QTableWidget();
+    table->setColumnCount(1);
+    
+    QStringList headers = {"IP Sources"};
+    table->setHorizontalHeaderLabels(headers);
+
+    table->setShowGrid(false);
+    table->setFocusPolicy(Qt::NoFocus);
+    table->setSelectionMode(QAbstractItemView::NoSelection);
+    table->verticalHeader()->setVisible(false);
+    table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
+    widget->setStyleSheet(QString:: fromStdString(get_table_style()));
+
+    frameLayout->addWidget(table);
+    mainLayout->addWidget(frame);
+}
+
+QWidget *AgentSourcesTable::get_widget()
+{
+    return this->widget;
+}
+
+void AgentSourcesTable::clear()
+{
+    table->setRowCount(0);
+}
+
+void AgentSourcesTable::add(std::vector<std::string> data)
+{
+    table->setUpdatesEnabled(false);
+    clear();
+
+    for(auto entry : data) 
+    {
+        if(entry.empty()){
+            continue;
         }
-
-        QWidget* btnWidget = new QWidget();
-        QHBoxLayout* btnLayout = new QHBoxLayout(btnWidget);
-        btnLayout->setContentsMargins(0,0,0,0);
-        btnLayout->setAlignment(Qt::AlignCenter);
-
-        QPushButton *deleteBtn = new QPushButton("Șterge");
-        deleteBtn->setCursor(Qt::PointingHandCursor);
-     
-        deleteBtn->setStyleSheet(R"(
-            QPushButton {
-                background-color: #FFEBEE;
-                color: #D32F2F;
-                border-radius: 15px; 
-                padding: 6px 15px;
-                font-weight: bold;
-                border: none;
-            }
-            QPushButton:hover {
-                background-color: #FFCDD2;
-            }
-        )");
-
-        QObject::connect(deleteBtn, &QPushButton::clicked, [this, deleteBtn]() {
-            QWidget *w = deleteBtn->parentWidget();
-            if(!w) return;
-            for(int r = 0; r < table->rowCount(); ++r) {
-                if(table->cellWidget(r, 4) == w) {
-                    table->removeRow(r);
-                    break;
-                }
-            }
-        });
-
-        btnLayout->addWidget(deleteBtn);
-        table->setCellWidget(0, 4, btnWidget);
+        table->insertRow(table->rowCount());
+        QTableWidgetItem *item = new QTableWidgetItem(QString::fromStdString(entry));
+        item->setTextAlignment(Qt::AlignCenter);
+        table->setItem(table->rowCount() - 1, 0, item);
     }
 
     table->setUpdatesEnabled(true);

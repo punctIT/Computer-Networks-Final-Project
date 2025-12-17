@@ -20,7 +20,7 @@ void AlertsPage::bind_buttons()
                 try
                 {
                     a.severity = stoi(content[3]);
-                    last_alert=stoi(content[0])+1;
+                    
                 }
                 catch(const std::exception& e){
                     continue;
@@ -38,9 +38,9 @@ void AlertsPage::bind_buttons()
 
 AlertsPage:: AlertsPage(std::shared_ptr<DataRequester> data, const std::shared_ptr<PageManager> &page_manager, std::shared_ptr<QMainWindow> window) : Page(data, page_manager, window)
 {
-    last_alert=0;
+   
     layout = new QVBoxLayout();
-    popup = std::make_shared<AlertsPopup>(window.get(),data_requester,100,200);
+    popup = std::make_shared<AlertsPopup>(window.get(),data_requester,300,300);
     layout->setContentsMargins(30, 20, 30, 20);
     layout->setSpacing(20);
     
@@ -65,10 +65,11 @@ void AlertsPage::on_enter()
 {
     updateTimer->start();
     window->showMaximized();
+    update();
    
 }
 void AlertsPage::update(){
-    this->data_requester->sent(std:: format("type:{{alerts_dashboard}};last_alert:{{{}}};",last_alert));
+    this->data_requester->sent(std:: format("type:{{alerts_dashboard}};"));
 }
 void AlertsPage::on_exit()
 {
@@ -143,6 +144,21 @@ QWidget* AlertsTable::get_widget()
     return this->widget;
 }
 
+void AlertsTable::remove_at(int i)
+{
+    if(i < 0 || i >= alertCount) {
+        qDebug() << "Invalid index:" << i;
+        return;
+    }
+    
+    QLayoutItem *item = contentLayout->takeAt(i);
+    if (item && item->widget()) {
+        delete item->widget();
+        delete item;
+        alertCount--;
+    }
+}
+
 void AlertsTable::clear()
 {
     QLayoutItem *item;
@@ -155,9 +171,9 @@ void AlertsTable::clear()
     contentLayout->addStretch();
     alertCount = 0;
 }
-
 void AlertsTable::add(std::vector<AlertData> alerts_data)
 {
+    this->clear();
     for(const auto& alert :  alerts_data)
     {
         QFrame *alertFrame = new QFrame();
@@ -184,7 +200,7 @@ void AlertsTable::add(std::vector<AlertData> alerts_data)
         layout->addWidget(nameLabel);
 
         QLabel *categoryLabel = new QLabel(QString::fromStdString(alert.category));
-        categoryLabel->setStyleSheet("color: #B0B0B0; font-size: 13px; background: transparent; border: none;");
+        categoryLabel->setStyleSheet("color:  #B0B0B0; font-size: 13px; background: transparent; border: none;");
         categoryLabel->setFixedWidth(150);
         layout->addWidget(categoryLabel);
 
@@ -196,12 +212,12 @@ void AlertsTable::add(std::vector<AlertData> alerts_data)
         else { severityText = "CRIT"; severityColor = "#9C27B0"; }
 
         QLabel *severityLabel = new QLabel(severityText);
-        severityLabel->setStyleSheet(QString("color: %1; font-weight:  bold; font-size: 13px; background: transparent; border:  none;").arg(severityColor));
+        severityLabel->setStyleSheet(QString("color:  %1; font-weight:  bold; font-size: 13px; background: transparent; border:   none;").arg(severityColor));
         severityLabel->setFixedWidth(80);
         severityLabel->setAlignment(Qt::AlignCenter);
         layout->addWidget(severityLabel);
 
-        QLabel *statusLabel = new QLabel(QString::fromStdString(alert.status));
+        QLabel *statusLabel = new QLabel(QString:: fromStdString(alert.status));
         statusLabel->setStyleSheet("color: #FFD700; font-size: 13px; background: transparent; border: none;");
         statusLabel->setFixedWidth(100);
         layout->addWidget(statusLabel);
@@ -226,7 +242,7 @@ void AlertsTable::add(std::vector<AlertData> alerts_data)
             "}"
             "QPushButton:hover {"
             "   background-color: #1ABC9C;"
-            "   color: #121212;"
+            "   color:  #121212;"
             "}"
             "QPushButton:pressed {"
             "   background-color: #0E6655;"
@@ -234,25 +250,26 @@ void AlertsTable::add(std::vector<AlertData> alerts_data)
             "}"
         );
         
-        QString details = QString::fromStdString(alert.details);
-        QObject::connect(showBtn, &QPushButton::clicked, [this,details]() {
-            popup->showCentered();
+        alertFrame->setProperty("alertIndex", alertCount);
+        
+        QObject::connect(showBtn, &QPushButton::clicked, [this, alert, alertFrame]() {
+            int rowIndex = -1;
+            for(int i = 0; i < contentLayout->count() - 1; i++) {
+                QLayoutItem *item = contentLayout->itemAt(i);
+                if(item && item->widget() == alertFrame) {
+                    rowIndex = i;
+                    break;
+                }
+            }
+            
+            if(rowIndex != -1) {
+                popup->update_data(alert.id, this, rowIndex);
+                popup->showCentered();
+            }
         });
         
         layout->addWidget(showBtn);
 
         contentLayout->insertWidget(contentLayout->count() - 1, alertFrame);
-        alertCount++;
-        
-        if(alertCount > 100)
-        {
-            int lastIndex = contentLayout->count() - 2;
-            QLayoutItem *item = contentLayout->takeAt(lastIndex);
-            if (item && item->widget()) {
-                delete item->widget();
-                delete item;
-                alertCount--;
-            }
-        }
     }
 }

@@ -52,6 +52,9 @@ std::expected<std::string, std::string> RequestHandler::match_type(JUNK &request
     if(type=="update_syslog_dashboard"){
         return logs_requests->update_syslog_dashboard(request);
     }
+    if(type=="update_unknown_syslog"){
+        return logs_requests->update_unknown_syslog_dashboard(request);
+    }
     if(type=="add_whitelist_ip"){
         return source_request->add_whitelist_request(request);
     }
@@ -78,6 +81,12 @@ std::expected<std::string, std::string> RequestHandler::match_type(JUNK &request
     }
     if(type == "update_agents_dashboard"){
         return agents_requests->update_dashboard(request);
+    }
+    if(type == "update_unknown_agents"){
+        return agents_requests->update_unknown_agents(request);
+    }
+    if(type == "remove_alert"){
+        return alerts_requests->remove_alert(request);
     }
     return std::unexpected("unknown type");
 }

@@ -18,7 +18,7 @@ WhiteListScreen::WhiteListScreen(std:: shared_ptr<DataRequester> data, const std
 {
     QGridLayout *layout = new QGridLayout;
     whitelist_table= std::make_shared<WhitelistTable>(data_requester);
-    add_whitelist=std::make_shared<AddWhitelistPopup>(window.get(),data_requester,400,300); 
+    add_whitelist=std::make_shared<AddWhitelistPopup>(window.get(),data_requester,400,400); 
     btn = new QPushButton("Add new whitelist rule");
      btn->setCursor(Qt::PointingHandCursor);
     btn->setFixedHeight(40);

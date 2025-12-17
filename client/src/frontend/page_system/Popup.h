@@ -5,15 +5,16 @@
 #include <QGridLayout>
 #include <QVBoxLayout>
 #include <QGraphicsDropShadowEffect>
-
+#include <string>
 #include <memory>
 
 class DataRequester;
-
+class AlertsTable;
 class Popup : public QWidget {
     Q_OBJECT
 protected:
     QGridLayout* layout;
+    std::string data;
     std::shared_ptr <DataRequester> data_requester;
 public:
     Popup(QWidget* parent, std::shared_ptr<DataRequester> data, int sizeX, int sizeY) 
@@ -91,5 +92,7 @@ public:
         }
         this->raise(); 
         this->show();
+        qDebug()<<data.c_str();
     }
+    virtual void update_data(std::string ,AlertsTable *table,int id){};
 };

@@ -38,15 +38,14 @@ AlertsManager::AlertsManager(std::shared_ptr<DBManager> alerts_db)
 std::expected<void, std::string> AlertsManager::add()
 {
     std::string insert2 = R"(
-        INSERT INTO alerts (alert_name, category, severity, entity, details, status, comment) 
+        INSERT INTO alerts (alert_name, category, severity, entity, details, status) 
         VALUES (
             'High CPU Usage',
             'Performance',
-            2,
+             2,
             'Server-01',
             'CPU usage exceeded 90% for more than 5 minutes',
-            'IN_PROGRESS',
-            'Team notified, investigating'
+            'IN_PROGRESS'
         );
     )";
     auto data = alerts_db->run_command_unsafe(insert2);

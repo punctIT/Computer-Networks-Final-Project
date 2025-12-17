@@ -1,5 +1,3 @@
-
-
 #pragma once
 
 #include <memory>
@@ -17,27 +15,36 @@
 #include <QtWidgets/QHeaderView>
 #include <QtCore/QTimer>
 
-
-
-class UnknownSyslogTable{
+class LogsTable {
     QWidget *widget;
     QTableWidget *table;
 
-    public:
-    UnknownSyslogTable();
+public:
+    LogsTable();
     QWidget* get_widget();
-    void add(std::vector<std::string> SyslogDashboard_data);
+    void add(std::vector<std::string> data);
     void clear();
 };
 
-class UnknownSyslogDashboardScreen:public Page{
-    QPushButton *btn;
-    std::shared_ptr<UnknownSyslogTable> SyslogDashboard_table;
-    void bind_buttons();
-    public:
-        UnknownSyslogDashboardScreen(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager,std::shared_ptr <QMainWindow> window);
-        void on_enter() override;
-        void on_exit() override;
+class SourcesTable {
+    QWidget *widget;
+    QTableWidget *table;
+
+public:
+    SourcesTable();
+    QWidget* get_widget();
+    void add(std:: vector<std::string> data);
+    void clear();
 };
 
+class UnknownSyslogDashboardScreen :  public Page {
+    QPushButton *btn;
+    std::shared_ptr<LogsTable> Logs_table;
+    std:: shared_ptr<SourcesTable> sources_table;
+    void bind_buttons();
 
+public:
+    UnknownSyslogDashboardScreen(std::shared_ptr<DataRequester> data, const std::shared_ptr<PageManager> &page_manager, std::shared_ptr<QMainWindow> window);
+    void on_enter() override;
+    void on_exit() override;
+};

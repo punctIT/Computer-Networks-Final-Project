@@ -158,6 +158,12 @@ void DataRequester::start_receiving()
             
             emit UpdateAgentsDashboard(qstr);
         }
+        if(type == "update_unknown_syslog"){
+            emit UpdateUnknownSyslig(qstr);
+        }
+        if(type == "update_unknown_agents"){
+            emit UpdateUnknownAgent(qstr);
+        }
         if(type == "alerts_dashboard"){
             emit UpdateAlertsDashboard(qstr);
         }

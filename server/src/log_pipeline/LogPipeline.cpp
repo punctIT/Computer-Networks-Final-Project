@@ -38,6 +38,7 @@ LogPipeline &LogPipeline::configure_database()
     sql = R"(
         CREATE TABLE IF NOT EXISTS unknown_log (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            ip TEXT,
             pri TEXT,
             timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
             host TEXT,
@@ -66,13 +67,15 @@ LogPipeline &LogPipeline::configure_database()
     if(!result.has_value())
         throw std::runtime_error(result.error());
     sql = R"(
-        CREATE TABLE IF NOT EXISTS agents (
+        CREATE TABLE IF NOT EXISTS unknown_metrics (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        hostname TEXT UNIQUE,       
-        ip_address TEXT,
-        os_info TEXT,
-        status TEXT,                
-        last_seen INTEGER          
+        hostname TEXT,    
+        ip TEXT,        
+        cpu_load REAL,
+        ram_usage REAL,
+        disk_usage REAL,
+        message TEXT,                
+        timestamp INTEGER DEFAULT (strftime('%s','now'))       
     );
     )";
     result = this->agents_db->run_command_unsafe(sql);

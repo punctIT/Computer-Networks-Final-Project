@@ -13,4 +13,5 @@ class Agents:public ResponseFormater{
     public:
     Agents(std::shared_ptr<DBManager> &agents);
     std::expected<std::string, std::string> update_dashboard(JUNK &request);
+    std::expected<std::string, std::string> update_unknown_agents(JUNK &request);
 };

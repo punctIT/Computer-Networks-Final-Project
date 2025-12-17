@@ -1,19 +1,20 @@
 #include "AlertsPopup.hpp"
+#include "AlertsPage.h"
 
 void AlertsPopup::connect_buttons()
 {
-    QObject::connect(add_btn,&QPushButton::clicked,[this](){
-        const std::string cmd = std::format("type:add_whitelist_ip;source_name:{{{}}};ip:{{{}}};admin_username:admin;",
-            source_name->text().toStdString(),ip_entry->text().toStdString());
+    QObject::connect(resolve_btn,&QPushButton::clicked,[this](){
+        const std::string cmd = std::format("type:{{remove_alert}};alert_id:{{{}}};",data);
         auto data = data_requester->sent(cmd);
+        alert_tabele->remove_at(id);
         this->hide();
     });
 }
 
 AlertsPopup::AlertsPopup(QWidget *parent, std::shared_ptr<DataRequester> data, int x, int y) : Popup(parent, data, x, y)
 {
-    add_btn= new QPushButton("Add to whitelist");
-    add_btn->setStyleSheet(R"(
+    resolve_btn= new QPushButton("Solve Alert");
+    resolve_btn->setStyleSheet(R"(
             QPushButton {
                 background-color: #1ABC9C;
                 color: white;
@@ -30,16 +31,13 @@ AlertsPopup::AlertsPopup(QWidget *parent, std::shared_ptr<DataRequester> data, i
                 background-color: #0E6655;
             }
         )");
-    ip_entry= new QLineEdit();
-    source_name = new QLineEdit();
-    error = new QLabel();
-    error->hide();
-    layout->addWidget(new QLabel("Add new ip source to whitelist"),0,0);
-    layout->addWidget(new QLabel("IP adreess:"),1,0);
-    layout->addWidget(ip_entry,2,0);
-    layout->addWidget(new QLabel("Source Name:"),3,0);
-    layout->addWidget(source_name,4,0);       
-    layout->addWidget(error,5,0);
-    layout->addWidget(add_btn,6,0);
+   
+    layout->addWidget(new QLabel("Mark alert resolved"),0,0);
+    layout->addWidget(resolve_btn,6,0);
     connect_buttons();
+}
+void AlertsPopup::update_data(std::string dat,AlertsTable *table,int id){
+    alert_tabele=table;
+    this->id = id;
+    data=dat;
 };

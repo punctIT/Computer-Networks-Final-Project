@@ -47,4 +47,6 @@ class DataRequester: public QWidget , public ProtocolFormater {
     void UpdateAlersPopup(QString response);
     void UpdateSyslogDashboard(QString response);
     void UpdateAgentsDashboard(QString response);
+    void UpdateUnknownSyslig(QString response);
+    void UpdateUnknownAgent(QString response);
 };

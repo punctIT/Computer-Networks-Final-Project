@@ -9,7 +9,7 @@ std::expected<std::string, std::string> Alerts::last_alert(JUNK &request)
     if(!request.contains("last_id")){
         return std::unexpected("Invalid , there is no LAST_ID ");
     }
-    auto data = this->alerts->get_unsafe("select max(id) from alerts;");
+    auto data = this->alerts->get_unsafe("select max(id) from alerts WHERE comment IS NULL OR comment = '';");
     if(data.has_value()==false ){
         return std::unexpected(data.error());
     }
@@ -28,10 +28,7 @@ std::expected<std::string, std::string> Alerts::last_alert(JUNK &request)
 }
 
 std::expected<std::string, std::string> Alerts::update_alerts_dashboard(JUNK &request){
-    if(!request.contains("last_alert")){
-        return std::unexpected("Invalid , there is no LAST_ID ");
-    }
-    auto data = alerts->query("select * from alerts where id >= ?;",{request["last_alert"].value()});
+    auto data = alerts->get_unsafe("SELECT * FROM alerts WHERE comment IS NULL OR comment = '';");
     if(data.has_value()==false){
         return std::unexpected(data.error());
     }
@@ -40,4 +37,20 @@ std::expected<std::string, std::string> Alerts::update_alerts_dashboard(JUNK &re
         result= std::format("{}{{}}{}",result,line);
     }
     return response_formater(false,"alerts_dashboard",result);
+}
+std::expected<std::string, std::string> Alerts::remove_alert(JUNK &request){
+    //std::cout<<"MERGE CACAT";
+    if(!request.contains("alert_id")){
+        return std::unexpected("Invalid , there is no ID ");
+    }
+    //std::cout<<'['<<request["alert_id"].value()<<']'<<std::endl;
+    auto data = alerts->query(
+        "UPDATE alerts SET status = 'RESOLVED', comment = 'Fixed' WHERE id = ?", 
+        {request["alert_id"].value()}
+    );
+    if(data.has_value()==false){
+        return std::unexpected(data.error());
+    }
+    return response_formater(true,"remove_alert","nimic");
+
 }

@@ -17,7 +17,8 @@ void DataProcessor::write_log(std::vector<std::string>& log,std::string source)
         result = logs_db->query("INSERT INTO logs (pri, timestamp, host, source, message,ip_name) VALUES (?, ?, ?, ?, ? ,?);",log);
     }
     else {
-        result = logs_db->query("INSERT INTO unknown_log (pri, timestamp, host, source, message) VALUES (?, ?, ?, ?, ? );",log);
+        log.push_back(source);
+        result = logs_db->query("INSERT INTO unknown_log (pri, timestamp, host, source, message,ip) VALUES (?, ?,?, ?, ?, ? );",log);
     }
     if (log[4].contains("ceva")){
         alerts_manager->add();
@@ -28,12 +29,23 @@ void DataProcessor::write_log(std::vector<std::string>& log,std::string source)
     }
 }
 
-void DataProcessor::write_agent(std::vector<std::string> &agent_metrics)
+void DataProcessor::write_agent(std::vector<std::string> &agent_metrics,std::string source)
 {
-    const char* sql =
-        "INSERT INTO metrics (hostname, cpu_load, ram_usage, disk_usage, message) "
-        "VALUES (?, ?, ?, ?, ?);";
-    auto status = this->agents_db->query(sql,agent_metrics);
+    std::expected<std::vector<std::string>, std::string> status;
+    auto source_name = this->source_manager->check_ip_whitelist(source);
+    if(source_name.has_value()){
+        const char* sql =
+            "INSERT INTO metrics (hostname, cpu_load, ram_usage, disk_usage, message) "
+            "VALUES (?, ?, ?, ?, ?);";
+        status = this->agents_db->query(sql,agent_metrics);
+    }
+    else {
+         agent_metrics.push_back(source);
+         const char* sql =
+            "INSERT INTO unknown_metrics (hostname, cpu_load, ram_usage, disk_usage, message,ip) "
+            "VALUES (?, ?, ?, ?, ?, ?);";
+        status = this->agents_db->query(sql,agent_metrics);
+    }
     if(status.has_value()==false){
         std::cerr<<status.error()<<std::endl;
     }
@@ -78,6 +90,7 @@ void DataProcessor::analyze_syslog(int id){
                 continue;
             }   
             write_log(log.value(),data.value().source_ip);
+            continue;
         }
         if(data.value().type= EventType::AGENT_METRIC){
             auto agent_metric = DataParser::get_agent_data(data.value().payload);
@@ -85,7 +98,8 @@ void DataProcessor::analyze_syslog(int id){
                 std::cout<<agent_metric.error()<<std::endl;
                 continue;
             }
-            write_agent(agent_metric.value());
+            write_agent(agent_metric.value(),data.value().source_ip);
+            continue;
         } 
     }
 

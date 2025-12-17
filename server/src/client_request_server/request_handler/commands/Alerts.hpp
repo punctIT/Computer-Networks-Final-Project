@@ -14,5 +14,6 @@ class Alerts:public ResponseFormater{
     public:
     Alerts(std::shared_ptr<DBManager> &alerts);
     std::expected<std::string, std::string> last_alert(JUNK &request);
+    std::expected<std::string, std::string> remove_alert(JUNK &request);
     std::expected<std::string,std::string> update_alerts_dashboard(JUNK &request);
 };

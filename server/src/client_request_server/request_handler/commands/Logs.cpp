@@ -52,7 +52,7 @@ std::expected<std::string, std::string> Logs::update_syslog_dashboard(JUNK &requ
     }
     auto data_logs = logs->query("SELECT * FROM (SELECT * FROM logs WHERE id >= ? ORDER BY id DESC LIMIT 10) AS subquery ORDER BY id;",{request["last_log"].value()});
     if(!data_logs.has_value()){
-        return std::unexpected(data.error());
+        return std::unexpected(data_logs.error());
     }
     std::string result="";
     for(auto log : data_logs.value()){
@@ -66,4 +66,25 @@ std::expected<std::string, std::string> Logs::update_syslog_dashboard(JUNK &requ
 
 
     return response_formater(true,"update_syslog_dashboard",response);
+}
+
+std::expected<std::string, std::string> Logs::update_unknown_syslog_dashboard(JUNK &request)
+{
+    auto data_logs = logs->get_unsafe("select * from unknown_log limit 100;");
+    if(!data_logs.has_value()){
+        return std::unexpected(data_logs.error());
+    }
+    std::string result="";
+    for(auto log : data_logs.value()){
+        result=std::format("{}{{}}{}",result,log);
+    }
+    auto sources_logs = logs->get_unsafe("select distinct(ip) from unknown_log ;");
+    if(!sources_logs.has_value()){
+        return std::unexpected(sources_logs.error());
+    }
+    std::string sources="";
+    for(auto log : sources_logs.value()){
+        sources=std::format("{}{{}}{}",sources,log);
+    }
+    return std::format("type:{{{}}};succes:{{{}}};logs:{{{}}};sources:{{{}}};","update_unknown_syslog",true,result,sources);
 }

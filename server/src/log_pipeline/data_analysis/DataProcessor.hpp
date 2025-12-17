@@ -15,7 +15,7 @@ class DataProcessor{
     std::shared_ptr<AlertsManager> alerts_manager;
      std::shared_ptr<FiltresManager> filtres_manager;
     void write_log(std::vector<std::string>& log,std::string source);
-    void write_agent(std::vector<std::string>& log);
+    void write_agent(std::vector<std::string>& log,std::string source);
     std::shared_ptr<SourceManager> source_manager;
     public:
     DataProcessor(std::shared_ptr<SourceManager> source_manager,std::shared_ptr<AlertsManager> alerts, std::shared_ptr<FiltresManager> filtres_manager);

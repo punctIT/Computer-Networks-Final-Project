@@ -21,7 +21,6 @@
 #include "../../../server_request/DataRequester.h"
 #include "../../../utils/BetterString.hpp"
 
-
 #include "AlertsPopup.hpp"
 
 #include <QWidget>
@@ -54,15 +53,14 @@ class AlertsTable {
 public:
     AlertsTable( std::shared_ptr<AlertsPopup> popup);
     QWidget* get_widget();
-
+    void remove_at(int i);
     void add(std:: vector<AlertData> alerts_data);
     void clear();
 };
 
 
-class AlertsPage:public Page{
+class AlertsPage:public Page {
     void bind_buttons();
-    int last_alert;
     QVBoxLayout *layout;
     QPushButton *Alerts;
     QTimer *updateTimer;   

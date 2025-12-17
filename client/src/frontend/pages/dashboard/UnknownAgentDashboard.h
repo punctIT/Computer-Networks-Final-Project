@@ -1,5 +1,3 @@
-
-
 #pragma once
 
 #include <memory>
@@ -17,27 +15,36 @@
 #include <QtWidgets/QHeaderView>
 #include <QtCore/QTimer>
 
-
-
-class UnknownAgentTable{
+class AgentLogsTable {
     QWidget *widget;
     QTableWidget *table;
 
-    public:
-    UnknownAgentTable();
+public:
+    AgentLogsTable();
     QWidget* get_widget();
-    void add(std::vector<std::string> SyslogDashboard_data);
+    void add(std::vector<std::string> data);
     void clear();
 };
 
-class UnknownAgentDashboardScreen:public Page{
-    QPushButton *btn;
-    std::shared_ptr<UnknownAgentTable> SyslogDashboard_table;
-    void bind_buttons();
-    public:
-        UnknownAgentDashboardScreen(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager,std::shared_ptr <QMainWindow> window);
-        void on_enter() override;
-        void on_exit() override;
+class AgentSourcesTable {
+    QWidget *widget;
+    QTableWidget *table;
+
+public:
+    AgentSourcesTable();
+    QWidget* get_widget();
+    void add(std::vector<std::string> data);
+    void clear();
 };
 
+class UnknownAgentDashboardScreen :  public Page {
+    QPushButton *btn;
+    std::shared_ptr<AgentLogsTable> Logs_table;
+    std:: shared_ptr<AgentSourcesTable> sources_table;
+    void bind_buttons();
 
+public:
+    UnknownAgentDashboardScreen(std::shared_ptr<DataRequester> data, const std::shared_ptr<PageManager> &page_manager, std::shared_ptr<QMainWindow> window);
+    void on_enter() override;
+    void on_exit() override;
+};

@@ -146,7 +146,7 @@ void AgentsDashboardScreen::on_exit() {
 
 AgentsDonutChart:: AgentsDonutChart(const std::string name, const std::string usedColor, const std::string freeColor)
 {
-    last_val=32;
+    last_val=0;
     series = new QPieSeries();
     series->setHoleSize(0.50); 
 

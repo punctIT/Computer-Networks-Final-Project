@@ -9,12 +9,14 @@
 #include <format>
 #include <string>
 
+
+class AlertsTable;
 class AlertsPopup:public Popup{
-    QPushButton *add_btn;
-    QLineEdit *ip_entry,*source_name;
-    QLabel *error;
-   
+    QPushButton *resolve_btn;
+    int id=0;
+    AlertsTable *alert_tabele;
     void connect_buttons();
     public:
     AlertsPopup(QWidget* parent,std::shared_ptr <DataRequester> data,int x,int y);
+    void update_data(std::string ,AlertsTable *table,int id) override;
 };

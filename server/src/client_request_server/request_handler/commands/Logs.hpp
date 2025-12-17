@@ -14,4 +14,5 @@ class Logs:public ResponseFormater{
     Logs(std::shared_ptr<DBManager> &Logs);
     std::expected<std::string, std::string> logs_request(JUNK &request);
     std::expected<std::string, std::string> update_syslog_dashboard(JUNK &request);
+    std::expected<std::string, std::string> update_unknown_syslog_dashboard(JUNK &request);
 };
