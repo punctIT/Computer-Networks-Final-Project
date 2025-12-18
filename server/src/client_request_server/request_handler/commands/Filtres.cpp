@@ -4,3 +4,8 @@ Filtres::Filtres(std::shared_ptr<FiltresManager> &fitres_manager):filtres_manage
 {
     
 }
+
+std::string Filtres::get_filtres()
+{
+    return std::string();
+}

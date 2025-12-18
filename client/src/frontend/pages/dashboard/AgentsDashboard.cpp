@@ -9,34 +9,65 @@
 #include <QLabel>
 #include <QFrame>
 #include <QListView>
-void AgentsDashboardScreen::bind_buttons()
+void AgentsDashboardScreen::  bind_buttons()
 {
     connect(data_requester. get(), &DataRequester::UpdateAgentsDashboard, this, [this](QString msg) {
-        //qDebug()<<msg;
         auto data = JUNK::deserialize(msg.toStdString());
         if(data.has_value()==false || data.value()["sources"].has_value()==false){
             qDebug()<<"invalid data";
             return;
         }   
-        auto sources =BetterString::split(data.value()["sources"].value(),"{}");
+        auto sources = BetterString:: split(data.value()["sources"].value(),"{}");
         
-        if(types->count() != source.size()){
+        bool needsUpdate = false;
+        if(types->count() != sources.size()){
+            needsUpdate = true;
+        } else {
+            for(int i = 0; i < sources.size(); i++){
+                if(sources[i].empty()){
+                    continue;
+                }
+                bool found = false;
+                for(int j = 0; j < types->count(); j++){
+                    if(types->itemText(j).toStdString() == sources[i]){
+                        found = true;
+                        break;
+                    }
+                }
+                if(! found){
+                    needsUpdate = true;
+                    break;
+                }
+            }
+        }
+        
+        if(needsUpdate){
+            QString currentText = types->currentText();
             types->clear();
-            for(auto source :sources){
+            int indexToRestore = -1;
+            int currentIndex = 0;
+            for(auto source : sources){
                 if(source.empty()){
                     continue;
                 }
                 types->addItem(QString::fromStdString(source));
+                if(QString::fromStdString(source) == currentText){
+                    indexToRestore = currentIndex;
+                }
+                currentIndex++;
+            }
+            if(indexToRestore >= 0){
+                types->setCurrentIndex(indexToRestore);
             }
         }
     
         if (types->currentText().isEmpty() && types->count() > 0) {     
             this->source = types->itemText(0).toStdString();    
         }
-        //cpu ram  disk
+        
         if(data.value()["agent_data"].has_value()){
-            auto metrics = BetterString::split(data.value()["agent_data"].value(),"[]");
-            if(metrics.size()>=5){
+            auto metrics = BetterString:: split(data.value()["agent_data"].value(),"[]");
+            if(metrics. size()>=5){
                 try{
                     this->cpu_chart->updateValues(stoi(metrics[2]));
                     this->ram_chart->updateValues(stoi(metrics[3]));
@@ -48,17 +79,17 @@ void AgentsDashboardScreen::bind_buttons()
             }
         }
         if(data.value()["agents"].has_value()){
-            this->agents_table->add(BetterString::split(data.value()["agents"].value(),"{}"));
+            this->agents_table->add(BetterString::split(data. value()["agents"].value(),"{}"));
         }
                 
     });
     QObject::connect(types, &QComboBox::currentTextChanged, [this](const QString &text){
-        qDebug()<<text;
-        this->source=text.toStdString();
+        //qDebug()<<text;
+        this->source=text. toStdString();
     });
 }
 
-AgentsDashboardScreen:: AgentsDashboardScreen(std::shared_ptr<DataRequester> data, const std::shared_ptr<PageManager> &page_manager, std::shared_ptr<QMainWindow> window) : Page(data, page_manager, window)
+AgentsDashboardScreen:: AgentsDashboardScreen(std::shared_ptr<DataRequester> data, const std:: shared_ptr<PageManager> &page_manager, std::shared_ptr<QMainWindow> window) : Page(data, page_manager, window)
 {
     source ="NONE";
     QGridLayout *layout = new QGridLayout;
@@ -66,7 +97,7 @@ AgentsDashboardScreen:: AgentsDashboardScreen(std::shared_ptr<DataRequester> dat
     types->setStyleSheet(QString::fromStdString(get_combobox()));
     last_log=0;
     total_logs=0;
-    ram_chart = std:: make_shared<AgentsDonutChart>("RAM", "#3498db", "#1abc9c");
+    ram_chart = std::  make_shared<AgentsDonutChart>("RAM", "#3498db", "#1abc9c");
     disk_chart = std::make_shared<AgentsDonutChart>("DISK", "#e74c3c", "#95a5a6");
     cpu_chart = std::make_shared<AgentsDonutChart>("CPU", "#9b59b6", "#f39c12");
 
@@ -94,7 +125,7 @@ QWidget* AgentsDashboardScreen::get_top_menu(){
     QCheckBox *cpu_checkbox = new QCheckBox("CPU", this);
     cpu_checkbox->setCheckState(Qt::Checked);
     QCheckBox *disk_checkbox = new QCheckBox("DISK", this);
-    disk_checkbox->setCheckState(Qt:: Checked);
+    disk_checkbox->setCheckState(Qt::  Checked);
 
     QGridLayout *layout= new QGridLayout();
     QListView *listView = new QListView(types);
@@ -114,14 +145,14 @@ QWidget* AgentsDashboardScreen::get_top_menu(){
         }
     });
     connect(ram_checkbox, &QCheckBox::stateChanged, [this](int state){
-        if(state == Qt:: Checked) {
+        if(state == Qt::Checked) {
            this->ram_chart->get_chart()->show();
         } else {
             this->ram_chart->get_chart()->hide();
         }
     });
     connect(disk_checkbox, &QCheckBox:: stateChanged, [this](int state){
-       if(state == Qt::Checked) {
+       if(state == Qt:: Checked) {
            this->disk_chart->get_chart()->show();
         } else {
             this->disk_chart->get_chart()->hide();
@@ -157,8 +188,8 @@ AgentsDonutChart:: AgentsDonutChart(const std::string name, const std::string us
     QPieSlice *sliceUsed = series->slices().at(0);
     sliceUsed->setLabelVisible(true);
     sliceUsed->setBrush(QColor(QString:: fromStdString(usedColor))); 
-    sliceUsed->setLabelColor(Qt:: white);   
-    sliceUsed->setLabel("Used:  70");
+    sliceUsed->setLabelColor(Qt::white);   
+    sliceUsed->setLabel("Used:   70");
     sliceUsed->setBorderColor(QColor("#2d2d2d")); 
     sliceUsed->setBorderWidth(2);
 
@@ -211,11 +242,11 @@ void AgentsDonutChart:: updateAnim()
 
     QPieSlice *sliceUsed = series->slices().at(0);
     sliceUsed->setValue(last_val);
-    sliceUsed->setLabel("Used: " + QString:: number(last_val));
+    sliceUsed->setLabel("Used: " + QString::number(last_val));
 
     QPieSlice *sliceFree = series->slices().at(1);
     sliceFree->setValue(100-last_val);
-    sliceFree->setLabel("Free:  " + QString::number(100-last_val));
+    sliceFree->setLabel("Free:   " + QString::number(100-last_val));
 
 
     chart->addSeries(series);
@@ -244,8 +275,8 @@ AgentsTable::AgentsTable()
     table->verticalHeader()->setVisible(false);
     table->verticalHeader()->setDefaultSectionSize(60);
    
-    table->horizontalHeader()->setSectionResizeMode(0, QHeaderView:: Stretch);
-    table->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+    table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+    table->horizontalHeader()->setSectionResizeMode(1, QHeaderView::  Stretch);
 
     widget->setStyleSheet(QString::fromStdString(get_table_style()));
 
@@ -271,7 +302,6 @@ void AgentsTable::add(std::vector<std::string> metrics_data)
     {
         auto content = BetterString:: split(entry, "[]");
         if(content.size() < 2) {
-            //qDebug() << "Skip invalid entry (size too small):" << QString::fromStdString(entry);
             continue;
         }
 
@@ -288,10 +318,10 @@ void AgentsTable::add(std::vector<std::string> metrics_data)
         statusItem->setTextAlignment(Qt::AlignCenter);
         
         if(status == "ACTIVE") {
-            statusItem->setForeground(QBrush(QColor("#4CAF50"))); // Verde
+            statusItem->setForeground(QBrush(QColor("#4CAF50")));
             statusItem->setFont(QFont("Arial", 12, QFont::Bold));
         } else if(status == "INACTIVE") {
-            statusItem->setForeground(QBrush(QColor("#F44336"))); // Roșu
+            statusItem->setForeground(QBrush(QColor("#F44336")));
             statusItem->setFont(QFont("Arial", 12, QFont::Bold));
         }
         

@@ -68,7 +68,7 @@ App::App()
         }
     });
     QObject::connect(data_requster.get(), &DataRequester::UpdateAlersPopup, window.get(), [this](QString mesaj) {
-        qDebug()<<mesaj;
+        //qDebug()<<mesaj;
         auto data = JUNK::deserialize(mesaj.toStdString());
         if(!data.has_value() ||!data.value()["content"].has_value()|| !data.value()["succes"].has_value()|| data.value()["succes"].value()=="false"){
             return;

@@ -11,7 +11,7 @@ HOSTNAME = socket.gethostname()
 
 def get_metrics():
     return {
-        "hostname": HOSTNAME,
+        "hostname": "IT_PC",
         "ip_address": socket.gethostbyname(HOSTNAME),
         "os_info": os.name, 
         "cpu_load": psutil.cpu_percent(interval=None),

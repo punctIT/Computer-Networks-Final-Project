@@ -1,91 +1,439 @@
 #include "FiltresPage.h"
-#include "Filtres.h"
+#include "../../style/SecurityStyle.hpp"
 
 void FiltresPage::bind_buttons()
 {
-    QObject::connect(filtres,&QPushButton::clicked,[this](){
-        filtres_pages->change_page(0);
-    });
-   
+    // connect(data_requester.get(), &DataRequester::UpdateFiltres, 
+    //     this, [this](QString mesaj) {
+    //        qDebug()<<"update filtres tables";
+    //        auto data = JUNK::deserialize(mesaj.toStdString());
+           
+    //        if(data.has_value() && data.value()["type_filtres"].has_value()){
+    //             type_table->clear();
+    //             type_table->add(BetterString::split(data. value()["type_filtres"].value(),"{}"));
+    //        }
+           
+    //        if(data. has_value() && data.value()["message_filtres"].has_value()){
+    //             message_table->clear();
+    //             message_table->add(BetterString::split(data.value()["message_filtres"].value(),"{}"));
+    //        }
+           
+    //        if(data.has_value() && data.value()["custom_alerts"].has_value()){
+    //             alert_table->clear();
+    //             alert_table->add(BetterString::split(data.value()["custom_alerts"].value(),"{}"));
+    //        }
+    //     });
 }
 
-QWidget *FiltresPage::get_side_menu()
-{
-    QWidget *menu = new QWidget();
-    menu->setStyleSheet("background-color: #2D2D30;"); 
-    QVBoxLayout *layout = new QVBoxLayout;
-    layout->setContentsMargins(0, 0, 0, 0);
-    layout->setSpacing(0); 
-    QString buttonStyle = R"(
-        QPushButton {
-            background-color: transparent;
-            color: #FFFFFF;
-            border: none;
-            padding: 15px;
-            text-align: left;
-            font-size: 14px;
-            font-weight: bold;
-        }
-        QPushButton:hover {
-            background-color: #3E3E42;
-            border-left: 5px solid #007ACC; /* O linie colorată în stânga la hover */
-        }
-        QPushButton:pressed {
-            background-color: #007ACC;
-        }
-    )";
-    filtres = new QPushButton("filtres");
-    filtres->setCursor(Qt::PointingHandCursor);
-    filtres->setStyleSheet(buttonStyle);
-    layout->addWidget(filtres);
-    
-    layout->addStretch();
-
-    menu->setLayout(layout);
-    menu->setFixedWidth(200); 
-
-    return menu;
-}
 FiltresPage::FiltresPage(std::shared_ptr<DataRequester> data, const std::shared_ptr<PageManager> &page_manager, std::shared_ptr<QMainWindow> window) : Page(data, page_manager, window)
 {
-    layout = new QHBoxLayout();
-    layout->setContentsMargins(0, 0, 0, 0);
-    pages = std::make_shared<std::vector<std::shared_ptr<Page>>>();
-    layout->addWidget(get_side_menu());
-    auto app_ptr = std::shared_ptr<FiltresPage>(this, [](FiltresPage*) {});
-    filtres_pages=std::make_shared<PageManager>(app_ptr);
-    pages->push_back(std::make_shared<FiltresScreen>(data,page_manager,window));
-   
-    for (auto page : *pages){
-       filtres_pages->add_page(page->get_page());
-    }
+    layout = new QGridLayout();
+    
+    type_table = std::make_shared<TypeFiltresTable>(data_requester);
+    message_table = std::make_shared<MessageFiltresTable>(data_requester);
+    alert_table = std::make_shared<CustomAlertsTable>(data_requester);
+    
+    btn_add_type = new QPushButton("Add Type Filter");
+    btn_add_type->setCursor(Qt::PointingHandCursor);
+    btn_add_type->setFixedHeight(40);
+    btn_add_type->setStyleSheet(R"(
+        QPushButton {
+            background-color: #1ABC9C;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 25px;
+            font-weight:  bold;
+            font-size:  14px;
+        }
+        QPushButton:hover {
+            background-color: #16A085;
+        }
+    )");
+    
+    btn_add_message = new QPushButton("Add Message Filter");
+    btn_add_message->setCursor(Qt::PointingHandCursor);
+    btn_add_message->setFixedHeight(40);
+    btn_add_message->setStyleSheet(R"(
+        QPushButton {
+            background-color: #1ABC9C;
+            color:  #FFFFFF;
+            border:  none;
+            border-radius:  20px;
+            padding:  10px 25px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        QPushButton:hover {
+            background-color: #16A085;
+        }
+    )");
+    
+    btn_add_alert = new QPushButton("Add Custom Alert");
+    btn_add_alert->setCursor(Qt::PointingHandCursor);
+    btn_add_alert->setFixedHeight(40);
+    btn_add_alert->setStyleSheet(R"(
+        QPushButton {
+            background-color: #1ABC9C;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 25px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        QPushButton:hover {
+            background-color: #16A085;
+        }
+    )");
+    
+    QLabel *title1 = new QLabel("Type Filtres");
+    title1->setStyleSheet("font-size: 24px; font-weight: bold; color: white;");
+    
+    QLabel *title2 = new QLabel("Message Filtres");
+    title2->setStyleSheet("font-size: 24px; font-weight: bold; color: white;");
+    
+    QLabel *title3 = new QLabel("Custom Alerts");
+    title3->setStyleSheet("font-size: 24px; font-weight: bold; color: white;");
+    
+    layout->addWidget(title1, 0, 0);
+    layout->addWidget(btn_add_type, 1, 0);
+    layout->addWidget(type_table->get_widget(), 2, 0);
+    
+    layout->addWidget(title2, 0, 1);
+    layout->addWidget(btn_add_message, 1, 1);
+    layout->addWidget(message_table->get_widget(), 2, 1);
+    
+    layout->addWidget(title3, 0, 2);
+    layout->addWidget(btn_add_alert, 1, 2);
+    layout->addWidget(alert_table->get_widget(), 2, 2);
     
     updateTimer = new QTimer();
-    layout->addWidget(filtres_pages->GetStack());
-    page->setLayout(layout);
     connect(updateTimer, &QTimer::timeout, this, &FiltresPage::update);
-    updateTimer->setInterval(2000); 
+    updateTimer->setInterval(2000);
+    
     bind_buttons();
+    page->setLayout(layout);
 }
 
 void FiltresPage::on_enter()
 {
     updateTimer->start();
-    filtres_pages->change_page(0);
     window->showMaximized();
-   
 }
-void FiltresPage::update(){
-    if(filtres_pages->get_current()==0){
-        auto status = data_requester->sent("type:{update_filtres};");
-        if(!status){
-            qDebug()<<QString::fromStdString(status.error());
-        }
+
+void FiltresPage::update()
+{
+    auto status = data_requester->sent("type:{update_filtres};");
+    if(! status){
+        qDebug()<<QString::fromStdString(status. error());
     }
-    
-    
 }
+
 void FiltresPage::on_exit()
 {
     updateTimer->stop();
+}
+
+TypeFiltresTable::TypeFiltresTable(std::shared_ptr<DataRequester> data_requester)
+{
+    this->data_requester = data_requester;
+    widget = new QWidget();
+    QVBoxLayout *mainLayout = new QVBoxLayout(widget);
+    mainLayout->setContentsMargins(10, 10, 10, 10);
+
+    QFrame *frame = new QFrame();
+    frame->setObjectName("TableFrame");
+    QVBoxLayout *frameLayout = new QVBoxLayout(frame);
+    frameLayout->setContentsMargins(0, 10, 0, 10);
+
+    table = new QTableWidget();
+    table->setColumnCount(2);
+    
+    QStringList headers = {"Keyword", "Remove"};
+    table->setHorizontalHeaderLabels(headers);
+
+    table->verticalHeader()->setDefaultSectionSize(60);
+    table->verticalHeader()->setVisible(false);
+    
+    table->setShowGrid(false);
+    table->setFocusPolicy(Qt::NoFocus);
+    table->setSelectionMode(QAbstractItemView:: NoSelection);
+   
+    table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    table->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Fixed);
+    table->setColumnWidth(1, 150);
+
+    widget->setStyleSheet(QString::fromStdString(get_table_style()));
+
+    frameLayout->addWidget(table);
+    mainLayout->addWidget(frame);
+}
+
+QWidget *TypeFiltresTable::get_widget()
+{
+    return this->widget;
+}
+
+void TypeFiltresTable::clear()
+{
+    table->setRowCount(0);
+}
+
+void TypeFiltresTable::add(std::vector<std::string> data)
+{
+    table->setUpdatesEnabled(false);
+    
+    for(auto entry : data) 
+    {
+        if(entry.empty()) continue;
+        
+        int currentRow = table->rowCount();
+        table->insertRow(currentRow);
+        table->setRowHeight(currentRow, 60);
+
+        QTableWidgetItem *item = new QTableWidgetItem(QString::fromStdString(entry));
+        item->setTextAlignment(Qt::AlignCenter | Qt::AlignVCenter);
+        table->setItem(currentRow, 0, item);
+
+        QWidget* btnWidget = new QWidget();
+        QHBoxLayout* btnLayout = new QHBoxLayout(btnWidget);
+        btnLayout->setContentsMargins(0, 0, 0, 0);
+        btnLayout->setSpacing(0);
+        btnLayout->setAlignment(Qt::AlignCenter);
+
+        QPushButton *deleteBtn = new QPushButton("Remove");
+        deleteBtn->setCursor(Qt:: PointingHandCursor);
+        deleteBtn->setFixedSize(110, 40);
+        deleteBtn->setStyleSheet(R"(
+            QPushButton {
+                background-color: transparent;
+                border: 2px solid #E74C3C;
+                color: #E74C3C;
+                border-radius: 20px;
+                font-weight: bold;
+                font-size: 13px;
+            }
+            QPushButton:hover {
+                background-color: #E74C3C;
+                color: #FFFFFF;
+            }
+        )");
+        
+        QString keyword = QString::fromStdString(entry);
+        QObject::connect(deleteBtn, &QPushButton:: clicked, [this, keyword, currentRow]() {
+            auto status = data_requester->sent(std::format("type:{{remove_type_filter}};keyword:{{{}}};", keyword.toStdString()));
+            if(! status){
+                qDebug()<<status.error().c_str();
+            }
+            table->removeRow(currentRow);
+        });
+
+        btnLayout->addWidget(deleteBtn);
+        table->setCellWidget(currentRow, 1, btnWidget);
+    }
+
+    table->setUpdatesEnabled(true);
+}
+
+MessageFiltresTable::MessageFiltresTable(std::shared_ptr<DataRequester> data_requester)
+{
+    this->data_requester = data_requester;
+    widget = new QWidget();
+    QVBoxLayout *mainLayout = new QVBoxLayout(widget);
+    mainLayout->setContentsMargins(10, 10, 10, 10);
+
+    QFrame *frame = new QFrame();
+    frame->setObjectName("TableFrame");
+    QVBoxLayout *frameLayout = new QVBoxLayout(frame);
+    frameLayout->setContentsMargins(0, 10, 0, 10);
+
+    table = new QTableWidget();
+    table->setColumnCount(2);
+    
+    QStringList headers = {"Keyword", "Remove"};
+    table->setHorizontalHeaderLabels(headers);
+
+    table->verticalHeader()->setDefaultSectionSize(60);
+    table->verticalHeader()->setVisible(false);
+    
+    table->setShowGrid(false);
+    table->setFocusPolicy(Qt::NoFocus);
+    table->setSelectionMode(QAbstractItemView::NoSelection);
+   
+    table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    table->horizontalHeader()->setSectionResizeMode(1, QHeaderView:: Fixed);
+    table->setColumnWidth(1, 150);
+
+    widget->setStyleSheet(QString::fromStdString(get_table_style()));
+
+    frameLayout->addWidget(table);
+    mainLayout->addWidget(frame);
+}
+
+QWidget *MessageFiltresTable::get_widget()
+{
+    return this->widget;
+}
+
+void MessageFiltresTable::clear()
+{
+    table->setRowCount(0);
+}
+
+void MessageFiltresTable::add(std::vector<std::string> data)
+{
+    table->setUpdatesEnabled(false);
+    
+    for(auto entry : data) 
+    {
+        if(entry.empty()) continue;
+        
+        int currentRow = table->rowCount();
+        table->insertRow(currentRow);
+        table->setRowHeight(currentRow, 60);
+
+        QTableWidgetItem *item = new QTableWidgetItem(QString::fromStdString(entry));
+        item->setTextAlignment(Qt::AlignCenter | Qt::AlignVCenter);
+        table->setItem(currentRow, 0, item);
+
+        QWidget* btnWidget = new QWidget();
+        QHBoxLayout* btnLayout = new QHBoxLayout(btnWidget);
+        btnLayout->setContentsMargins(0, 0, 0, 0);
+        btnLayout->setSpacing(0);
+        btnLayout->setAlignment(Qt::AlignCenter);
+
+        QPushButton *deleteBtn = new QPushButton("Remove");
+        deleteBtn->setCursor(Qt:: PointingHandCursor);
+        deleteBtn->setFixedSize(110, 40);
+        deleteBtn->setStyleSheet(R"(
+            QPushButton {
+                background-color: transparent;
+                border: 2px solid #E74C3C;
+                color: #E74C3C;
+                border-radius:  20px;
+                font-weight: bold;
+                font-size: 13px;
+            }
+            QPushButton:hover {
+                background-color: #E74C3C;
+                color: #FFFFFF;
+            }
+        )");
+        
+        QString keyword = QString::fromStdString(entry);
+        QObject::connect(deleteBtn, &QPushButton::clicked, [this, keyword, currentRow]() {
+            auto status = data_requester->sent(std::format("type:{{remove_message_filter}};keyword:{{{}}};", keyword.toStdString()));
+            if(!status){
+                qDebug()<<status.error().c_str();
+            }
+            table->removeRow(currentRow);
+        });
+
+        btnLayout->addWidget(deleteBtn);
+        table->setCellWidget(currentRow, 1, btnWidget);
+    }
+
+    table->setUpdatesEnabled(true);
+}
+
+CustomAlertsTable::CustomAlertsTable(std::shared_ptr<DataRequester> data_requester)
+{
+    this->data_requester = data_requester;
+    widget = new QWidget();
+    QVBoxLayout *mainLayout = new QVBoxLayout(widget);
+    mainLayout->setContentsMargins(10, 10, 10, 10);
+
+    QFrame *frame = new QFrame();
+    frame->setObjectName("TableFrame");
+    QVBoxLayout *frameLayout = new QVBoxLayout(frame);
+    frameLayout->setContentsMargins(0, 10, 0, 10);
+
+    table = new QTableWidget();
+    table->setColumnCount(2);
+    
+    QStringList headers = {"Keyword", "Remove"};
+    table->setHorizontalHeaderLabels(headers);
+
+    table->verticalHeader()->setDefaultSectionSize(60);
+    table->verticalHeader()->setVisible(false);
+    
+    table->setShowGrid(false);
+    table->setFocusPolicy(Qt::NoFocus);
+    table->setSelectionMode(QAbstractItemView::NoSelection);
+   
+    table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    table->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Fixed);
+    table->setColumnWidth(1, 150);
+
+    widget->setStyleSheet(QString::fromStdString(get_table_style()));
+
+    frameLayout->addWidget(table);
+    mainLayout->addWidget(frame);
+}
+
+QWidget *CustomAlertsTable::get_widget()
+{
+    return this->widget;
+}
+
+void CustomAlertsTable::clear()
+{
+    table->setRowCount(0);
+}
+
+void CustomAlertsTable::add(std::vector<std::string> data)
+{
+    table->setUpdatesEnabled(false);
+    
+    for(auto entry : data) 
+    {
+        if(entry.empty()) continue;
+        
+        int currentRow = table->rowCount();
+        table->insertRow(currentRow);
+        table->setRowHeight(currentRow, 60);
+
+        QTableWidgetItem *item = new QTableWidgetItem(QString::fromStdString(entry));
+        item->setTextAlignment(Qt:: AlignCenter | Qt::AlignVCenter);
+        table->setItem(currentRow, 0, item);
+
+        QWidget* btnWidget = new QWidget();
+        QHBoxLayout* btnLayout = new QHBoxLayout(btnWidget);
+        btnLayout->setContentsMargins(0, 0, 0, 0);
+        btnLayout->setSpacing(0);
+        btnLayout->setAlignment(Qt::AlignCenter);
+
+        QPushButton *deleteBtn = new QPushButton("Remove");
+        deleteBtn->setCursor(Qt::PointingHandCursor);
+        deleteBtn->setFixedSize(110, 40);
+        deleteBtn->setStyleSheet(R"(
+            QPushButton {
+                background-color:  transparent;
+                border: 2px solid #E74C3C;
+                color: #E74C3C;
+                border-radius: 20px;
+                font-weight: bold;
+                font-size: 13px;
+            }
+            QPushButton:hover {
+                background-color: #E74C3C;
+                color: #FFFFFF;
+            }
+        )");
+        
+        QString keyword = QString:: fromStdString(entry);
+        QObject::connect(deleteBtn, &QPushButton::clicked, [this, keyword, currentRow]() {
+            auto status = data_requester->sent(std:: format("type:{{remove_custom_alert}};keyword:{{{}}};", keyword.toStdString()));
+            if(!status){
+                qDebug()<<status.error().c_str();
+            }
+            table->removeRow(currentRow);
+        });
+
+        btnLayout->addWidget(deleteBtn);
+        table->setCellWidget(currentRow, 1, btnWidget);
+    }
+
+    table->setUpdatesEnabled(true);
 }

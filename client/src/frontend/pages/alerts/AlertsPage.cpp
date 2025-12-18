@@ -5,7 +5,7 @@ void AlertsPage::bind_buttons()
 {
    connect(data_requester.get(), &DataRequester::UpdateAlertsDashboard, 
         this, [this](QString mesaj) {
-            qDebug()<<mesaj;
+            //qDebug()<<mesaj;
             std::vector<AlertData> alerts;
             auto data = BetterString::split(mesaj.toStdString(),"{}");
             for(auto alert : data){
