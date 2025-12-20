@@ -167,6 +167,9 @@ void DataRequester::start_receiving()
         if(type == "alerts_dashboard"){
             emit UpdateAlertsDashboard(qstr);
         }
+        if(type == "update_filtres"){
+            emit UpdateFiltres(qstr);
+        }
     }
     
 }

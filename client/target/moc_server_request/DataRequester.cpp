@@ -26,7 +26,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 namespace {
 struct qt_meta_stringdata_DataRequester_t {
-    uint offsetsAndSizes[30];
+    uint offsetsAndSizes[32];
     char stringdata0[14];
     char stringdata1[16];
     char stringdata2[1];
@@ -42,6 +42,7 @@ struct qt_meta_stringdata_DataRequester_t {
     char stringdata12[22];
     char stringdata13[20];
     char stringdata14[19];
+    char stringdata15[14];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(sizeof(qt_meta_stringdata_DataRequester_t::offsetsAndSizes) + ofs), len 
@@ -61,7 +62,8 @@ Q_CONSTINIT static const qt_meta_stringdata_DataRequester_t qt_meta_stringdata_D
         QT_MOC_LITERAL(136, 21),  // "UpdateSyslogDashboard"
         QT_MOC_LITERAL(158, 21),  // "UpdateAgentsDashboard"
         QT_MOC_LITERAL(180, 19),  // "UpdateUnknownSyslig"
-        QT_MOC_LITERAL(200, 18)   // "UpdateUnknownAgent"
+        QT_MOC_LITERAL(200, 18),  // "UpdateUnknownAgent"
+        QT_MOC_LITERAL(219, 13)   // "UpdateFiltres"
     },
     "DataRequester",
     "lost_connection",
@@ -77,7 +79,8 @@ Q_CONSTINIT static const qt_meta_stringdata_DataRequester_t qt_meta_stringdata_D
     "UpdateSyslogDashboard",
     "UpdateAgentsDashboard",
     "UpdateUnknownSyslig",
-    "UpdateUnknownAgent"
+    "UpdateUnknownAgent",
+    "UpdateFiltres"
 };
 #undef QT_MOC_LITERAL
 } // unnamed namespace
@@ -88,30 +91,32 @@ Q_CONSTINIT static const uint qt_meta_data_DataRequester[] = {
       10,       // revision
        0,       // classname
        0,    0, // classinfo
-      11,   14, // methods
+      12,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-      11,       // signalCount
+      12,       // signalCount
 
  // signals: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,   80,    2, 0x06,    1 /* Public */,
-       3,    1,   81,    2, 0x06,    2 /* Public */,
-       5,    1,   84,    2, 0x06,    4 /* Public */,
-       6,    1,   87,    2, 0x06,    6 /* Public */,
-       8,    1,   90,    2, 0x06,    8 /* Public */,
-       9,    1,   93,    2, 0x06,   10 /* Public */,
-      10,    1,   96,    2, 0x06,   12 /* Public */,
-      11,    1,   99,    2, 0x06,   14 /* Public */,
-      12,    1,  102,    2, 0x06,   16 /* Public */,
-      13,    1,  105,    2, 0x06,   18 /* Public */,
-      14,    1,  108,    2, 0x06,   20 /* Public */,
+       1,    0,   86,    2, 0x06,    1 /* Public */,
+       3,    1,   87,    2, 0x06,    2 /* Public */,
+       5,    1,   90,    2, 0x06,    4 /* Public */,
+       6,    1,   93,    2, 0x06,    6 /* Public */,
+       8,    1,   96,    2, 0x06,    8 /* Public */,
+       9,    1,   99,    2, 0x06,   10 /* Public */,
+      10,    1,  102,    2, 0x06,   12 /* Public */,
+      11,    1,  105,    2, 0x06,   14 /* Public */,
+      12,    1,  108,    2, 0x06,   16 /* Public */,
+      13,    1,  111,    2, 0x06,   18 /* Public */,
+      14,    1,  114,    2, 0x06,   20 /* Public */,
+      15,    1,  117,    2, 0x06,   22 /* Public */,
 
  // signals: parameters
     QMetaType::Void,
     QMetaType::Void, QMetaType::QString,    4,
     QMetaType::Void, QMetaType::QString,    4,
+    QMetaType::Void, QMetaType::QString,    7,
     QMetaType::Void, QMetaType::QString,    7,
     QMetaType::Void, QMetaType::QString,    7,
     QMetaType::Void, QMetaType::QString,    7,
@@ -164,6 +169,9 @@ Q_CONSTINIT const QMetaObject DataRequester::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<QString, std::false_type>,
         // method 'UpdateUnknownAgent'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        QtPrivate::TypeAndForceComplete<QString, std::false_type>,
+        // method 'UpdateFiltres'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
         QtPrivate::TypeAndForceComplete<QString, std::false_type>
     >,
     nullptr
@@ -186,6 +194,7 @@ void DataRequester::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _i
         case 8: _t->UpdateAgentsDashboard((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
         case 9: _t->UpdateUnknownSyslig((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
         case 10: _t->UpdateUnknownAgent((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 11: _t->UpdateFiltres((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -267,6 +276,13 @@ void DataRequester::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _i
                 return;
             }
         }
+        {
+            using _t = void (DataRequester::*)(QString );
+            if (_t _q_method = &DataRequester::UpdateFiltres; *reinterpret_cast<_t *>(_a[1]) == _q_method) {
+                *result = 11;
+                return;
+            }
+        }
     }
 }
 
@@ -291,13 +307,13 @@ int DataRequester::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 11)
+        if (_id < 12)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 11;
+        _id -= 12;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 11)
+        if (_id < 12)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 11;
+        _id -= 12;
     }
     return _id;
 }
@@ -376,6 +392,13 @@ void DataRequester::UpdateUnknownAgent(QString _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
     QMetaObject::activate(this, &staticMetaObject, 10, _a);
+}
+
+// SIGNAL 11
+void DataRequester::UpdateFiltres(QString _t1)
+{
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    QMetaObject::activate(this, &staticMetaObject, 11, _a);
 }
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE

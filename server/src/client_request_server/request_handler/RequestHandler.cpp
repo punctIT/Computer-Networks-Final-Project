@@ -2,7 +2,7 @@
 #include <format>
 
 std::expected<std::string,std::string> RequestHandler::match_request(int client,std::string request){
-    //std::cout << "Request: "<< request << std::endl;
+    std::cout << "Request: "<< request << std::endl;
     auto data = JUNK::deserialize(request);
     if(!data.has_value()){
         return std::unexpected(data.error());
@@ -89,7 +89,14 @@ std::expected<std::string, std::string> RequestHandler::match_type(JUNK &request
         return alerts_requests->remove_alert(request);
     }
     if(type == "update_filtres"){
-        
+        return filtres_request->get_filtres();
+    }
+    if(type== "add_filtres"){
+        std::cout<<"ASASDASDASD"<<std::endl;
+        return filtres_request->add_filtres(request);
+    }
+    if(type== "remove_filtres"){
+        return filtres_request->remove_filtres(request);
     }
     return std::unexpected("unknown type");
 }

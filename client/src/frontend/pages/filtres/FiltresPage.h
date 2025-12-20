@@ -14,7 +14,7 @@
 #include <QtWidgets/QHeaderView>
 #include <QHBoxLayout>
 #include <format>
-
+#include "AddPopup.hpp"
 #include "../../page_system/PageManager.h"
 #include "../../page_system/Page.h"
 #include "../../widgets/MainMenu.hpp"
@@ -25,7 +25,7 @@ class TypeFiltresTable {
     QWidget *widget;
     QTableWidget *table;
     std:: shared_ptr<DataRequester> data_requester;
-
+     std::shared_ptr<AddPopup> popup;
 public:
     TypeFiltresTable(std::shared_ptr<DataRequester> data_requester);
     QWidget* get_widget();
@@ -37,7 +37,7 @@ class MessageFiltresTable {
     QWidget *widget;
     QTableWidget *table;
     std:: shared_ptr<DataRequester> data_requester;
-
+     std::shared_ptr<AddPopup> popup;
 public: 
     MessageFiltresTable(std::shared_ptr<DataRequester> data_requester);
     QWidget* get_widget();
@@ -49,6 +49,7 @@ class CustomAlertsTable {
     QWidget *widget;
     QTableWidget *table;
     std::shared_ptr<DataRequester> data_requester;
+    std::shared_ptr<AddPopup> popup;
 
 public: 
     CustomAlertsTable(std::shared_ptr<DataRequester> data_requester);
@@ -69,6 +70,7 @@ class FiltresPage : public Page {
     std::shared_ptr<TypeFiltresTable> type_table;
     std::shared_ptr<MessageFiltresTable> message_table;
     std::shared_ptr<CustomAlertsTable> alert_table;
+    std::shared_ptr<AddPopup> popup;
 
 public:
     FiltresPage(std::shared_ptr<DataRequester> data, const std::shared_ptr<PageManager> &page_manager, std::shared_ptr<QMainWindow> window);
