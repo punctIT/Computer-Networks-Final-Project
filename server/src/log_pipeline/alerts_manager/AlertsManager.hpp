@@ -12,4 +12,5 @@ class AlertsManager{
     public:
     AlertsManager(std::shared_ptr<DBManager> alerts_db);
     std::expected<void,std::string> add();
+    std::expected<void,std::string> add_custom(std::string title,std::string msg,std::string source);
 };

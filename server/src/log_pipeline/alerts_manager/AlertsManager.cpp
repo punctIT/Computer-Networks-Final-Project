@@ -54,3 +54,23 @@ std::expected<void, std::string> AlertsManager::add()
     }
     return {};
 }
+
+std::expected<void, std::string> AlertsManager::add_custom(std::string title, std::string msg,std::string source)
+{
+     std::string insert2 = R"(
+        INSERT INTO alerts (alert_name, category, severity, entity, details, status) 
+        VALUES (
+            ?,
+            'Custom Alert',
+             2,
+            ?,
+            ?,
+            'NEW'
+        );
+    )";
+    auto data = alerts_db->query(insert2,{title,source,msg});
+    if (data.has_value()==false){
+        return std::unexpected(data.error());
+    }
+    return {};
+}

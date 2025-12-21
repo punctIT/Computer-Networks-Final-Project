@@ -10,9 +10,16 @@ void DataProcessor::write_log(std::vector<std::string>& log,std::string source)
     if(log.size()!=5){
         return;
     }
+    if(filtres_manager->check_type(log[0]) || filtres_manager->check_msg(log[4])){
+        return;
+    }
+   
     std::expected<std::vector<std::string>, std::string> result;
     auto source_name = this->source_manager->check_ip_whitelist(source);
     if(source_name.has_value()){
+        if(filtres_manager->check_alert(log[4])){
+            alerts_manager->add_custom(log[2],log[4],source_name.value());
+        }
         log.push_back(source_name.value());
         result = logs_db->query("INSERT INTO logs (pri, timestamp, host, source, message,ip_name) VALUES (?, ?, ?, ?, ? ,?);",log);
     }
@@ -20,10 +27,6 @@ void DataProcessor::write_log(std::vector<std::string>& log,std::string source)
         log.push_back(source);
         result = logs_db->query("INSERT INTO unknown_log (pri, timestamp, host, source, message,ip) VALUES (?, ?,?, ?, ?, ? );",log);
     }
-    if (log[4].contains("ceva")){
-        alerts_manager->add();
-    }
-
     if(!result.has_value()){
         std::cerr<<"[ERR]"<<result.error()<<std::endl;
     }

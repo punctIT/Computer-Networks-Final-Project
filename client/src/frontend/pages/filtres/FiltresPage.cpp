@@ -129,6 +129,7 @@ FiltresPage::FiltresPage(std::shared_ptr<DataRequester> data, const std::shared_
 
 void FiltresPage::on_enter()
 {
+    update();
     updateTimer->start();
     window->showMaximized();
 }
