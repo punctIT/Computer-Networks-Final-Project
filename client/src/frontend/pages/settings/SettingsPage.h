@@ -21,8 +21,9 @@ class PageManager;
 class SettingsPage:public Page{
     QStackedWidget *stack;
     std::shared_ptr<RegisterScreen> register_screen;
-    
+    QPushButton *register_menu;
     void bind_buttons();
+    QWidget* get_side_menu();
     public:
      SettingsPage(std::shared_ptr <DataRequester> data,const std::shared_ptr <PageManager> &page_manager,std::shared_ptr <QMainWindow> window);
         void on_enter() override;

@@ -13,7 +13,7 @@ std::expected<std::string, std::string> Alerts::last_alert(JUNK &request)
     if(data.has_value()==false ){
         return std::unexpected(data.error());
     }
-    std::cout<<data.value()[0]<<" "<<request["last_id"].value()<<std::endl;
+    //std::cout<<data.value()[0]<<" "<<request["last_id"].value()<<std::endl;
     if(data.value().empty()||data.value()[0]=="NULL"||data.value()[0]<request["last_id"].value()){
         return response_formater(false,"update_alerts","NIMIC");
     }
