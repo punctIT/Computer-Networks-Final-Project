@@ -151,9 +151,9 @@ SyslogTable::SyslogTable()
     frameLayout->setContentsMargins(0, 10, 0, 10); 
 
     table = new QTableWidget();
-    table->setColumnCount(8);
+    table->setColumnCount(7);
     
-    QStringList headers = {"Name", "Type", "Hostname", "Source", "Timestamp", "Message", "", ""}; 
+    QStringList headers = {"Name", "Type", "Hostname", "Source", "Timestamp", "Message", ""}; 
     table->setHorizontalHeaderLabels(headers);
 
     table->setShowGrid(false);
@@ -169,10 +169,8 @@ SyslogTable::SyslogTable()
     table->horizontalHeader()->setSectionResizeMode(4, QHeaderView:: Stretch);
     table->horizontalHeader()->setSectionResizeMode(5, QHeaderView:: Stretch);
     table->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Fixed);
-    table->horizontalHeader()->setSectionResizeMode(7, QHeaderView::Fixed);
     
     table->setColumnWidth(6, 180);
-    table->setColumnWidth(7, 150);
 
     widget->setStyleSheet(QString:: fromStdString(get_table_style()));
 
@@ -205,7 +203,7 @@ void SyslogTable::add(std::vector<std::string> whitelist_data)
         table->insertRow(0);
         table->setRowHeight(0, 70);
 
-        int columnMapping[] = {6, 1, 3, 4, 2, 5};
+        int columnMapping[] = {6, 1, 3, 4, 2, 10};
         
         for(int col = 0; col < 6; ++col) {
             int contentIndex = columnMapping[col];
@@ -221,32 +219,6 @@ void SyslogTable::add(std::vector<std::string> whitelist_data)
             item->setTextAlignment(Qt::AlignCenter);
             table->setItem(0, col, item);
         }
-
-        QWidget* showMoreWidget = new QWidget();
-        QHBoxLayout* showMoreLayout = new QHBoxLayout(showMoreWidget);
-        showMoreLayout->setContentsMargins(5, 5, 5, 5);
-        showMoreLayout->setAlignment(Qt::AlignCenter);
-
-        QPushButton *showMoreBtn = new QPushButton("Show More");
-        showMoreBtn->setCursor(Qt::PointingHandCursor);
-        showMoreBtn->setMinimumHeight(40);
-        showMoreBtn->setStyleSheet(R"(
-            QPushButton {
-                background-color: #1565C0;
-                color: #FFFFFF;
-                border-radius: 15px; 
-                padding: 10px 20px;
-                font-weight: bold;
-                border: none;
-                font-size: 13px;
-            }
-            QPushButton:hover {
-                background-color: #0D47A1;
-            }
-        )");
-
-        showMoreLayout->addWidget(showMoreBtn);
-        table->setCellWidget(0, 6, showMoreWidget);
 
         QWidget* deleteWidget = new QWidget();
         QHBoxLayout* deleteLayout = new QHBoxLayout(deleteWidget);
@@ -275,7 +247,7 @@ void SyslogTable::add(std::vector<std::string> whitelist_data)
             QWidget *w = deleteBtn->parentWidget();
             if(!w) return;
             for(int r = 0; r < table->rowCount(); ++r) {
-                if(table->cellWidget(r, 7) == w) {
+                if(table->cellWidget(r, 6) == w) {
                     table->removeRow(r);
                     break;
                 }
@@ -283,7 +255,7 @@ void SyslogTable::add(std::vector<std::string> whitelist_data)
         });
 
         deleteLayout->addWidget(deleteBtn);
-        table->setCellWidget(0, 7, deleteWidget);
+        table->setCellWidget(0, 6, deleteWidget);
         while(table->rowCount() > 100) {
             table->removeRow(table->rowCount() - 1);
         }
@@ -514,7 +486,7 @@ SyslogData::SyslogData()
         "QLabel { border: none; background: transparent; }"
     );
     QVBoxLayout *card2Layout = new QVBoxLayout(card2);
-    lbl2Title = new QLabel("Total Logs");
+    lbl2Title = new QLabel("Total Logs Current Session");
     lbl2Title->setStyleSheet("color:  #bbbbbb; font-weight: bold; font-size: 14px;");
     lbl2Value = new QLabel("0");
     lbl2Value->setStyleSheet("color: #ffffff; font-weight: bold; font-size: 32px;");
@@ -527,30 +499,6 @@ SyslogData::SyslogData()
     card2Layout->addWidget(lbl2Value);
     card2Layout->addWidget(lbl2Sub);
     card2Layout->addStretch();
-
-    card3 = new QFrame();
-    card3->setStyleSheet(
-        "QFrame {"
-        "   background-color: #2d2d2d;" 
-        "   border: 1px solid #3e3e3e;"
-        "   border-radius: 8px;"
-        "}"
-        "QLabel { border: none; background: transparent; }"
-    );
-    QVBoxLayout *card3Layout = new QVBoxLayout(card3);
-    lbl3Title = new QLabel("Uptime");
-    lbl3Title->setStyleSheet("color: #bbbbbb; font-weight:  bold; font-size: 14px;");
-    lbl3Value = new QLabel("UNKNOWN");
-    lbl3Value->setStyleSheet("color: #ffffff; font-weight: bold; font-size: 32px;");
-    lbl3Value->setAlignment(Qt::AlignCenter);
-    lbl3Sub = new QLabel("time");
-    lbl3Sub->setStyleSheet("color: #888888; font-size: 12px;");
-    lbl3Sub->setAlignment(Qt::AlignCenter);
-    card3Layout->addWidget(lbl3Title);
-    card3Layout->addStretch();
-    card3Layout->addWidget(lbl3Value);
-    card3Layout->addWidget(lbl3Sub);
-    card3Layout->addStretch();
 
     card4 = new QFrame();
     card4->setStyleSheet(

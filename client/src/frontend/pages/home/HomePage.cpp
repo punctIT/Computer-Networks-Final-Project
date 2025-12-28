@@ -91,10 +91,12 @@ void HomePage::bind_buttons()
                 qDebug()<<data.error().c_str();
                 return ;
             }
-            if(data.value()["whitelist"].has_value()&&data.value()["blacklist"].has_value()){
+            if(data.value()["whitelist"].has_value()&&data.value()["blacklist"].has_value()&&data.value()["uptime"].has_value()&&data.value()["total_size"].has_value()){
                 try{
                     this->card1->updateValue(stoi(data.value()["whitelist"].value()));
                     this->card2->updateValue(stoi(data.value()["blacklist"].value()));
+                    this->card3->updateValue(QString::fromStdString(data.value()["uptime"].value()));
+                    this->card4->updateValue(QString::fromStdString(data.value()["total_size"].value()));
                 }
                 catch(const std::exception& e){
                     qDebug() << e.what() ;
@@ -143,7 +145,7 @@ HomePage::HomePage(std::shared_ptr<DataRequester> data, const std::shared_ptr<Pa
     updateTimer = new QTimer(this); 
 
     connect(updateTimer, &QTimer::timeout, this, &HomePage::update);
-    updateTimer->setInterval(2000); 
+    updateTimer->setInterval(1000); 
 
     bind_buttons();
 }

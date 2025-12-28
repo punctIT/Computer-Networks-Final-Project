@@ -6,6 +6,7 @@
 #include "ResponseFormater.hpp"
 #include "../session_manager/SessionManager.hpp"
 #include "../session_manager/AuthManager.hpp"
+#include "../../utils/DBManager.hpp"
 #include "../../utils/JUNK.hpp"
 
 #include "commands/Logs.hpp"
@@ -16,6 +17,8 @@
 #include "commands/Agents.hpp"
 #include <iostream>
 #include <format>
+#include <chrono>
+
 
 class RequestHandler:public ResponseFormater{
     protected:
@@ -26,6 +29,8 @@ class RequestHandler:public ResponseFormater{
     std::shared_ptr<Source> source_request;
     std::shared_ptr<Filtres> filtres_request;
     std::shared_ptr<Agents> agents_requests;
+    std::chrono::time_point<std::chrono::system_clock> server_start_time;
+    std::string get_uptime_string();
     public:
     RequestHandler(std::shared_ptr<SessionManager> &session,std::shared_ptr<AuthManager> &auth,
          std::shared_ptr<DBManager>& logs_db,std::shared_ptr<SourceManager>& source,

@@ -8,6 +8,7 @@
 #include <optional>
 #include <fstream>
 #include <mutex>
+#include <format>
 #include <string>
 class DBManager{
     private:
@@ -25,4 +26,5 @@ class DBManager{
         std::expected<std::vector<std::string>,std::string> get_unsafe(const std::string cmd) ;
         std::expected<void,std::string> run_command_unsafe(const std::string cmd);
         std::expected<std::vector<std::string>,std::string> query(const std::string& sql, const std::vector<std::string>& params) ;
+        static std::string get_folder_size(std::string path);
 };

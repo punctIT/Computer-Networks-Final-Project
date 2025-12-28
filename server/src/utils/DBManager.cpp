@@ -162,3 +162,30 @@ std::expected<std::vector<std::string>, std::string> DBManager::query(
     sqlite3_finalize(stmt);
     return results;
 }
+
+std::string DBManager::get_folder_size(std::string folder_path)
+{
+    namespace fs = std::filesystem;
+    uintmax_t total_bytes = 0;
+
+    try {
+        if (!fs::exists(folder_path) || !fs::is_directory(folder_path)) {
+            return "Invalid Path";
+        }
+        for (const auto& entry : fs::directory_iterator(folder_path)) {
+            if (entry.is_regular_file()) {
+                total_bytes += entry.file_size();
+            }
+        }
+    } catch (const std::exception& e) {
+        return "Error";
+    }
+    if (total_bytes < 1024) 
+        return std::format("{} Bytes", total_bytes);
+    else if (total_bytes < 1024 * 1024) 
+        return std::format("{:.2f} KB", total_bytes / 1024.0);
+    else if (total_bytes < 1024 * 1024 * 1024) 
+        return std::format("{:.2f} MB", total_bytes / (1024.0 * 1024.0));
+    else 
+        return std::format("{:.2f} GB", total_bytes / (1024.0 * 1024.0 * 1024.0));
+}

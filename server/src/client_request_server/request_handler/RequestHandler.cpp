@@ -113,11 +113,24 @@ RequestHandler::RequestHandler(std::shared_ptr<SessionManager> &session,
        source_request=std::make_shared<Source>(source);
        filtres_request= std::make_shared<Filtres>(filtres);
        agents_requests=std::make_shared<Agents>(agents);
+       server_start_time = std::chrono::system_clock::now();
     }
 
 std::expected<std::string, std::string> RequestHandler::home_request(JUNK &request)
 {
     auto source_data = source_request->get_count();
-    return std::format("type:{{{}}};succes:{{{}}};whitelist:{{{}}};blacklist:{{{}}};",
-        "logs",true,source_data.first,source_data.second);
+    return std::format("type:{{{}}};succes:{{{}}};whitelist:{{{}}};blacklist:{{{}}};uptime:{{{}}};total_size:{{{}}};",
+        "logs",true,source_data.first,source_data.second,get_uptime_string(),DBManager::get_folder_size("databases"));
+}
+
+std::string RequestHandler::get_uptime_string() {
+    auto now = std::chrono::system_clock::now();
+    auto uptime_duration = now - server_start_time; 
+    auto hours = std::chrono::duration_cast<std::chrono::hours>(uptime_duration);
+    uptime_duration -= hours;
+    auto minutes = std::chrono::duration_cast<std::chrono::minutes>(uptime_duration);
+    uptime_duration -= minutes;
+    auto seconds = std::chrono::duration_cast<std::chrono::seconds>(uptime_duration);
+
+    return std::format("{}h {}m {}s", hours.count(), minutes.count(), seconds.count());
 }

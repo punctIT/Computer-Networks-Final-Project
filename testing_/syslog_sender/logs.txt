@@ -1,4 +1,50 @@
-<86>Nov 27 15:38:01 masina-dev sshd[1234]: Failed password for invalid user admin from 192.168.1.50 port 4422 ssh2
-<13>Nov 27 15:38:05 web-prod-01 nginx: 2023/11/27 15:38:05 [error] 456#456: *1 open() "/var/www/html/favicon.ico" failed (2: No such file or directory)
-<4>Nov 27 15:38:10 db-primary kernel: [12345.678900] Out of memory: Kill process 9876 (mysqld) score 950 or sacrifice child
-<78>Nov 27 15:38:15 firewall-main kernel: BURST ceva iptables: DROP IN=eth0 OUT= MAC=00:11:22:33:44:55 SRC=45.33.22.11 DST=192.168.1.1 PROTO=TCP SPT=54321 DPT=22
+<86>Nov 28 10:00:01 masina-dev sshd[1001]: Failed password for invalid user root from 192.168.1.101 port 22 ssh2
+<13>Nov 28 10:00:02 web-prod-01 nginx[2045]: 2023/11/28 10:00:02 [error] open() "/var/www/html/admin.php" failed (2: No such file)
+<4>Nov 28 10:00:05 db-primary kernel[0]: [123.45] Out of memory: Kill process 3050 (mysqld) score 800
+<78>Nov 28 10:00:08 firewall-main kernel[0]: IPTABLES: DROP IN=eth0 SRC=45.33.22.11 DST=192.168.1.5 PROTO=TCP DPT=22
+<86>Nov 28 10:00:10 masina-dev sshd[1022]: Failed password for invalid user admin from 112.15.11.20 port 4921 ssh2
+<30>Nov 28 10:00:12 auth-srv systemd[1]: Started Session 55 of user root.
+<13>Nov 28 10:00:15 web-prod-01 nginx[2048]: 2023/11/28 10:00:15 [warn] client 10.0.0.5 closed keepalive connection
+<78>Nov 28 10:00:18 firewall-main kernel[0]: IPTABLES: DROP IN=eth0 SRC=185.20.1.5 DST=192.168.1.5 PROTO=UDP DPT=53
+<4>Nov 28 10:00:20 db-primary mysqld[3060]: [Warning] Aborted connection 3060 to db: 'users' (Got an error reading communication packets)
+<86>Nov 28 10:00:22 masina-dev sshd[1035]: Invalid user ubnt from 203.0.113.5 port 5566 ssh2
+<86>Nov 28 10:00:24 masina-dev sshd[1035]: Failed password for invalid user ubnt from 203.0.113.5 port 5566 ssh2
+<13>Nov 28 10:00:28 web-prod-01 nginx[2050]: 2023/11/28 10:00:28 [error] FastCGI sent in stderr: "Primary script unknown"
+<78>Nov 28 10:00:30 firewall-main kernel[0]: IPTABLES: DROP IN=eth0 SRC=89.12.34.56 DST=192.168.1.5 PROTO=TCP DPT=3389
+<46>Nov 28 10:00:35 sys-mon rsyslogd[880]: -- MARK --
+<86>Nov 28 10:00:38 masina-dev sshd[1050]: Accepted password for root from 192.168.1.50 port 5678 ssh2
+<86>Nov 28 10:00:38 masina-dev sshd[1050]: pam_unix(sshd:session): session opened for user root by (uid=0)
+<3>Nov 28 10:00:40 db-primary kernel[0]: IO error on device sdb1, logical block 5021
+<13>Nov 28 10:00:42 web-prod-01 nginx[2055]: 2023/11/28 10:00:42 [crit] connect() to unix:/var/run/php/php7.4-fpm.sock failed
+<78>Nov 28 10:00:45 firewall-main kernel[0]: IPTABLES: DROP IN=eth0 SRC=91.200.12.4 DST=192.168.1.5 PROTO=ICMP
+<86>Nov 28 10:00:48 masina-dev sshd[1060]: Received disconnect from 116.203.12.55 port 44321:11: Bye Bye
+<86>Nov 28 10:00:50 masina-dev sshd[1065]: Failed password for invalid user support from 101.102.103.104 port 2222
+<4>Nov 28 10:00:55 db-primary mysqld[3080]: InnoDB: Page 123 log sequence number 505050 is in the future!
+<13>Nov 28 10:01:00 web-prod-01 nginx[2060]: 2023/11/28 10:01:00 [error] directory index of "/var/www/html/" is forbidden
+<78>Nov 28 10:01:05 firewall-main kernel[0]: IPTABLES: DROP IN=eth0 SRC=5.5.5.5 DST=192.168.1.5 PROTO=TCP DPT=23
+<86>Nov 28 10:01:10 masina-dev sshd[1070]: Failed password for invalid user oracle from 211.11.11.11 port 4567
+<30>Nov 28 10:01:12 cron[4000]: (root) CMD (   cd / && run-parts --report /etc/cron.hourly )
+<13>Nov 28 10:01:15 web-prod-01 nginx[2065]: 2023/11/28 10:01:15 [error] upstream timed out (110: Connection timed out)
+<4>Nov 28 10:01:20 db-primary kernel[0]: EXT4-fs (sda1): re-mounted. Opts: errors=remount-ro
+<78>Nov 28 10:01:22 firewall-main kernel[0]: IPTABLES: DROP IN=eth0 SRC=192.168.5.50 DST=192.168.1.5 PROTO=TCP DPT=445
+<86>Nov 28 10:01:25 masina-dev sshd[1080]: Failed password for invalid user postgres from 77.88.99.00 port 22
+<86>Nov 28 10:01:28 masina-dev sudo[5000]: root : TTY=pts/0 ; PWD=/root ; USER=root ; COMMAND=/usr/bin/apt update
+<13>Nov 28 10:01:30 web-prod-01 nginx[2070]: 2023/11/28 10:01:30 [error] open() "/var/www/html/.env" failed (2: No such file)
+<78>Nov 28 10:01:35 firewall-main kernel[0]: IPTABLES: DROP IN=eth0 SRC=1.2.3.4 DST=192.168.1.5 PROTO=TCP DPT=8080
+<4>Nov 28 10:01:40 db-primary mysqld[3100]: [ERROR] InnoDB: Attempted to open a previously opened tablespace.
+<86>Nov 28 10:01:45 masina-dev sshd[1090]: Failed password for invalid user test from 123.123.123.123 port 54321
+<30>Nov 28 10:01:50 systemd[1]: Stopping User Manager for UID 1000...
+<13>Nov 28 10:01:52 web-prod-01 nginx[2080]: 2023/11/28 10:01:52 [warn] conflicting server name "example.com" on 0.0.0.0:80
+<78>Nov 28 10:01:55 firewall-main kernel[0]: IPTABLES: DROP IN=eth0 SRC=200.100.50.25 DST=192.168.1.5 PROTO=TCP DPT=1433
+<4>Nov 28 10:02:00 db-primary kernel[0]: sd 0:0:0:0: [sda] tag#0 FAILED Result: hostbyte=DID_OK driverbyte=DRIVER_SENSE
+<86>Nov 28 10:02:05 masina-dev sshd[1100]: Disconnected from invalid user admin 192.168.1.150 port 5544
+<13>Nov 28 10:02:10 web-prod-01 nginx[2090]: 2023/11/28 10:02:10 [error] request entity too large
+<78>Nov 28 10:02:15 firewall-main kernel[0]: IPTABLES: DROP IN=eth0 SRC=99.88.77.66 DST=192.168.1.5 PROTO=UDP DPT=123
+<86>Nov 28 10:02:20 masina-dev sshd[1110]: Failed password for invalid user guest from 10.10.10.10 port 22
+<4>Nov 28 10:02:25 db-primary systemd-journald[500]: Failed to write entry, ignoring: Read-only file system
+<13>Nov 28 10:02:30 web-prod-01 nginx[2100]: 2023/11/28 10:02:30 [error] worker_connections are not enough
+<78>Nov 28 10:02:35 firewall-main kernel[0]: IPTABLES: DROP IN=eth0 SRC=172.16.0.5 DST=192.168.1.5 PROTO=TCP DPT=21
+<86>Nov 28 10:02:40 masina-dev sshd[1120]: Failed password for invalid user pi from 192.168.0.100 port 22
+<30>Nov 28 10:02:45 systemd[1]: Created slice User Slice of UID 1001.
+<13>Nov 28 10:02:50 web-prod-01 nginx[2110]: 2023/11/28 10:02:50 [crit] SSL_do_handshake() failed
+<78>Nov 28 10:02:55 firewall-main kernel[0]: IPTABLES: DROP IN=eth0 SRC=45.55.65.75 DST=192.168.1.5 PROTO=TCP DPT=3306
