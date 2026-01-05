@@ -2,52 +2,39 @@
 \@writefile{toc}{\contentsline {title}{NetworkDevicesMonitor}{1}{}\protected@file@percent }
 \@writefile{toc}{\authcount {1}}
 \@writefile{toc}{\contentsline {author}{Ivaniciuc Teodor-Arsenie}{1}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {1}Introducere si Context}{1}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Motivatie}{1}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}Obiective Tehnice}{1}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {2}Arhitectura Sistemului}{2}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Vedere de Ansamblu}{2}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Arhitectura completa NetworkDevicesMonitor}}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introducere}{1}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Viziunea Generala și Motivatie}{1}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}Obiectivele Proiectului}{1}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}Tehnologii Aplicate}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}C++23 (Backend) și Concurenta}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Protocolul TCP}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}SQLite3 (Stocare)}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Qt6 (Interfata Grafica)}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Structura Aplicatiei}{3}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Arhitectura completa NetworkDevicesMonitor}}{3}{}\protected@file@percent }
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:architecture}{{1}{2}{}{figure.1}{}}
-\@writefile{toc}{\contentsline {subsubsection}{1. Server Backend (C++23)}{3}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{2. Client GUI (Qt6)}{3}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Pipeline-ul de Date}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Port 1514 - Syslog Receiver}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Port 9000 - Agent Receiver}{5}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Port 8080 - Admin API}{5}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3}Implementare Tehnica Detaliata}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Server: Concurenta si Thread Safety}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Thread-Safe Queue Implementation}{6}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Database Manager (SQLite3 WAL Mode)}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Source Manager - Sistem de Securitate}{7}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Sistem de Filtrare Avansata}{8}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{FiltresManager - Filtrare Multi-Nivel}{8}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Sistem de Alertare}{9}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{AlertsManager (Server)}{9}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{AlertsPage si AlertPopup (Client)}{9}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Client: Interfata Grafica Asincrona}{10}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Page Management System}{10}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Comunicare Asincrona cu Signals}{11}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Security Page - Whitelist/Blacklist Management}{12}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4}Protocol de Comunicare}{13}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Structura Pachetului (Admin API)}{13}{}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Format pachet TCP pe port 8080}}{13}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Comenzi Disponibile}{13}{}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces API endpoints complete}}{13}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Exemple de Raspunsuri}{13}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Validare cu Wireshark}{14}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Captura Wireshark - Analiza pachetelor JUNK}}{14}{}\protected@file@percent }
-\newlabel{fig:wireshark}{{2}{14}{}{figure.2}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Scenarii de Utilizare}{14}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Scenarii de Succes}{14}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Scenariu 1: Monitorizare Agent în Timp Real}{14}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Scenariu 2: Onboarding Echipament Nou}{15}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Scenariu 3: Configurare Filtre Custom}{15}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Scenariu 4: Alerta Personalizata pe Keyword}{16}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Scenarii de Esec si Recuperare}{16}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Scenariu 5: Trafic Malitios Blocat}{16}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{Scenariu 6: Pachet Corupt Primit}{16}{}\protected@file@percent }
+\newlabel{fig:architecture}{{1}{3}{}{figure.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Server Backend}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Client GUI}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Protocolul de Comunicare}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}A. Port 1514 - Syslog (RFC 5424)}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}B. Port 9000 - Agenti}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}C. Port 8080 - Admin API (Protocol JUNK)}{5}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Specificatia completa a comenzilor API}}{5}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Captura Wireshark - Analiza pachetelor JUNK}}{5}{}\protected@file@percent }
+\newlabel{fig:wireshark}{{2}{5}{}{figure.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Scenarii de Utilizare}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Scenarii de Succes}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Scenariu 1: Monitorizare Agent in Timp Real}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Scenariu 2: Onboarding Echipament Nou}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Scenariu 3: Configurare Filtre Custom (Reducere Zgomot)}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Scenariu 4: Alerta Personalizata pe Keyword}{6}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Scenarii de Eșec (Recuperare și Stabilitate)}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Scenariu 5: Trafic Malitios Blocat}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Scenariu 6: Pachet Corupt Primit}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Scenariu 7: Token Expirat}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6}Concluzii}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Analiza Realizarii}{7}{}\protected@file@percent }
 \bibcite{curs_retele}{1}
 \bibcite{geeks_thread}{2}
 \bibcite{cpp_expected}{3}
@@ -55,6 +42,5 @@
 \bibcite{QT - C++}{5}
 \bibcite{Nlohmann Json}{6}
 \bibcite{Sqlite3}{7}
-\@writefile{toc}{\contentsline {subsubsection}{Scenariu 7: Token Expirat}{17}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {6}Concluzii}{17}{}\protected@file@percent }
-\gdef \@abspage@last{18}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}imbunatatiri Viitoare}{8}{}\protected@file@percent }
+\gdef \@abspage@last{8}
