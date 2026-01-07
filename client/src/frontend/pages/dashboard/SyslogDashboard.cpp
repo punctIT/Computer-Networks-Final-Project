@@ -166,8 +166,9 @@ SyslogTable::SyslogTable()
     table->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
     table->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
     table->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
-    table->horizontalHeader()->setSectionResizeMode(4, QHeaderView:: Stretch);
-    table->horizontalHeader()->setSectionResizeMode(5, QHeaderView:: Stretch);
+    table->horizontalHeader()->setSectionResizeMode(4, QHeaderView::ResizeToContents); 
+    table->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);
+
     table->horizontalHeader()->setSectionResizeMode(6, QHeaderView::Fixed);
     
     table->setColumnWidth(6, 180);
@@ -195,6 +196,10 @@ void SyslogTable::add(std::vector<std::string> whitelist_data)
     for(auto entry : whitelist_data) 
     {
         auto content = BetterString::split(entry, "[]");
+        QString debugStr;
+        for(size_t i=0; i<content.size(); i++) {
+            debugStr += "[" + QString::number(i) + "]:" + QString::fromStdString(content[i]) + " ";
+        }
         if(content.size() < 7) { 
             //qDebug() << "Skip invalid entry (size too small):" << QString::fromStdString(entry);
             continue; 

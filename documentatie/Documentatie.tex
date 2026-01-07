@@ -264,24 +264,18 @@ Unknown Agents & \texttt{type:\{unknown\_agents\};last\_id:\{0\};token:\{...\};}
 \textbf{Rezultat:} Zero impact pe performanta, CPU usage normal.
 
 \subsubsection{Scenariu 6: Pachet Corupt Primit}
-\textbf{Context:} Eroare de retea corupe header-ul unui pachet JUNK.
+\textbf{Context:} Serverul primeste un pachet invalid care nu e in formatul JUNK.
 \begin{enumerate}
-    \item Client trimite pachet cu lungime incorecta in header (0xFFFFFFFF).
-    \item Server citeste 4 bytes: \texttt{length = 4294967295} (invalid).
-    \item Buffer allocation failsafe: maxim 64KB hardcoded.
-    \item Alocare refuzata, citire partiala/anulata.
     \item RequestHandler logheaza eroarea și trimite raspuns de eroare.
 \end{enumerate}
 \textbf{Rezultat:} Server nu crasheaza (segmentation fault evitat), conexiune mentinuta.
 
-\subsubsection{Scenariu 7: Token Expirat}
-\textbf{Context:} Admin lasa aplicatia deschisa 24h, sesiune expirata pe server.
+\subsubsection{Scenariu 7: Token invalid}
 \begin{enumerate}
-    \item Client incearca sa ceara logs cu token vechi.
-    \item SessionManager verifica: token nu mai exista in hash map (șters automat dupa 12h).
-    \item Raspuns: eroare, sesiune expirata.
+    \item Client incearca sa ceara logs cu token invalid/nerecunoscut.
+    \item SessionManager verifica: token nu exista in hash map.
+    \item Raspuns: eroare, sesiune invalida.
 \end{enumerate}
-\textbf{Rezultat:} Security enforcement, clientul este delogat automat.
 
 % -------------------------------------------------------------------------
 % 6. CONCLUZII
@@ -289,8 +283,6 @@ Unknown Agents & \texttt{type:\{unknown\_agents\};last\_id:\{0\};token:\{...\};}
 \section{Concluzii}
 
 Acest proiect a fost, inainte de toate, o experienta de invatare foarte utila. Daca la inceput totul era doar o schita, acum am un server functional (cu Syslog si Agenti) si un client care chiar comunica intre ei.
-
-\subsection{Analiza Realizarii}
 Nu a fost doar despre scris cod, ci despre a intelege cum se leaga lucrurile in prezent:
 \begin{itemize}
     \item \textbf{C++23:} Am profitat de ocazie sa explorez noutatile din noul standard pentru a scrie codul mai modern.

@@ -107,7 +107,7 @@ DashboardPage::DashboardPage(std::shared_ptr<DataRequester> data, const std::sha
 void DashboardPage::update()
 {
     if(this->dashboard_pages->get_current()==0){
-        std::string cmd = std::format("type:{{update_syslog_dashboard}};last_log:{{{}}};",pages->at(0)->last_log);
+        std::string cmd = std::format("type:{{update_syslog_dashboard}};last_log:{{{}}};",pages->at(0)->last_log+1);
         auto data = data_requester->sent(cmd);
         if(!data.has_value()){
             qDebug()<<data.error().c_str();
